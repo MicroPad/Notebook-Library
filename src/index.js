@@ -267,6 +267,47 @@ exports.parseFromEvernote = function parseFromEvernote(xml, addons) {
 	});
 };
 
+exports.parseFromJupyter = function parseFromJupyter(json) {
+	const np = JSON.parse(json);
+	const parsedNotepad = new Notepad(`Jupyter Import (${format(new Date(), 'D MMM h:mmA')})`);
+	parsedNotepad.addSection(new Section('Imported Notes'));
+
+	const section = parsedNotepad.sections[0];
+
+	section.addNote(new Note('Content', format(new Date(), 'YYYY-MM-DDTHH:mm:ss.SSSZ'), []));
+	const content = section.notes[0];
+
+	let mdString = '';
+	np.cells.forEach(cell => {
+		if (cell.cell_type === 'markdown') cell.source.forEach(line => mdString += line+'\n');
+
+		if (cell.cell_type === 'code') {
+			mdString += '\n```\n';
+			cell.source.forEach(line => mdString += line+'\n');
+
+			cell.outputs.forEach(output => {
+				if (!output.text) return;
+				mdString += '\n--------------------\n';
+				mdString += 'Output:\n';
+				output.text.forEach(t => mdString += t);
+			});
+
+			mdString += '```\n';
+		}
+	});
+
+	content.addElement('markdown', {
+		id: 'markdown1',
+		x: '10px',
+		y: '10px',
+		width: '600px',
+		height: 'auto',
+		fontSize: '16px'
+	}, mdString);
+
+	exports.notepad = parsedNotepad;
+}
+
 exports.createNotepad = function createNotepad(title) {
 	return new Notepad(title);
 };
