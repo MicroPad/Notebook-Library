@@ -302,6 +302,7 @@ exports.parseFromJupyter = function parseFromJupyter(json) {
 				output.text.forEach(function (t) {
 					return mdString += t;
 				});
+				mdString += '\n--------------------\n';
 			});
 
 			mdString += '```\n';
