@@ -1,11 +1,9 @@
 {
 	"name": "upad-parse",
-	"version": "2.8.1",
+	"version": "3.0.0",
 	"description": "This is a parser for the NPX file format that µPad uses",
-	"main": "src/index.js",
-	"scripts": {
-		"build": "babel src -d dist"
-	},
+	"main": "dist/index.js",
+	"scripts": {},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/MicroPad/Web-Parser.git"
@@ -16,26 +14,14 @@
 		"url": "https://github.com/MicroPad/Web-Parser/issues"
 	},
 	"homepage": "https://getmicropad.com",
-	"dependencies": {
-		"date-fns": "^1.29.0",
-		"pretty-data": "^0.40.0",
-		"to-markdown": "^3.1.1",
-		"xml2js": "^0.4.17"
-	},
-	"devDependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-preset-env": "^1.6.1"
-	},
-	"babel": {
-		"presets": [
-			"env"
-		]
-	},
 	"keywords": [
 		"uPad",
 		"µPad",
 		"parse",
 		"npx",
 		"parser"
-	]
+	],
+	"devDependencies": {
+		"typescript": "^2.9.2"
+	}
 }
