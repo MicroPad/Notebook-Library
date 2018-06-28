@@ -36,9 +36,3 @@ jobs:
             - node_modules/
 
       - run: yarn test
-
-workflows:
-  version: 2
-  test-and-deploy:
-    jobs:
-      - test
