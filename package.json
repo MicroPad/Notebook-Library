@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "rm -rf ./dist; npx tsc",
-		"test": "npx jest"
+		"test": "TZ=NZ npx jest"
 	},
 	"repository": {
 		"type": "git",
