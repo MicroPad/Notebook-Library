@@ -6,7 +6,7 @@
 		"lib": ["esnext"],                        /* Specify library files to be included in the compilation. */
 		"declaration": true,                      /* Generates corresponding '.d.ts' file. */
 		"outDir": "./dist",                       /* Redirect output structure to the directory. */
-		"rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+		// "rootDir": "./src",                    /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
 		"removeComments": true,                   /* Do not emit comments to output. */
 		"downlevelIteration": true,               /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
 		"preserveConstEnums": true,
@@ -20,8 +20,9 @@
 		"esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
 
 		/* Source Map Options */
-		"sourceMap": true,                        /* Generates corresponding '.map' file. */
-		"sourceRoot": "./src",                    /* Specify the location where debugger should locate TypeScript files instead of source locations. */
-		"mapRoot": "./dist",                      /* Specify the location where debugger should locate map files instead of generated locations. */
-	}
+		"sourceMap": false                        /* Generates corresponding '.map' file. */
+	},
+	"exclude": [
+		"**/*.spec.ts"
+	]
 }
