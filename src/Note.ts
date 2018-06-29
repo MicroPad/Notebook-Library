@@ -27,7 +27,7 @@ export type Source = {
 export default class Note extends NPXObject {
 	constructor(
 		public readonly title: string,
-		public readonly time: Date = new Date(),
+		public readonly time: number = new Date().getTime(),
 		public readonly elements: NoteElement[] = [],
 		public readonly bibliography: Source[] = [],
 		internalRef?: string

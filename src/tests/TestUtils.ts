@@ -9,7 +9,7 @@ export namespace TestUtils {
 	}
 
 	export function makeNote(title: string, time: Date = new Date(1)): Note {
-		const note = new Note(title, time);
+		const note = new Note(title, time.getTime());
 		(note as any).internalRef = 'abc';
 
 		return note;

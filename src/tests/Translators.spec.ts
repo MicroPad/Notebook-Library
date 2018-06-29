@@ -1,4 +1,5 @@
-import { Notepad, Section, Translators } from '../index';
+import { Notepad, Translators } from '../index';
+import { TestUtils } from './TestUtils';
 
 describe('Translators', () => {
 	describe('Json', () => {
@@ -9,7 +10,11 @@ describe('Translators', () => {
 					lastModified: new Date(1),
 					notepadAssets: ['test']
 				});
-				expected = expected.addSection(new Section('test'));
+
+				let section = TestUtils.makeSection('test');
+				section = section.addSection(TestUtils.makeSection('sub'));
+				section = section.addNote(TestUtils.makeNote('hello'));
+				expected = expected.addSection(section);
 
 				const json = expected.toJson();
 

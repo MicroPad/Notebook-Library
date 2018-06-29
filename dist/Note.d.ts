@@ -21,10 +21,10 @@ export declare type Source = {
 };
 export default class Note extends NPXObject {
     readonly title: string;
-    readonly time: Date;
+    readonly time: number;
     readonly elements: NoteElement[];
     readonly bibliography: Source[];
-    constructor(title: string, time?: Date, elements?: NoteElement[], bibliography?: Source[], internalRef?: string);
+    constructor(title: string, time?: number, elements?: NoteElement[], bibliography?: Source[], internalRef?: string);
     addElement(element: NoteElement): Note;
     addSource(source: Source): Note;
     toXmlObject(): any;

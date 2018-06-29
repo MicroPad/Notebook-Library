@@ -43,7 +43,7 @@ var date_fns_1 = require("date-fns");
 var Note = (function (_super) {
     __extends(Note, _super);
     function Note(title, time, elements, bibliography, internalRef) {
-        if (time === void 0) { time = new Date(); }
+        if (time === void 0) { time = new Date().getTime(); }
         if (elements === void 0) { elements = []; }
         if (bibliography === void 0) { bibliography = []; }
         var _this = _super.call(this, title, internalRef) || this;
