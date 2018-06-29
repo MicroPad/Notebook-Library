@@ -1,24 +1,60 @@
-import { format } from 'date-fns';
-import { Section } from './Section';
+import { format, parse } from 'date-fns';
+import { Asset, Parent, Section } from './';
 
-export class Notepad {
+export type NotepadOptions = {
+	lastModified?: Date;
+	sections?: Section[];
+	notepadAssets?: string[];
+	assets?: Asset[];
+};
+
+export default class Notepad implements Parent {
 	public readonly lastModified: string;
-	private readonly sections: Section[] = [];
-	private readonly notepadAssets: string[] = [];
+	public readonly sections: Section[];
+	public readonly notepadAssets: string[];
+	public readonly assets: Asset[];
 
 	constructor(
 		public readonly title: string,
-		lastModified?: Date
+		opts: NotepadOptions = {}
 	) {
-		this.lastModified = format(lastModified || new Date(), 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+		this.lastModified = format(opts.lastModified || new Date(), 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+		this.sections = opts.sections || [];
+		this.notepadAssets = opts.notepadAssets || [];
+		this.assets = opts.assets || [];
 	}
 
-	public toJson() {
-		return JSON.stringify(this);
+	public addSection(section: Section): Notepad {
+		const notepad = this.clone({
+			sections: [
+				...this.sections,
+				section
+			]
+		});
+		section.parent = notepad;
+
+		return notepad;
+	}
+
+	public toJson(): string {
+		return JSON.stringify({
+			...(<object> this),
+			assets: undefined
+		});
 	}
 
 	public toXml() {
 		// TODO: XML export
 		return '';
+	}
+
+	private clone(opts: Partial<NotepadOptions> = {}, title?: string): Notepad {
+		return new Notepad(title || this.title, {
+			lastModified: parse(this.lastModified),
+			sections: this.sections,
+			notepadAssets: this.notepadAssets,
+			assets: this.notepadAssets,
+			...opts
+		});
 	}
 }
