@@ -32,14 +32,24 @@ describe('Translators', () => {
 	describe('Xml', () => {
 		describe('toNotepadFromNpx', () => {
 			const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
-
 			it('should return a notepad object from NPX', async () => {
 				// Arrange
-
 				// Act
 				const res = await Translators.Xml.toNotepadFromNpx(helpNpx);
 
 				// Assert
+				expect(res).toMatchSnapshot();
+			});
+
+			it('should be identical to the source data', async () => {
+				// Arrange
+				const parsed = await Translators.Xml.toNotepadFromNpx(helpNpx);
+
+				// Act
+				const res = await parsed.toXml();
+
+				// Assert
+				expect('﻿' + res).toEqual(helpNpx);
 			});
 		});
 	});

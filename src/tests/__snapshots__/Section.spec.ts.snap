@@ -18,8 +18,12 @@ Object {
               "time": "1970-01-01T12:00:00.001+12:00",
               "title": "test note",
             },
-            "addons": Array [],
-            "bibliography": Array [],
+            "addons": Array [
+              Array [],
+            ],
+            "bibliography": Array [
+              Array [],
+            ],
           },
         ],
         "section": Array [],

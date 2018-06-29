@@ -1,6 +1,7 @@
 import { Note, Notepad, Section } from './index';
 import { parse } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
+import { NoteElement, Source } from './Note';
 
 export namespace Translators {
 	export namespace Json {
@@ -50,11 +51,43 @@ export namespace Translators {
 				let section = new Section(sectionObj.$.title);
 
 				// Insert sub-sections recursively because notepads are trees
-				(sectionObj.section || []).forEach(item => {
-					section = section.addSection(parseSection(item));
-				});
+				(sectionObj.section || []).forEach(item => section = section.addSection(parseSection(item)));
 
-				// TODO: Parse notes
+				// Parse notes
+				(sectionObj.note || []).forEach(item =>
+					section = section.addNote(new Note(
+						item.$.title,
+						item.$.time,
+						[
+							...([
+									'markdown',
+									'drawing',
+									'image',
+									'file',
+									'recording'
+								]
+								.map(type =>
+									(item[type] || []).map(e => {
+										return {
+											type: type,
+											args: e.$,
+											content: e._
+										} as NoteElement;
+									})
+								)
+							).reduce((acc: NoteElement[], element: NoteElement) => acc.concat(element))
+						],
+						[
+							...(item.bibliography[0].source || []).map(s => {
+								return {
+									id: s.$.id,
+									item: s.$.item,
+									content: s._
+								} as Source;
+							})
+						]
+					))
+				);
 
 				return section;
 			}
