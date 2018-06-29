@@ -42,23 +42,28 @@ var NPXObject_1 = require("./NPXObject");
 var date_fns_1 = require("date-fns");
 var Note = (function (_super) {
     __extends(Note, _super);
-    function Note(title, time, elements, bibliography, addons, internalRef) {
+    function Note(title, time, elements, bibliography, internalRef) {
         if (time === void 0) { time = new Date(); }
         if (elements === void 0) { elements = []; }
         if (bibliography === void 0) { bibliography = []; }
-        if (addons === void 0) { addons = []; }
         var _this = _super.call(this, title, internalRef) || this;
         _this.title = title;
         _this.time = time;
         _this.elements = elements;
         _this.bibliography = bibliography;
-        _this.addons = addons;
         return _this;
     }
     Note.prototype.addElement = function (element) {
         return this.clone({
             elements: __spread(this.elements, [
                 element
+            ])
+        });
+    };
+    Note.prototype.addSource = function (source) {
+        return this.clone({
+            bibliography: __spread(this.bibliography, [
+                source
             ])
         });
     };
@@ -76,11 +81,7 @@ var Note = (function (_super) {
             note: __assign({ $: {
                     title: this.title,
                     time: date_fns_1.format(this.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
-                }, addons: this.addons.map(function (addon) {
-                    return {
-                        'import': [addon]
-                    };
-                }), bibliography: this.bibliography.map(function (source) {
+                }, addons: [], bibliography: this.bibliography.map(function (source) {
                     return {
                         source: {
                             $: {
@@ -95,7 +96,7 @@ var Note = (function (_super) {
     };
     Note.prototype.clone = function (opts) {
         if (opts === void 0) { opts = {}; }
-        return new Note(opts.title || this.title, opts.time || this.time, opts.elements || this.elements, opts.bibliography || this.bibliography, opts.addons || this.addons, opts.internalRef || this.internalRef);
+        return new Note(opts.title || this.title, opts.time || this.time, opts.elements || this.elements, opts.bibliography || this.bibliography, opts.internalRef || this.internalRef);
     };
     return Note;
 }(NPXObject_1.NPXObject));

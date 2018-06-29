@@ -30,7 +30,6 @@ export default class Note extends NPXObject {
 		public readonly time: Date = new Date(),
 		public readonly elements: NoteElement[] = [],
 		public readonly bibliography: Source[] = [],
-		public readonly addons: string[] = [],
 		internalRef?: string
 	) {
 		super(title, internalRef);
@@ -41,6 +40,15 @@ export default class Note extends NPXObject {
 			elements: [
 				...this.elements,
 				element
+			]
+		});
+	}
+
+	public addSource(source: Source): Note {
+		return this.clone({
+			bibliography: [
+				...this.bibliography,
+				source
 			]
 		});
 	}
@@ -61,11 +69,7 @@ export default class Note extends NPXObject {
 					title: this.title,
 					time: format(this.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
 				},
-				addons: this.addons.map(addon => {
-					return {
-						'import': [addon]
-					};
-				}),
+				addons: [], // We aren't supporting addons in v3 of the parser but we'll keep this for NPX compatibility
 				bibliography: this.bibliography.map(source => {
 					return {
 						source: {
@@ -88,7 +92,6 @@ export default class Note extends NPXObject {
 			opts.time || this.time,
 			opts.elements || this.elements,
 			opts.bibliography || this.bibliography,
-			opts.addons || this.addons,
 			opts.internalRef || this.internalRef
 		);
 	}

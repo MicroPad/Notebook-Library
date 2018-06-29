@@ -24,9 +24,9 @@ export default class Note extends NPXObject {
     readonly time: Date;
     readonly elements: NoteElement[];
     readonly bibliography: Source[];
-    readonly addons: string[];
-    constructor(title: string, time?: Date, elements?: NoteElement[], bibliography?: Source[], addons?: string[], internalRef?: string);
+    constructor(title: string, time?: Date, elements?: NoteElement[], bibliography?: Source[], internalRef?: string);
     addElement(element: NoteElement): Note;
+    addSource(source: Source): Note;
     toXmlObject(): any;
     clone(opts?: Partial<Note>): Note;
 }
