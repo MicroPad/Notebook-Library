@@ -1,5 +1,6 @@
 import { format, parse } from 'date-fns';
 import { Asset, Parent, Section } from './';
+import stringify from 'json-stringify-safe';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -37,10 +38,14 @@ export default class Notepad implements Parent {
 	}
 
 	public toJson(): string {
-		return JSON.stringify({
+		return stringify({
 			...(<object> this),
 			assets: undefined
 		});
+	}
+
+	public async toXmlObject(): Promise<object> {
+		return {};
 	}
 
 	public toXml() {
@@ -53,7 +58,7 @@ export default class Notepad implements Parent {
 			lastModified: parse(this.lastModified),
 			sections: this.sections,
 			notepadAssets: this.notepadAssets,
-			assets: this.notepadAssets,
+			assets: this.assets,
 			...opts
 		});
 	}

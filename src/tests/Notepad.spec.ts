@@ -45,7 +45,7 @@ describe('Notepad', () => {
 
 		beforeEach(() => {
 			notepad = new Notepad('test');
-			section = new Section();
+			section = new Section('test');
 		});
 
 		it('should add a new section', () => {
@@ -63,7 +63,7 @@ describe('Notepad', () => {
 			const res = notepad.addSection(section);
 
 			// Assert
-			expect(res).not.toEqual(notepad);
+			expect(res).not.toBe(notepad);
 		});
 	});
 
@@ -84,7 +84,7 @@ describe('Notepad', () => {
 function getOptions(): NotepadOptions {
 	return {
 		lastModified: new Date(1),
-		sections: [new Section()],
+		sections: [new Section('test')],
 		assets: [new Asset()],
 		notepadAssets: ['test']
 	};

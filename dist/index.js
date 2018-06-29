@@ -6,3 +6,5 @@ var Section_1 = require("./Section");
 exports.Section = Section_1.default;
 var Asset_1 = require("./Asset");
 exports.Asset = Asset_1.default;
+var Translators_1 = require("./Translators");
+exports.Translators = Translators_1.Translators;

@@ -8,12 +8,13 @@ export declare type NotepadOptions = {
 export default class Notepad implements Parent {
     readonly title: string;
     readonly lastModified: string;
-    private readonly sections;
-    private readonly notepadAssets;
-    private readonly assets;
+    readonly sections: Section[];
+    readonly notepadAssets: string[];
+    readonly assets: Asset[];
     constructor(title: string, opts?: NotepadOptions);
     addSection(section: Section): Notepad;
     toJson(): string;
+    toXmlObject(): Promise<object>;
     toXml(): string;
     private clone;
 }
