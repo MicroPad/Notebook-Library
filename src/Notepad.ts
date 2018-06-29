@@ -44,10 +44,6 @@ export default class Notepad implements Parent {
 		});
 	}
 
-	public async toXmlObject(): Promise<object> {
-		return {};
-	}
-
 	public toXml() {
 		// TODO: XML export
 		return '';
@@ -61,5 +57,9 @@ export default class Notepad implements Parent {
 			assets: this.assets,
 			...opts
 		});
+	}
+
+	private async toXmlObject(): Promise<object> {
+		return {};
 	}
 }

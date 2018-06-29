@@ -1,6 +1,3 @@
-export interface NPXObject {
+export interface Parent {
 	title: string;
-	toXmlObject: () => Promise<object>;
 }
-
-export interface Parent extends NPXObject {}

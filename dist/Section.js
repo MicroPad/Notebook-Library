@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -35,9 +45,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Section = (function () {
-    function Section(title) {
-        this.title = title;
+var NPXObject_1 = require("./NPXObject");
+var Section = (function (_super) {
+    __extends(Section, _super);
+    function Section(title, sections, notes) {
+        if (sections === void 0) { sections = []; }
+        if (notes === void 0) { notes = []; }
+        var _this = _super.call(this, title) || this;
+        _this.title = title;
+        _this.sections = sections;
+        _this.notes = notes;
+        return _this;
     }
     Section.prototype.toXmlObject = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -47,5 +65,5 @@ var Section = (function () {
         });
     };
     return Section;
-}());
+}(NPXObject_1.NPXObject));
 exports.default = Section;

@@ -82,9 +82,12 @@ describe('Notepad', () => {
 });
 
 function getOptions(): NotepadOptions {
+	const testSection = new Section('test section');
+	(<any> testSection).internalRef = 'abc';
+
 	return {
 		lastModified: new Date(1),
-		sections: [new Section('test')],
+		sections: [testSection],
 		assets: [new Asset()],
 		notepadAssets: ['test']
 	};

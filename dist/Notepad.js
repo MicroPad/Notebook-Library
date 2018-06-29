@@ -89,19 +89,19 @@ var Notepad = (function () {
     Notepad.prototype.toJson = function () {
         return json_stringify_safe_1.default(__assign({}, this, { assets: undefined }));
     };
-    Notepad.prototype.toXmlObject = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2, {}];
-            });
-        });
-    };
     Notepad.prototype.toXml = function () {
         return '';
     };
     Notepad.prototype.clone = function (opts, title) {
         if (opts === void 0) { opts = {}; }
         return new Notepad(title || this.title, __assign({ lastModified: date_fns_1.parse(this.lastModified), sections: this.sections, notepadAssets: this.notepadAssets, assets: this.assets }, opts));
+    };
+    Notepad.prototype.toXmlObject = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2, {}];
+            });
+        });
     };
     return Notepad;
 }());

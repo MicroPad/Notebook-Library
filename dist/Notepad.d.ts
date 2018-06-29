@@ -14,7 +14,7 @@ export default class Notepad implements Parent {
     constructor(title: string, opts?: NotepadOptions);
     addSection(section: Section): Notepad;
     toJson(): string;
-    toXmlObject(): Promise<object>;
     toXml(): string;
     private clone;
+    private toXmlObject;
 }
