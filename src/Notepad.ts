@@ -1,6 +1,7 @@
 import { format, parse } from 'date-fns';
 import { Asset, Parent, Section } from './';
 import stringify from 'json-stringify-safe';
+import { Builder } from 'xml2js';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -44,9 +45,22 @@ export default class Notepad implements Parent {
 		});
 	}
 
-	public toXml() {
-		// TODO: XML export
-		return '';
+	public async toXml(): Promise<string> {
+		const builder = new Builder({
+			cdata: true,
+			renderOpts: {
+				'pretty': false
+			},
+			xmldec: {
+				version: '1.0',
+				encoding: 'UTF-8',
+				standalone: false
+			}
+		});
+
+		// Generate the XML
+		const obj = await this.toXmlObject();
+		return builder.buildObject(obj).replace(/&#xD;/g, '');
 	}
 
 	private clone(opts: Partial<NotepadOptions> = {}, title?: string): Notepad {
@@ -60,6 +74,17 @@ export default class Notepad implements Parent {
 	}
 
 	private async toXmlObject(): Promise<object> {
-		return {};
+		return {
+			notepad: {
+				$: {
+					'xsi:noNamespaceSchemaLocation': 'https://getmicropad.com/schema.xsd',
+					title: this.title,
+					lastModified: this.lastModified,
+					'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
+				},
+				assets: [], // TODO: Assets needs a toXmlObject method
+				section: this.sections.map(s => s.toXmlObject().section)
+			}
+		};
 	}
 }

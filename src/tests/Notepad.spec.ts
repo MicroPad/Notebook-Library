@@ -79,6 +79,19 @@ describe('Notepad', () => {
 			expect(n.toJson()).toMatchSnapshot();
 		});
 	});
+
+	describe('toXml', () => {
+		it(`should generate the notepad's NPX file`, async () => {
+			// Arrange
+			const title = 'test';
+
+			// Act
+			const n = new Notepad(title, options);
+
+			// Assert
+			expect(await n.toXml()).toMatchSnapshot();
+		});
+	});
 });
 
 function getOptions(): NotepadOptions {

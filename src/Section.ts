@@ -13,7 +13,15 @@ export default class Section extends NPXObject implements Parent {
 		super(title);
 	}
 
-	public async toXmlObject(): Promise<object> {
-		return {};
+	public toXmlObject(): any {
+		return {
+			section: {
+				$: {
+					title: this.title
+				},
+				section: this.sections.map(s => s.toXmlObject().section),
+				notes: [] // TODO: Notes
+			}
+		};
 	}
 }
