@@ -1,5 +1,7 @@
 import { Notepad, Translators } from '../index';
 import { TestUtils } from './TestUtils';
+import * as fs from 'fs';
+import * as path from 'path';
 
 describe('Translators', () => {
 	describe('Json', () => {
@@ -23,6 +25,21 @@ describe('Translators', () => {
 
 				// Assert
 				expect(res).toEqual(expected);
+			});
+		});
+	});
+
+	describe('Xml', () => {
+		describe('toNotepadFromNpx', () => {
+			const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
+
+			it('should return a notepad object from NPX', async () => {
+				// Arrange
+
+				// Act
+				const res = await Translators.Xml.toNotepadFromNpx(helpNpx);
+
+				// Assert
 			});
 		});
 	});

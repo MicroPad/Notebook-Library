@@ -1,5 +1,6 @@
 import { Note, Notepad, Section } from './index';
 import { parse } from 'date-fns';
+import { OptionsV2, parseString } from 'xml2js';
 
 export namespace Translators {
 	export namespace Json {
@@ -28,6 +29,44 @@ export namespace Translators {
 
 		function restoreNote(note: Note) {
 			return new Note(note.title, note.time, note.elements, note.bibliography, note.internalRef);
+		}
+	}
+
+	export namespace Xml {
+		export async function toNotepadFromNpx(xml: string): Promise<Notepad> {
+			const res = await parseXml(xml);
+			let notepad = new Notepad(res.notepad.$.title, { lastModified: res.notepad.$.lastModified });
+
+			// Parse sections/notes
+			if (res.notepad.section) {
+				res.notepad.section.forEach(s => notepad = notepad.addSection(parseSection(s)));
+			}
+
+			// TODO: Parse assets
+
+			return notepad;
+
+			function parseSection(sectionObj: any): Section {
+				let section = new Section(sectionObj.$.title);
+
+				// Insert sub-sections recursively because notepads are trees
+				(sectionObj.section || []).forEach(item => {
+					section = section.addSection(parseSection(item));
+				});
+
+				// TODO: Parse notes
+
+				return section;
+			}
+		}
+
+		function parseXml(xml: string, opts: OptionsV2 = {}): Promise<any> {
+			return new Promise<any>((resolve, reject) => {
+				parseString(xml, { trim: true, ...opts }, (err, res) => {
+					if (err) reject(err);
+					resolve(res);
+				});
+			});
 		}
 	}
 }
