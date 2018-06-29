@@ -1,10 +1,16 @@
+import { Parent } from './interfaces';
+
 export abstract class NPXObject {
+	public parent: Parent | string | undefined;
+	public readonly title: string;
 	public readonly internalRef: string;
 
 	protected constructor(
-		public readonly title: string
+		title: string,
+		internalRef?: string
 	) {
-		this.internalRef = this.generateGuid();
+		this.title = this.clean(title);
+		this.internalRef = internalRef || this.generateGuid();
 	}
 
 	public abstract toXmlObject(): any;
@@ -14,5 +20,9 @@ export abstract class NPXObject {
 			return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 		}
 		return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+	}
+
+	protected clean(str: string) {
+		return str.replace(/<[^>]*>/, "");
 	}
 }

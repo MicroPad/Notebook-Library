@@ -23,6 +23,7 @@
 		"sourceMap": false                        /* Generates corresponding '.map' file. */
 	},
 	"exclude": [
-		"**/*.spec.ts"
+		"**/*.spec.ts",
+		"**/TestUtils.ts"
 	]
 }

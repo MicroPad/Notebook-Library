@@ -63,7 +63,7 @@ export default class Notepad implements Parent {
 		return builder.buildObject(obj).replace(/&#xD;/g, '');
 	}
 
-	private clone(opts: Partial<NotepadOptions> = {}, title?: string): Notepad {
+	public clone(opts: Partial<NotepadOptions> = {}, title?: string): Notepad {
 		return new Notepad(title || this.title, {
 			lastModified: parse(this.lastModified),
 			sections: this.sections,

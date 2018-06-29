@@ -1,5 +1,6 @@
 import { Asset, Notepad, Section } from '../';
 import { NotepadOptions } from '../Notepad';
+import { TestUtils } from './TestUtils';
 
 describe('Notepad', () => {
 	let options = getOptions();
@@ -83,13 +84,18 @@ describe('Notepad', () => {
 	describe('toXml', () => {
 		it(`should generate the notepad's NPX file`, async () => {
 			// Arrange
-			const title = 'test';
+			let n = new Notepad('test', options);
+			n = n.clone({
+				sections: [
+					n.sections[0].addNote(TestUtils.makeNote('test note'))
+				]
+			});
 
 			// Act
-			const n = new Notepad(title, options);
+			const res = await n.toXml();
 
 			// Assert
-			expect(await n.toXml()).toMatchSnapshot();
+			expect(res).toMatchSnapshot();
 		});
 	});
 });

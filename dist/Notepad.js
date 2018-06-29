@@ -68,6 +68,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var date_fns_1 = require("date-fns");
 var json_stringify_safe_1 = __importDefault(require("json-stringify-safe"));
+var xml2js_1 = require("xml2js");
 var Notepad = (function () {
     function Notepad(title, opts) {
         if (opts === void 0) { opts = {}; }
@@ -90,7 +91,29 @@ var Notepad = (function () {
         return json_stringify_safe_1.default(__assign({}, this, { assets: undefined }));
     };
     Notepad.prototype.toXml = function () {
-        return '';
+        return __awaiter(this, void 0, void 0, function () {
+            var builder, obj;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        builder = new xml2js_1.Builder({
+                            cdata: true,
+                            renderOpts: {
+                                'pretty': false
+                            },
+                            xmldec: {
+                                version: '1.0',
+                                encoding: 'UTF-8',
+                                standalone: false
+                            }
+                        });
+                        return [4, this.toXmlObject()];
+                    case 1:
+                        obj = _a.sent();
+                        return [2, builder.buildObject(obj).replace(/&#xD;/g, '')];
+                }
+            });
+        });
     };
     Notepad.prototype.clone = function (opts, title) {
         if (opts === void 0) { opts = {}; }
@@ -99,7 +122,18 @@ var Notepad = (function () {
     Notepad.prototype.toXmlObject = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, {}];
+                return [2, {
+                        notepad: {
+                            $: {
+                                'xsi:noNamespaceSchemaLocation': 'https://getmicropad.com/schema.xsd',
+                                title: this.title,
+                                lastModified: this.lastModified,
+                                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
+                            },
+                            assets: [],
+                            section: this.sections.map(function (s) { return s.toXmlObject().section; })
+                        }
+                    }];
             });
         });
     };
