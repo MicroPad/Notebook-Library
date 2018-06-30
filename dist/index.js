@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Notepad_1 = require("./Notepad");
 exports.Notepad = Notepad_1.default;
+var FlatNotepad_1 = require("./FlatNotepad");
+exports.FlatNotepad = FlatNotepad_1.default;
 var Section_1 = require("./Section");
 exports.Section = Section_1.default;
 var Note_1 = require("./Note");

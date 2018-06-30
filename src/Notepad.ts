@@ -51,6 +51,12 @@ export default class Notepad implements Parent {
 		});
 	}
 
+	public modified(lastModified: Date = new Date()): Notepad {
+		return this.clone({
+			lastModified
+		});
+	}
+
 	public toJson(): string {
 		return stringify({
 			...(<object> this),
@@ -76,8 +82,8 @@ export default class Notepad implements Parent {
 		return builder.buildObject(obj).replace(/&#xD;/g, '');
 	}
 
-	public clone(opts: Partial<NotepadOptions> = {}, title?: string): Notepad {
-		return new Notepad(title || this.title, {
+	public clone(opts: Partial<NotepadOptions> = {}, title: string = this.title): Notepad {
+		return new Notepad(title, {
 			lastModified: parse(this.lastModified),
 			sections: this.sections,
 			notepadAssets: this.notepadAssets,

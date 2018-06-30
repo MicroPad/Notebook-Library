@@ -105,6 +105,20 @@ describe('Notepad', () => {
 		});
 	});
 
+	describe('modified', () => {
+		it('should update lastModified', () => {
+			// Arrange
+			const expected = new Notepad('expected', { lastModified: new Date(32) });
+			let notepad = new Notepad('test');
+
+			// Act
+			notepad = notepad.modified(new Date(32));
+
+			// Assert
+			expect(notepad.lastModified).toEqual(expected.lastModified);
+		});
+	});
+
 	describe('toJson', () => {
 		it('should generate a JSON object of the notepad', () => {
 			// Arrange

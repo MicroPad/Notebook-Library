@@ -97,6 +97,12 @@ var Notepad = (function () {
             ])
         });
     };
+    Notepad.prototype.modified = function (lastModified) {
+        if (lastModified === void 0) { lastModified = new Date(); }
+        return this.clone({
+            lastModified: lastModified
+        });
+    };
     Notepad.prototype.toJson = function () {
         return json_stringify_safe_1.default(__assign({}, this, { assets: undefined }));
     };
@@ -127,7 +133,8 @@ var Notepad = (function () {
     };
     Notepad.prototype.clone = function (opts, title) {
         if (opts === void 0) { opts = {}; }
-        return new Notepad(title || this.title, __assign({ lastModified: date_fns_1.parse(this.lastModified), sections: this.sections, notepadAssets: this.notepadAssets, assets: this.assets }, opts));
+        if (title === void 0) { title = this.title; }
+        return new Notepad(title, __assign({ lastModified: date_fns_1.parse(this.lastModified), sections: this.sections, notepadAssets: this.notepadAssets, assets: this.assets }, opts));
     };
     Notepad.prototype.toXmlObject = function () {
         return __awaiter(this, void 0, void 0, function () {
