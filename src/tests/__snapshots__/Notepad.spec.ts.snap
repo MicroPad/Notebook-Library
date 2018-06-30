@@ -14,7 +14,7 @@ Array [
           ],
           "type": "Buffer",
         },
-        "type": "text/plain",
+        "type": "",
         Symbol(wrapper): [Circular],
       },
     },

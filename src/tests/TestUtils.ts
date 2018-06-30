@@ -17,6 +17,6 @@ export namespace TestUtils {
 
 	export function makeAsset(data: string = 'test', ref: string = 'abc'): Asset {
 		// @ts-ignore Ignore the error here, Jest will manage this
-		return new Asset(new Blob([data], { type: 'text/plain' }), ref);
+		return new Asset(new Blob([data]), ref);
 	}
 }
