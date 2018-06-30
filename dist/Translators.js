@@ -133,6 +133,16 @@ var Translators;
                             if (res.notepad.section) {
                                 res.notepad.section.forEach(function (s) { return notepad = notepad.addSection(parseSection(s)); });
                             }
+                            if (res.notepad.assets) {
+                                ((res.notepad.assets[0] || {}).asset || []).forEach(function (item) {
+                                    try {
+                                        notepad = notepad.addAsset(new index_1.Asset(dataURItoBlob(item._), item.$.uuid));
+                                    }
+                                    catch (e) {
+                                        console.warn("Can't parse the asset " + item.$.uuid);
+                                    }
+                                });
+                            }
                             return [2, notepad];
                     }
                 });
@@ -150,4 +160,14 @@ var Translators;
             });
         }
     })(Xml = Translators.Xml || (Translators.Xml = {}));
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    }
 })(Translators = exports.Translators || (exports.Translators = {}));

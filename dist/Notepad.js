@@ -87,6 +87,13 @@ var Notepad = (function () {
         section.parent = notepad;
         return notepad;
     };
+    Notepad.prototype.addAsset = function (asset) {
+        return this.clone({
+            assets: __spread(this.assets, [
+                asset
+            ])
+        });
+    };
     Notepad.prototype.toJson = function () {
         return json_stringify_safe_1.default(__assign({}, this, { assets: undefined }));
     };
@@ -121,19 +128,29 @@ var Notepad = (function () {
     };
     Notepad.prototype.toXmlObject = function () {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2, {
-                        notepad: {
+            var _a, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _a = {};
+                        _b = {
                             $: {
                                 'xsi:noNamespaceSchemaLocation': 'https://getmicropad.com/schema.xsd',
                                 title: this.title,
                                 lastModified: this.lastModified,
                                 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
-                            },
-                            assets: [],
-                            section: this.sections.map(function (s) { return s.toXmlObject().section; })
-                        }
-                    }];
+                            }
+                        };
+                        _c = {};
+                        return [4, Promise.all(this.assets.map(function (a) { return a.toXmlObject(); }))];
+                    case 1: return [2, (_a.notepad = (_b.assets = [
+                            (_c.asset = _d.sent(),
+                                _c)
+                        ],
+                            _b.section = this.sections.map(function (s) { return s.toXmlObject().section; }),
+                            _b),
+                            _a)];
+                }
             });
         });
     };

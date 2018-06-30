@@ -13,6 +13,7 @@ export default class Notepad implements Parent {
     readonly assets: Asset[];
     constructor(title: string, opts?: NotepadOptions);
     addSection(section: Section): Notepad;
+    addAsset(asset: Asset): Notepad;
     toJson(): string;
     toXml(): Promise<string>;
     clone(opts?: Partial<NotepadOptions>, title?: string): Notepad;

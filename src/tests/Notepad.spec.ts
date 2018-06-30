@@ -68,6 +68,34 @@ describe('Notepad', () => {
 		});
 	});
 
+	describe('addAsset', () => {
+		let notepad: Notepad;
+		let asset: Asset;
+
+		beforeEach(() => {
+			notepad = new Notepad('test');
+			asset = TestUtils.makeAsset();
+		});
+
+		it('should add a new section', () => {
+			//Arrange
+			// Act
+			const res = notepad.addAsset(asset);
+
+			// Assert
+			expect(res.assets[0]).toEqual(asset);
+		});
+
+		it('should create a new object', () => {
+			//Arrange
+			// Act
+			const res = notepad.addAsset(asset);
+
+			// Assert
+			expect(res).not.toBe(notepad);
+		});
+	});
+
 	describe('toJson', () => {
 		it('should generate a JSON object of the notepad', () => {
 			// Arrange
