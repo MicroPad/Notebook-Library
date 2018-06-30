@@ -91,6 +91,9 @@ var Notepad = (function () {
         return this.clone({
             assets: __spread(this.assets, [
                 asset
+            ]),
+            notepadAssets: __spread(this.notepadAssets, [
+                asset.uuid
             ])
         });
     };

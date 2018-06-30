@@ -49,7 +49,6 @@ var Asset = (function () {
                 reader.readAsDataURL(_this.data);
             }
             catch (e) {
-                console.warn(e);
                 resolve('');
             }
         });
