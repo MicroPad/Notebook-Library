@@ -1,4 +1,4 @@
-import { Note, Section } from '../index';
+import { Asset, Note, Section } from '../index';
 
 export namespace TestUtils {
 	export function makeSection(title: string, sections?: Section[], notes?: Note[]): Section {
@@ -13,5 +13,10 @@ export namespace TestUtils {
 		(note as any).internalRef = 'abc';
 
 		return note;
+	}
+
+	export function makeAsset(data: string = 'test', ref: string = 'abc'): Asset {
+		// @ts-ignore Ignore the error here, Jest will manage this
+		return new Asset(new Blob([data], { type: 'text/plain' }), ref)
 	}
 }

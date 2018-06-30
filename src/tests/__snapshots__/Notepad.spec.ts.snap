@@ -14,7 +14,7 @@ Array [
           ],
           "type": "Buffer",
         },
-        "type": "audio/ogg",
+        "type": "text/plain",
         Symbol(wrapper): [Circular],
       },
     },

@@ -107,9 +107,8 @@ function getOptions(): NotepadOptions {
 	return {
 		lastModified: new Date(1),
 		sections: [testSection],
-		// Ignore the error here, Jest will manage this
-		// @ts-ignore
-		assets: [new Asset(new Blob(['test'], { type: 'audio/ogg' }), 'abc')],
+
+		assets: [TestUtils.makeAsset()],
 		notepadAssets: ['test']
 	};
 }
