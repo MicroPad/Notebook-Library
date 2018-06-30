@@ -1,4 +1,4 @@
-import { Note, Notepad, Section } from './index';
+import { Asset, Note, Notepad, Section } from './index';
 import { parse } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
@@ -43,7 +43,16 @@ export namespace Translators {
 				res.notepad.section.forEach(s => notepad = notepad.addSection(parseSection(s)));
 			}
 
-			// TODO: Parse assets
+			// Parse assets
+			if (res.notepad.assets) {
+				((res.notepad.assets[0] || {}).asset || []).forEach(item => {
+					try {
+						notepad = notepad.addAsset(new Asset(dataURItoBlob(item._), item.$.uuid))
+					} catch (e) {
+						console.warn(`Can't parse the asset ${item.$.uuid}`);
+					}
+				});
+			}
 
 			return notepad;
 
@@ -101,5 +110,25 @@ export namespace Translators {
 				});
 			});
 		}
+	}
+
+	// Thanks to http://stackoverflow.com/a/12300351/998467
+	function dataURItoBlob(dataURI: string) {
+		// convert base64 to raw binary data held in a string
+		// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+		let byteString = atob(dataURI.split(',')[1]);
+
+		// separate out the mime component
+		let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+		// write the bytes of the string to an ArrayBuffer
+		let ab = new ArrayBuffer(byteString.length);
+		let ia = new Uint8Array(ab);
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+
+		// write the ArrayBuffer to a blob, and you're done
+		return new Blob([ab], { type: mimeString });
 	}
 }

@@ -38,6 +38,15 @@ export default class Notepad implements Parent {
 		return notepad;
 	}
 
+	public addAsset(asset: Asset): Notepad {
+		return this.clone({
+			assets: [
+				...this.assets,
+				asset
+			]
+		});
+	}
+
 	public toJson(): string {
 		return stringify({
 			...(<object> this),
@@ -82,7 +91,11 @@ export default class Notepad implements Parent {
 					lastModified: this.lastModified,
 					'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
 				},
-				assets: [], // TODO: Assets needs a toXmlObject method
+				assets: [
+					{
+						asset: await Promise.all(this.assets.map(a => a.toXmlObject()))
+					}
+				],
 				section: this.sections.map(s => s.toXmlObject().section)
 			}
 		};
