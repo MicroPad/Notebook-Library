@@ -67,6 +67,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var date_fns_1 = require("date-fns");
+var _1 = require("./");
 var json_stringify_safe_1 = __importDefault(require("json-stringify-safe"));
 var xml2js_1 = require("xml2js");
 var Notepad = (function () {
@@ -130,6 +131,22 @@ var Notepad = (function () {
                 }
             });
         });
+    };
+    Notepad.prototype.flatten = function () {
+        var notepad = new _1.FlatNotepad(this.title, {
+            lastModified: date_fns_1.parse(this.lastModified),
+            notepadAssets: this.notepadAssets
+        });
+        var flattenSection = function (section) {
+            var flat = { title: section.title, internalRef: section.internalRef };
+            if (section.parent)
+                flat.parentRef = section.parent.internalRef;
+            notepad = notepad.addSection(flat);
+            section.notes.forEach(function (n) { return notepad = notepad.addNote(n); });
+            section.sections.forEach(function (s) { return flattenSection(s); });
+        };
+        this.sections.forEach(function (s) { return flattenSection(s); });
+        return notepad;
     };
     Notepad.prototype.clone = function (opts, title) {
         if (opts === void 0) { opts = {}; }

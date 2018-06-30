@@ -1,7 +1,8 @@
 import { format, parse } from 'date-fns';
-import { Asset, Parent, Section } from './';
+import { Asset, FlatNotepad, Parent, Section } from './';
 import stringify from 'json-stringify-safe';
 import { Builder } from 'xml2js';
+import { FlatSection } from './FlatNotepad';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -80,6 +81,28 @@ export default class Notepad implements Parent {
 		// Generate the XML
 		const obj = await this.toXmlObject();
 		return builder.buildObject(obj).replace(/&#xD;/g, '');
+	}
+
+	public flatten(): FlatNotepad {
+		let notepad = new FlatNotepad(this.title, {
+			lastModified: parse(this.lastModified),
+			notepadAssets: this.notepadAssets
+		});
+
+		const flattenSection = (section: Section) => {
+			let flat: FlatSection = { title: section.title, internalRef: section.internalRef };
+			if (section.parent) flat.parentRef = (section.parent as Section).internalRef;
+
+			// Add this flat section
+			notepad = notepad.addSection(flat);
+			section.notes.forEach(n => notepad = notepad.addNote(n));
+
+			// Add all of its children recursively
+			section.sections.forEach(s => flattenSection(s));
+		};
+		this.sections.forEach(s => flattenSection(s));
+
+		return notepad;
 	}
 
 	public clone(opts: Partial<NotepadOptions> = {}, title: string = this.title): Notepad {

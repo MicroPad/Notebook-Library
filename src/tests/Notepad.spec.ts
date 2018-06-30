@@ -149,6 +149,27 @@ describe('Notepad', () => {
 			expect(res).toMatchSnapshot();
 		});
 	});
+
+	describe('flatten', () => {
+		it(`should generate a FlatNotepad correctly`, async () => {
+			// Arrange
+			let n = new Notepad('test', options);
+			n = n.clone({
+				sections: [
+					n.sections[0]
+						.addNote(TestUtils.makeNote('test note').clone({ internalRef: 'unique' }))
+						.addSection(TestUtils.makeSection('nested').clone({ internalRef: 'deep' }))
+				]
+			});
+
+			// Act
+			const res = n.flatten();
+
+			// Assert
+			expect(res).toMatchSnapshot();
+			expect(await res.toNotepad().toXml()).toEqual(await n.clone({ assets: [] }).toXml());
+		});
+	});
 });
 
 function getOptions(): NotepadOptions {

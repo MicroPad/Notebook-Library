@@ -42,6 +42,37 @@ Array [
 ]
 `;
 
+exports[`Notepad flatten should generate a FlatNotepad correctly 1`] = `
+FlatNotepad {
+  "lastModified": "1970-01-01T12:00:00.001+12:00",
+  "notepadAssets": Array [
+    "test",
+  ],
+  "notes": Object {
+    "unique": Note {
+      "bibliography": Array [],
+      "elements": Array [],
+      "internalRef": "unique",
+      "parent": "abc",
+      "time": 1,
+      "title": "test note",
+    },
+  },
+  "sections": Object {
+    "abc": Object {
+      "internalRef": "abc",
+      "title": "test section",
+    },
+    "deep": Object {
+      "internalRef": "deep",
+      "parentRef": "abc",
+      "title": "nested",
+    },
+  },
+  "title": "test",
+}
+`;
+
 exports[`Notepad toJson should generate a JSON object of the notepad 1`] = `"{\\"title\\":\\"test\\",\\"lastModified\\":\\"1970-01-01T12:00:00.001+12:00\\",\\"sections\\":[{\\"title\\":\\"test section\\",\\"internalRef\\":\\"abc\\",\\"sections\\":[],\\"notes\\":[]}],\\"notepadAssets\\":[\\"test\\"]}"`;
 
 exports[`Notepad toXml should generate the notepad's NPX file 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"no\\"?><notepad xsi:noNamespaceSchemaLocation=\\"https://getmicropad.com/schema.xsd\\" title=\\"test\\" lastModified=\\"1970-01-01T12:00:00.001+12:00\\" xmlns:xsi=\\"http://www.w3.org/2001/XMLSchema-instance\\"><assets><asset uuid=\\"abc\\">data:;base64,dGVzdA==</asset></assets><section title=\\"test section\\"><note title=\\"test note\\" time=\\"1970-01-01T12:00:00.001+12:00\\"><addons/><bibliography/></note></section></notepad>"`;
