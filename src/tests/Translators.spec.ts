@@ -6,7 +6,7 @@ import * as path from 'path';
 describe('Translators', () => {
 	describe('Json', () => {
 		describe('toNotepad', () => {
-			it('should return a notepad object from JSON', () => {
+			it('should return a Notepad object from JSON', () => {
 				// Arrange
 				let expected: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
@@ -22,6 +22,30 @@ describe('Translators', () => {
 
 				// Act
 				const res = Translators.Json.toNotepad(json);
+
+				// Assert
+				expect(res).toEqual(expected);
+			});
+		});
+
+		describe('toFlatNotepad', () => {
+			it('should return a FlatNotepad object from JSON', () => {
+				// Arrange
+				let testNotepad: Notepad = new Notepad('test', {
+					lastModified: new Date(1),
+					notepadAssets: ['test']
+				});
+
+				let section = TestUtils.makeSection('test');
+				section = section.addSection(TestUtils.makeSection('sub'));
+				section = section.addNote(TestUtils.makeNote('hello'));
+				testNotepad = testNotepad.addSection(section);
+
+				const expected = testNotepad.flatten();
+				const json = testNotepad.toJson();
+
+				// Act
+				const res = Translators.Json.toFlatNotepad(json);
 
 				// Assert
 				expect(res).toEqual(expected);

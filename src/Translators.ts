@@ -1,7 +1,8 @@
-import { Asset, Note, Notepad, Section } from './index';
+import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
 import { parse } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
+import { FlatSection } from './FlatNotepad';
 
 export namespace Translators {
 	export namespace Json {
@@ -16,6 +17,31 @@ export namespace Translators {
 			jsonObj.sections.forEach(section => notepad = notepad.addSection(restoreSection(section)));
 
 			return notepad;
+		}
+
+		export function toFlatNotepad(json: string): FlatNotepad {
+			const jsonObj: Notepad = JSON.parse(json);
+			let notepad = new FlatNotepad(jsonObj.title, {
+				lastModified: parse(jsonObj.lastModified),
+				notepadAssets: jsonObj.notepadAssets || []
+			});
+
+			// Restore sections
+			jsonObj.sections.forEach(section => restoreFlatSection(section));
+
+			return notepad;
+
+			function restoreFlatSection(section: Section) {
+				let flat: FlatSection = { title: section.title, internalRef: section.internalRef };
+				if (section.parent) flat.parentRef = (section.parent as Section).internalRef;
+
+				// Add this flat section
+				notepad = notepad.addSection(flat);
+				section.notes.forEach(n => notepad = notepad.addNote(n));
+
+				// Add all of its children recursively
+				section.sections.forEach(s => restoreFlatSection(s));
+			}
 		}
 
 		function restoreSection(section: Section): Section {
