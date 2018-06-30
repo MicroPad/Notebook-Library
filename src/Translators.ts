@@ -15,8 +15,6 @@ export namespace Translators {
 			// Restore sections
 			jsonObj.sections.forEach(section => notepad = notepad.addSection(restoreSection(section)));
 
-			// TODO: Restore assets
-
 			return notepad;
 		}
 
