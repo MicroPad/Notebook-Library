@@ -77,13 +77,22 @@ describe('Notepad', () => {
 			asset = TestUtils.makeAsset();
 		});
 
-		it('should add a new section', () => {
+		it('should add a new asset', () => {
 			//Arrange
 			// Act
 			const res = notepad.addAsset(asset);
 
 			// Assert
 			expect(res.assets[0]).toEqual(asset);
+		});
+
+		it('should add a new value to notepadAssets', () => {
+			//Arrange
+			// Act
+			const res = notepad.addAsset(asset);
+
+			// Assert
+			expect(res.notepadAssets[0]).toEqual(asset.uuid);
 		});
 
 		it('should create a new object', () => {

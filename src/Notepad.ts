@@ -43,6 +43,10 @@ export default class Notepad implements Parent {
 			assets: [
 				...this.assets,
 				asset
+			],
+			notepadAssets: [
+				...this.notepadAssets,
+				asset.uuid
 			]
 		});
 	}

@@ -32,15 +32,27 @@ describe('Translators', () => {
 	describe('Xml', () => {
 		describe('toNotepadFromNpx', () => {
 			const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
+			const brokenNpx = fs.readFileSync(path.join(__dirname, 'Broken.npx')).toString();
+
 			it('should be identical to the source data', async () => {
 				// Arrange
-				const parsed = await Translators.Xml.toNotepadFromNpx(helpNpx);
-
 				// Act
+				const parsed = await Translators.Xml.toNotepadFromNpx(helpNpx);
 				const res = await parsed.toXml();
 
 				// Assert
 				expect('﻿' + res).toEqual(helpNpx);
+			});
+
+			it('should still parse correctly even with invalid assets', async () => {
+				// Arrange
+				console.warn = jest.fn(() => { return; });
+
+				// Act
+				const parsed = await Translators.Xml.toNotepadFromNpx(brokenNpx);
+
+				// Assert
+				expect(parsed.notepadAssets).toHaveLength(0);
 			});
 		});
 	});
