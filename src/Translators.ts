@@ -108,7 +108,7 @@ export namespace Translators {
 										} as NoteElement;
 									})
 								)
-							).reduce((acc: NoteElement[], element: NoteElement) => acc.concat(element))
+							).reduce((acc: NoteElement[], element: NoteElement[]) => acc.concat(element))
 						],
 						[
 							...(item.bibliography[0].source || []).map(s => {

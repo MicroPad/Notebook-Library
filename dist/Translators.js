@@ -80,6 +80,24 @@ var Translators;
             return notepad;
         }
         Json.toNotepad = toNotepad;
+        function toFlatNotepad(json) {
+            var jsonObj = JSON.parse(json);
+            var notepad = new index_1.FlatNotepad(jsonObj.title, {
+                lastModified: date_fns_1.parse(jsonObj.lastModified),
+                notepadAssets: jsonObj.notepadAssets || []
+            });
+            jsonObj.sections.forEach(function (section) { return restoreFlatSection(section); });
+            return notepad;
+            function restoreFlatSection(section) {
+                var flat = { title: section.title, internalRef: section.internalRef };
+                if (section.parent)
+                    flat.parentRef = section.parent.internalRef;
+                notepad = notepad.addSection(flat);
+                section.notes.forEach(function (n) { return notepad = notepad.addNote(n); });
+                section.sections.forEach(function (s) { return restoreFlatSection(s); });
+            }
+        }
+        Json.toFlatNotepad = toFlatNotepad;
         function restoreSection(section) {
             var restored = new index_1.Section(section.title).clone({ internalRef: section.internalRef });
             section.sections.forEach(function (s) { return restored = restored.addSection(restoreSection(s)); });
