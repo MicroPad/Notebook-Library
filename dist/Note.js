@@ -77,21 +77,22 @@ var Note = (function (_super) {
                 _: e.content
             });
         });
+        var bibliography = this.bibliography.map(function (source) {
+            return {
+                source: {
+                    $: {
+                        id: source.id,
+                        item: source.item
+                    },
+                    _: source.content
+                }
+            };
+        });
         return {
             note: __assign({ $: {
                     title: this.title,
                     time: date_fns_1.format(this.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
-                }, addons: [], bibliography: this.bibliography.map(function (source) {
-                    return {
-                        source: {
-                            $: {
-                                id: source.id,
-                                item: source.item
-                            },
-                            _: source.content
-                        }
-                    };
-                }) }, elements)
+                }, addons: [[]], bibliography: (bibliography.length > 0) ? bibliography : [[]] }, elements)
         };
     };
     Note.prototype.clone = function (opts) {

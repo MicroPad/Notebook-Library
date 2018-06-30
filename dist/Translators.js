@@ -42,6 +42,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./index");
 var date_fns_1 = require("date-fns");
@@ -76,8 +96,30 @@ var Translators;
             return __awaiter(this, void 0, void 0, function () {
                 function parseSection(sectionObj) {
                     var section = new index_1.Section(sectionObj.$.title);
-                    (sectionObj.section || []).forEach(function (item) {
-                        section = section.addSection(parseSection(item));
+                    (sectionObj.section || []).forEach(function (item) { return section = section.addSection(parseSection(item)); });
+                    (sectionObj.note || []).forEach(function (item) {
+                        return section = section.addNote(new index_1.Note(item.$.title, item.$.time, __spread(([
+                            'markdown',
+                            'drawing',
+                            'image',
+                            'file',
+                            'recording'
+                        ]
+                            .map(function (type) {
+                            return (item[type] || []).map(function (e) {
+                                return {
+                                    type: type,
+                                    args: e.$,
+                                    content: e._
+                                };
+                            });
+                        })).reduce(function (acc, element) { return acc.concat(element); })), __spread((item.bibliography[0].source || []).map(function (s) {
+                            return {
+                                id: s.$.id,
+                                item: s.$.item,
+                                content: s._
+                            };
+                        }))));
                     });
                     return section;
                 }
