@@ -1,4 +1,4 @@
-import { FlatNotepad, Note, Notepad, Section } from '../index';
+import { FlatNotepad, Note, Section } from '../index';
 import { FlatNotepadOptions, FlatSection } from '../FlatNotepad';
 import { TestUtils } from './TestUtils';
 
