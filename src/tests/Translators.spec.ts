@@ -21,7 +21,7 @@ describe('Translators', () => {
 				const json = expected.toJson();
 
 				// Act
-				const res = Translators.Json.toNotepad(json);
+				const res = Translators.Json.toNotepadFromNotepad(json);
 
 				// Assert
 				expect(res).toEqual(expected);
@@ -45,7 +45,7 @@ describe('Translators', () => {
 				const json = testNotepad.toJson();
 
 				// Act
-				const res = Translators.Json.toFlatNotepad(json);
+				const res = Translators.Json.toFlatNotepadFromNotepad(json);
 
 				// Assert
 				expect(res).toEqual(expected);
