@@ -70,7 +70,7 @@ var Translators;
 (function (Translators) {
     var Json;
     (function (Json) {
-        function toNotepad(json) {
+        function toNotepadFromNotepad(json) {
             var jsonObj = JSON.parse(json);
             var notepad = new index_1.Notepad(jsonObj.title, {
                 lastModified: date_fns_1.parse(jsonObj.lastModified),
@@ -78,9 +78,18 @@ var Translators;
             });
             jsonObj.sections.forEach(function (section) { return notepad = notepad.addSection(restoreSection(section)); });
             return notepad;
+            function restoreSection(section) {
+                var restored = new index_1.Section(section.title).clone({ internalRef: section.internalRef });
+                section.sections.forEach(function (s) { return restored = restored.addSection(restoreSection(s)); });
+                section.notes.forEach(function (n) { return restored = restored.addNote(restoreNote(n)); });
+                return restored;
+            }
+            function restoreNote(note) {
+                return new index_1.Note(note.title, note.time, note.elements, note.bibliography, note.internalRef);
+            }
         }
-        Json.toNotepad = toNotepad;
-        function toFlatNotepad(json) {
+        Json.toNotepadFromNotepad = toNotepadFromNotepad;
+        function toFlatNotepadFromNotepad(json) {
             var jsonObj = JSON.parse(json);
             var notepad = new index_1.FlatNotepad(jsonObj.title, {
                 lastModified: date_fns_1.parse(jsonObj.lastModified),
@@ -97,16 +106,30 @@ var Translators;
                 section.sections.forEach(function (s) { return restoreFlatSection(s); });
             }
         }
-        Json.toFlatNotepad = toFlatNotepad;
-        function restoreSection(section) {
-            var restored = new index_1.Section(section.title).clone({ internalRef: section.internalRef });
-            section.sections.forEach(function (s) { return restored = restored.addSection(restoreSection(s)); });
-            section.notes.forEach(function (n) { return restored = restored.addNote(restoreNote(n)); });
-            return restored;
+        Json.toFlatNotepadFromNotepad = toFlatNotepadFromNotepad;
+        function toMarkdownFromJupyter(json) {
+            var np = JSON.parse(json);
+            var mdString = '';
+            np.cells.forEach(function (cell) {
+                if (cell.cell_type === 'markdown')
+                    cell.source.forEach(function (line) { return mdString += line + '\n'; });
+                if (cell.cell_type === 'code') {
+                    mdString += '\n```\n';
+                    cell.source.forEach(function (line) { return mdString += line + '\n'; });
+                    cell.outputs.forEach(function (output) {
+                        if (!output.text)
+                            return;
+                        mdString += '\n--------------------\n';
+                        mdString += 'Output:\n';
+                        output.text.forEach(function (t) { return mdString += t; });
+                        mdString += '\n--------------------\n';
+                    });
+                    mdString += '```\n';
+                }
+            });
+            return mdString;
         }
-        function restoreNote(note) {
-            return new index_1.Note(note.title, note.time, note.elements, note.bibliography, note.internalRef);
-        }
+        Json.toMarkdownFromJupyter = toMarkdownFromJupyter;
     })(Json = Translators.Json || (Translators.Json = {}));
     var Xml;
     (function (Xml) {

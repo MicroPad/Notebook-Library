@@ -55,6 +55,32 @@ export namespace Translators {
 				section.sections.forEach(s => restoreFlatSection(s));
 			}
 		}
+
+		export function toMarkdownFromJupyter(json: string): string {
+			const np = JSON.parse(json);
+
+			let mdString = '';
+			np.cells.forEach(cell => {
+				if (cell.cell_type === 'markdown') cell.source.forEach(line => mdString += line+'\n');
+
+				if (cell.cell_type === 'code') {
+					mdString += '\n```\n';
+					cell.source.forEach(line => mdString += line+'\n');
+
+					cell.outputs.forEach(output => {
+						if (!output.text) return;
+						mdString += '\n--------------------\n';
+						mdString += 'Output:\n';
+						output.text.forEach(t => mdString += t);
+						mdString += '\n--------------------\n';
+					});
+
+					mdString += '```\n';
+				}
+			});
+
+			return mdString;
+		}
 	}
 
 	export namespace Xml {

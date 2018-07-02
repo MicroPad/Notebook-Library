@@ -196,7 +196,7 @@ describe('Notepad', () => {
 
 	it('should convert a notepad an array of MarkdownNotes', async () => {
 		// Arrange
-		const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
+		const helpNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Help.npx')).toString();
 		const notepad = await Translators.Xml.toNotepadFromNpx(helpNpx);
 
 		// Act

@@ -51,12 +51,25 @@ describe('Translators', () => {
 				expect(res).toEqual(expected);
 			});
 		});
+
+		describe('toMarkdownFromJupyter', () => {
+			const notebook = fs.readFileSync(path.join(__dirname, '__data__', 'notebook.ipynb')).toString();
+
+			it('should convert to the correct markdown', () => {
+				// Arrange
+				// Act
+				const res = Translators.Json.toMarkdownFromJupyter(notebook);
+
+				// Assert
+				expect(res).toMatchSnapshot();
+			});
+		});
 	});
 
 	describe('Xml', () => {
 		describe('toNotepadFromNpx', () => {
-			const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
-			const brokenNpx = fs.readFileSync(path.join(__dirname, 'Broken.npx')).toString();
+			const helpNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Help.npx')).toString();
+			const brokenNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Broken.npx')).toString();
 
 			it('should be identical to the source data', async () => {
 				// Arrange
