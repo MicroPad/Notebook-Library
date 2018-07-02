@@ -2,6 +2,7 @@ import { Notepad, Translators } from '../index';
 import { TestUtils } from './TestUtils';
 import * as fs from 'fs';
 import * as path from 'path';
+import Asset from '../Asset';
 
 describe('Translators', () => {
 	describe('Json', () => {
@@ -91,6 +92,21 @@ describe('Translators', () => {
 				// Assert
 				expect(parsed.notepadAssets).toHaveLength(0);
 			});
+		});
+
+		describe('toNotepadFromEnex', () => {
+			const sampleEnex = fs.readFileSync(path.join(__dirname, '__data__', 'sample-enex.enex')).toString();
+
+			it('should convert the notepad correctly', async () => {
+				// Arrange
+				(Asset as any).prototype.generateGuid = jest.fn(() => 'abc');
+
+				// Act
+				const res = await Translators.Xml.toNotepadFromEnex(sampleEnex);
+
+				// Assert
+				expect(await (res.clone({ lastModified: new Date(1) })).toXml()).toMatchSnapshot();
+			})
 		});
 	});
 });

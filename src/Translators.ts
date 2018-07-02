@@ -1,8 +1,11 @@
 import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
-import { parse } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
 import { FlatSection } from './FlatNotepad';
+import { pd } from 'pretty-data';
+import { gfm } from 'turndown-plugin-gfm';
+import TurndownService from 'turndown';
 
 export namespace Translators {
 	export namespace Json {
@@ -149,6 +152,128 @@ export namespace Translators {
 				);
 
 				return section;
+			}
+		}
+
+		export async function toNotepadFromEnex(xml: string): Promise<Notepad> {
+			const res = await parseXml(xml, { trim: true, normalize: false });
+			const exported = res['en-export'];
+
+			let notepad = new Notepad(`${exported.$.application} Import ${format(parse(exported.$['export-date']), 'D MMM h:mmA')}`);
+			let section = new Section('Imported Notes');
+
+			(exported.note || [])
+				.map(enexNote => {
+					let note = new Note((enexNote.title || ['Imported Note'])[0], parse(enexNote.created[0]).getTime(), [
+						// Add the general note content (text/to-do)
+						{
+							type: 'markdown',
+							args: {
+								id: 'markdown1',
+								x: '10px',
+								y: '10px',
+								width: '600px',
+								height: 'auto',
+								fontSize: '16px'
+							},
+							content: enmlToMarkdown(pd.xml(enexNote.content[0]))
+						}
+					]);
+
+					let fileCount = 0;
+					let imageCount = 0;
+					(enexNote.resource || []).map(resource => {
+						const asset = new Asset(dataURItoBlob(
+							`data:${resource.mime};base64,${resource.data[0]._.replace(/\r?\n|\r/g, '')}`
+						));
+						notepad = notepad.addAsset(asset);
+
+						const y = 10 + (200 * (fileCount * imageCount));
+
+						if (resource.mime[0].includes('image')) {
+							note = note.addElement({
+								type: 'image',
+								args: {
+									id: `image${++imageCount}`,
+									x: '650px',
+									y: y + 'px',
+									width: 'auto',
+									height: '200px',
+									ext: asset.uuid
+								},
+								content: 'AS'
+							});
+						} else {
+							// Add the resource as a file
+							let filename;
+							try {
+								if (resource['resource-attributes'][0]['file-name']) {
+									filename = resource['resource-attributes'][0]['file-name'][0];
+								} else if (resource['resource-attributes'][0]['source-url']) {
+									filename = resource['resource-attributes'][0]['source-url'][0].split('/').pop();
+								} else {
+									filename = `file${fileCount}.${resource.mime[0].split('/').pop()}`
+								}
+							} catch (e) {
+								filename = 'imported-file' + fileCount;
+							}
+
+							note = note.addElement({
+								type: 'file',
+								args: {
+									id: `file${++fileCount}`,
+									x: '650px',
+									y: y + 'px',
+									width: 'auto',
+									height: 'auto',
+									ext: asset.uuid,
+									filename
+								},
+								content: 'AS'
+							});
+						}
+					});
+
+					return note;
+				})
+				.forEach(note => section = section.addNote(note));
+
+			return notepad.addSection(section);
+
+			function enmlToMarkdown(enml: string): string {
+				// Init Turndown service
+				const service = new TurndownService();
+				service.use(gfm);
+
+				// Setup rules, these are like converters from the old to-markdown lib
+				service.addRule('en-media', {
+					filter: 'en-media',
+					replacement: () => {
+						return '`there was an attachment here`';
+					}
+				});
+
+				service.addRule('crypt', {
+					filter: 'en-crypt',
+					replacement: () => '`there was encrypted text here`'
+				});
+
+				service.addRule('todo', {
+					filter: 'en-todo',
+					replacement: (content, node) =>
+						`- [${(node.getAttributeNode('checked') && node.getAttributeNode('checked').value === 'true') ? 'x' : ' '}] ${content}`
+				});
+
+				// Clean input
+				let lines = enml.split('\n');
+				lines = lines.slice(3, lines.length - 1);
+				const html = lines
+					.map(line => line.trim())
+					.join('\n')
+					.replace(/^<en-media.*\/>$/gmi, tag => `${tag.substr(0, tag.length - 2)}>t</en-media>`);
+
+				// Convert to markdown
+				return service.turndown(html);
 			}
 		}
 

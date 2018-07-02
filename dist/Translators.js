@@ -62,10 +62,16 @@ var __spread = (this && this.__spread) || function () {
     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
     return ar;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./index");
 var date_fns_1 = require("date-fns");
 var xml2js_1 = require("xml2js");
+var pretty_data_1 = require("pretty-data");
+var turndown_plugin_gfm_1 = require("turndown-plugin-gfm");
+var turndown_1 = __importDefault(require("turndown"));
 var Translators;
 (function (Translators) {
     var Json;
@@ -190,6 +196,120 @@ var Translators;
             });
         }
         Xml.toNotepadFromNpx = toNotepadFromNpx;
+        function toNotepadFromEnex(xml) {
+            return __awaiter(this, void 0, void 0, function () {
+                function enmlToMarkdown(enml) {
+                    var service = new turndown_1.default();
+                    service.use(turndown_plugin_gfm_1.gfm);
+                    service.addRule('en-media', {
+                        filter: 'en-media',
+                        replacement: function () {
+                            return '`there was an attachment here`';
+                        }
+                    });
+                    service.addRule('crypt', {
+                        filter: 'en-crypt',
+                        replacement: function () { return '`there was encrypted text here`'; }
+                    });
+                    service.addRule('todo', {
+                        filter: 'en-todo',
+                        replacement: function (content, node) {
+                            return "- [" + ((node.getAttributeNode('checked') && node.getAttributeNode('checked').value === 'true') ? 'x' : ' ') + "] " + content;
+                        }
+                    });
+                    var lines = enml.split('\n');
+                    lines = lines.slice(3, lines.length - 1);
+                    var html = lines
+                        .map(function (line) { return line.trim(); })
+                        .join('\n')
+                        .replace(/^<en-media.*\/>$/gmi, function (tag) { return tag.substr(0, tag.length - 2) + ">t</en-media>"; });
+                    return service.turndown(html);
+                }
+                var res, exported, notepad, section;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, parseXml(xml, { trim: true, normalize: false })];
+                        case 1:
+                            res = _a.sent();
+                            exported = res['en-export'];
+                            notepad = new index_1.Notepad(exported.$.application + " Import " + date_fns_1.format(date_fns_1.parse(exported.$['export-date']), 'D MMM h:mmA'));
+                            section = new index_1.Section('Imported Notes');
+                            (exported.note || [])
+                                .map(function (enexNote) {
+                                var note = new index_1.Note((enexNote.title || ['Imported Note'])[0], date_fns_1.parse(enexNote.created[0]).getTime(), [
+                                    {
+                                        type: 'markdown',
+                                        args: {
+                                            id: 'markdown1',
+                                            x: '10px',
+                                            y: '10px',
+                                            width: '600px',
+                                            height: 'auto',
+                                            fontSize: '16px'
+                                        },
+                                        content: enmlToMarkdown(pretty_data_1.pd.xml(enexNote.content[0]))
+                                    }
+                                ]);
+                                var fileCount = 0;
+                                var imageCount = 0;
+                                (enexNote.resource || []).map(function (resource) {
+                                    var asset = new index_1.Asset(dataURItoBlob("data:" + resource.mime + ";base64," + resource.data[0]._.replace(/\r?\n|\r/g, '')));
+                                    notepad = notepad.addAsset(asset);
+                                    var y = 10 + (200 * (fileCount * imageCount));
+                                    if (resource.mime[0].includes('image')) {
+                                        note = note.addElement({
+                                            type: 'image',
+                                            args: {
+                                                id: "image" + ++imageCount,
+                                                x: '650px',
+                                                y: y + 'px',
+                                                width: 'auto',
+                                                height: '200px',
+                                                ext: asset.uuid
+                                            },
+                                            content: 'AS'
+                                        });
+                                    }
+                                    else {
+                                        var filename = void 0;
+                                        try {
+                                            if (resource['resource-attributes'][0]['file-name']) {
+                                                filename = resource['resource-attributes'][0]['file-name'][0];
+                                            }
+                                            else if (resource['resource-attributes'][0]['source-url']) {
+                                                filename = resource['resource-attributes'][0]['source-url'][0].split('/').pop();
+                                            }
+                                            else {
+                                                filename = "file" + fileCount + "." + resource.mime[0].split('/').pop();
+                                            }
+                                        }
+                                        catch (e) {
+                                            filename = 'imported-file' + fileCount;
+                                        }
+                                        note = note.addElement({
+                                            type: 'file',
+                                            args: {
+                                                id: "file" + ++fileCount,
+                                                x: '650px',
+                                                y: y + 'px',
+                                                width: 'auto',
+                                                height: 'auto',
+                                                ext: asset.uuid,
+                                                filename: filename
+                                            },
+                                            content: 'AS'
+                                        });
+                                    }
+                                });
+                                return note;
+                            })
+                                .forEach(function (note) { return section = section.addNote(note); });
+                            return [2, notepad.addSection(section)];
+                    }
+                });
+            });
+        }
+        Xml.toNotepadFromEnex = toNotepadFromEnex;
         function parseXml(xml, opts) {
             if (opts === void 0) { opts = {}; }
             return new Promise(function (resolve, reject) {

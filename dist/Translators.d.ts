@@ -7,5 +7,6 @@ export declare namespace Translators {
     }
     namespace Xml {
         function toNotepadFromNpx(xml: string): Promise<Notepad>;
+        function toNotepadFromEnex(xml: string): Promise<Notepad>;
     }
 }
