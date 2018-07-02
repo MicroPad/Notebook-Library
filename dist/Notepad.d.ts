@@ -1,4 +1,4 @@
-import { Asset, FlatNotepad, Parent, Section } from './';
+import { Asset, FlatNotepad, Note, Parent, Section } from './';
 export declare type NotepadOptions = {
     lastModified?: Date;
     sections?: Section[];
@@ -15,6 +15,7 @@ export default class Notepad implements Parent {
     addSection(section: Section): Notepad;
     addAsset(asset: Asset): Notepad;
     modified(lastModified?: Date): Notepad;
+    search(query: string): Note[];
     toJson(): string;
     toXml(): Promise<string>;
     flatten(): FlatNotepad;

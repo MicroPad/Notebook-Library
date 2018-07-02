@@ -1,4 +1,5 @@
 import { Parent } from './interfaces';
+import { Note } from './index';
 
 export abstract class NPXObject {
 	public parent: Parent | string | undefined;
@@ -12,6 +13,8 @@ export abstract class NPXObject {
 		this.title = this.clean(title);
 		this.internalRef = internalRef || this.generateGuid();
 	}
+
+	public abstract search(query: string): Note[];
 
 	public abstract toXmlObject(): any;
 

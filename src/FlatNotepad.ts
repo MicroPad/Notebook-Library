@@ -66,6 +66,10 @@ export default class FlatNotepad {
 		});
 	}
 
+	public search(query: string): Note[] {
+		return Object.values(this.notes).filter(n => n.search(query).length > 0);
+	}
+
 	public toNotepad(): Notepad {
 		const buildSection = (flat: FlatSection): Section => {
 			let section = new Section(flat.title, [], [], flat.internalRef);

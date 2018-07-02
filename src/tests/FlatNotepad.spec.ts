@@ -1,5 +1,6 @@
 import { FlatNotepad, Note, Notepad, Section } from '../index';
 import { FlatNotepadOptions, FlatSection } from '../FlatNotepad';
+import { TestUtils } from './TestUtils';
 
 describe('FlatNotepad', () => {
 	let options = getOptions();
@@ -149,6 +150,26 @@ describe('FlatNotepad', () => {
 
 			// Assert
 			expect(notepad.lastModified).toEqual(expected.lastModified);
+		});
+	});
+
+	describe('search', () => {
+		it('should call search on all notes', () => {
+			// Arrange
+			const notepad = new FlatNotepad('test', {
+				lastModified: new Date(1),
+				notes: {
+					abc: TestUtils.makeNote('hi')
+				}
+			});
+
+			Note.prototype.search = jest.fn(() => [TestUtils.makeNote('hi')]);
+
+			// Act
+			notepad.search('h');
+
+			// Assert
+			expect(Note.prototype.search).toHaveBeenCalledWith('h');
 		});
 	});
 

@@ -104,6 +104,11 @@ var Notepad = (function () {
             lastModified: lastModified
         });
     };
+    Notepad.prototype.search = function (query) {
+        return this.sections
+            .map(function (s) { return s.search(query); })
+            .reduce(function (acc, val) { return acc.concat(val); }, []);
+    };
     Notepad.prototype.toJson = function () {
         return json_stringify_safe_1.default(__assign({}, this, { assets: undefined }));
     };

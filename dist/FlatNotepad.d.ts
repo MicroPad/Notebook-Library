@@ -29,6 +29,7 @@ export default class FlatNotepad {
     addNote(note: Note): FlatNotepad;
     addAsset(uuid: string): FlatNotepad;
     modified(lastModified?: Date): FlatNotepad;
+    search(query: string): Note[];
     toNotepad(): Notepad;
     clone(opts?: Partial<FlatNotepadOptions>, title?: string): FlatNotepad;
 }

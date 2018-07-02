@@ -60,6 +60,12 @@ var Section = (function (_super) {
         note.parent = parent;
         return parent;
     };
+    Section.prototype.search = function (query) {
+        var subSectionNotes = this.sections
+            .map(function (s) { return s.search(query); })
+            .reduce(function (acc, val) { return acc.concat(val); }, []);
+        return __spread(this.notes.filter(function (n) { return n.search(query).length > 0; }), subSectionNotes);
+    };
     Section.prototype.toXmlObject = function () {
         return {
             section: {

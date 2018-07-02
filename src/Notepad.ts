@@ -1,5 +1,5 @@
 import { format, parse } from 'date-fns';
-import { Asset, FlatNotepad, Parent, Section } from './';
+import { Asset, FlatNotepad, Note, Parent, Section } from './';
 import stringify from 'json-stringify-safe';
 import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
@@ -56,6 +56,12 @@ export default class Notepad implements Parent {
 		return this.clone({
 			lastModified
 		});
+	}
+
+	public search(query: string): Note[] {
+		return this.sections
+			.map(s => s.search(query))
+			.reduce((acc, val) => acc.concat(val), []);
 	}
 
 	public toJson(): string {

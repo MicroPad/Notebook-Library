@@ -70,6 +70,28 @@ describe('Section', () => {
 		});
 	});
 
+	describe('search', () => {
+		it('should call search on all notes', () => {
+			// Arrange
+			let section = TestUtils.makeSection('test');
+			section = section.addNote(TestUtils.makeNote('hi'));
+
+			let subSection = TestUtils.makeSection('sub');
+			subSection = subSection.addNote(TestUtils.makeNote('hello'));
+			section = section.addSection(subSection);
+
+			Note.prototype.search = jest.fn(() => [TestUtils.makeNote('hi')]);
+
+			// Act
+			section.search('h');
+
+			// Assert
+			expect(Note.prototype.search).toHaveBeenCalledWith('h');
+			expect(Note.prototype.search).toHaveBeenCalledTimes(2);
+		});
+	});
+
+
 	it('should generate XML Object with required data', () => {
 		// Arrange
 		let section = TestUtils.makeSection('test parent');

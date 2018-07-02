@@ -66,6 +66,9 @@ var FlatNotepad = (function () {
             lastModified: lastModified
         });
     };
+    FlatNotepad.prototype.search = function (query) {
+        return Object.values(this.notes).filter(function (n) { return n.search(query).length > 0; });
+    };
     FlatNotepad.prototype.toNotepad = function () {
         var _this = this;
         var buildSection = function (flat) {

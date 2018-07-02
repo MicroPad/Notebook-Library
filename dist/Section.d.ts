@@ -8,6 +8,7 @@ export default class Section extends NPXObject implements Parent {
     constructor(title: string, sections?: Section[], notes?: Note[], internalRef?: string);
     addSection(section: Section): Section;
     addNote(note: Note): Section;
+    search(query: string): Note[];
     toXmlObject(): any;
     clone(opts?: Partial<Section>): Section;
 }

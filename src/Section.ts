@@ -36,6 +36,17 @@ export default class Section extends NPXObject implements Parent {
 		return parent;
 	}
 
+	public search(query: string): Note[] {
+		const subSectionNotes: Note[] = this.sections
+			.map(s => s.search(query))
+			.reduce((acc, val) => acc.concat(val), []);
+
+		return [
+			...this.notes.filter(n => n.search(query).length > 0),
+			...subSectionNotes
+		];
+	}
+
 	public toXmlObject(): any {
 		return {
 			section: {

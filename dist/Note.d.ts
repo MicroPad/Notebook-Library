@@ -27,6 +27,7 @@ export default class Note extends NPXObject {
     constructor(title: string, time?: number, elements?: NoteElement[], bibliography?: Source[], internalRef?: string);
     addElement(element: NoteElement): Note;
     addSource(source: Source): Note;
+    search(query: string): Note[];
     toXmlObject(): any;
     clone(opts?: Partial<Note>): Note;
 }

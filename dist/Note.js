@@ -67,6 +67,19 @@ var Note = (function (_super) {
             ])
         });
     };
+    Note.prototype.search = function (query) {
+        var pattern = new RegExp("\\b" + query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'i');
+        if (pattern.test(this.title))
+            return [this];
+        if (query.length > 1 && query.charAt(0) === '#') {
+            pattern = new RegExp("(^|\\s)" + query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + "(\\b)", 'i');
+            if (this.elements
+                .filter(function (e) { return e.type === 'markdown'; })
+                .some(function (e) { return pattern.test(e.content); }))
+                return [this];
+        }
+        return [];
+    };
     Note.prototype.toXmlObject = function () {
         var elements = {};
         this.elements.forEach(function (e) {

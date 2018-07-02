@@ -1,4 +1,4 @@
-import { Asset, Notepad, Section } from '../';
+import { Asset, Note, Notepad, Section } from '../';
 import { NotepadOptions } from '../Notepad';
 import { TestUtils } from './TestUtils';
 
@@ -116,6 +116,26 @@ describe('Notepad', () => {
 
 			// Assert
 			expect(notepad.lastModified).toEqual(expected.lastModified);
+		});
+	});
+
+	describe('search', () => {
+		it('should call search on all notes', () => {
+			// Arrange
+			let n = new Notepad('test', options);
+			n = n.clone({
+				sections: [
+					n.sections[0].addNote(TestUtils.makeNote('test note'))
+				]
+			});
+
+			Note.prototype.search = jest.fn(() => [TestUtils.makeNote('test note')]);
+
+			// Act
+			const res = n.search('t');
+
+			// Assert
+			expect(Note.prototype.search).toHaveBeenCalledWith('t');
 		});
 	});
 

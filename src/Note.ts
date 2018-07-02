@@ -53,6 +53,26 @@ export default class Note extends NPXObject {
 		});
 	}
 
+	public search(query: string): Note[] {
+		// Title search
+		let pattern = new RegExp("\\b" + query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'i');
+		if (pattern.test(this.title)) return [this];
+
+		// Hashtag search
+		if (query.length > 1 && query.charAt(0) === '#') {
+			pattern = new RegExp("(^|\\s)" + query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + "(\\b)", 'i');
+
+			// Check if any markdown elements contain the hashtag
+			if (
+				this.elements
+					.filter(e => e.type === 'markdown')
+					.some(e => pattern.test(e.content))
+			) return [this];
+		}
+
+		return [];
+	}
+
 	public toXmlObject(): any {
 		const elements = {};
 		this.elements.forEach(e => {

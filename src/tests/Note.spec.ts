@@ -1,6 +1,6 @@
 import { TestUtils } from './TestUtils';
 import { Note } from '../index';
-import { NoteElement, Source } from '../Note';
+import { ElementArgs, NoteElement, Source } from '../Note';
 
 describe('Note', () => {
 	let element: NoteElement;
@@ -85,6 +85,88 @@ describe('Note', () => {
 
 			// Assert
 			expect(res).not.toBe(note);
+		});
+	});
+
+	describe('search', () => {
+		describe('title search', () => {
+			it('should return empty array on no match', () => {
+				// Arrange
+				const note = TestUtils.makeNote('test');
+
+				// Act
+				const res = note.search('invalid');
+
+				// Assert
+				expect(res).toEqual([]);
+			});
+
+			it('should return an array with the note on a match', () => {
+				// Arrange
+				const note = TestUtils.makeNote('test');
+
+				// Act
+				const res = note.search('te');
+
+				// Assert
+				expect(res).toEqual([note]);
+			});
+
+			it('should return an array with the note on an empty query', () => {
+				// Arrange
+				const note = TestUtils.makeNote('test');
+
+				// Act
+				const res = note.search('');
+
+				// Assert
+				expect(res).toEqual([note]);
+			});
+		});
+
+		describe('hashtag search', () => {
+			it('should return empty array on no match', () => {
+				// Arrange
+				const note = TestUtils.makeNote('test');
+
+				// Act
+				const res = note.search('#test');
+
+				// Assert
+				expect(res).toEqual([]);
+			});
+
+			it('should not accept a partial match', () => {
+				// Arrange
+				let note = TestUtils.makeNote('test');
+				note = note.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: '#match'
+				});
+
+				// Act
+				const res = note.search('#mat');
+
+				// Assert
+				expect(res).toEqual([]);
+			});
+
+			it('should return an array with the note on a full match', () => {
+				// Arrange
+				let note = TestUtils.makeNote('test');
+				note = note.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: '#match'
+				});
+
+				// Act
+				const res = note.search('#match');
+
+				// Assert
+				expect(res).toEqual([note]);
+			});
 		});
 	});
 
