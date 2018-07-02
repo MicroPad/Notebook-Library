@@ -14,6 +14,10 @@ export type FlatSection = {
 	parentRef?: string;
 };
 
+/**
+ * A FlatNotepad is similar to the {@link Notepad} class, but it stores all the notes/sections
+ * as in flat structures. FlatNotepads will likely be better for internal use in many situations.
+ */
 export default class FlatNotepad {
 	public readonly lastModified: string;
 	public readonly sections: { [internalRef: string]: FlatSection };

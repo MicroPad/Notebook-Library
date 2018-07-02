@@ -8,6 +8,9 @@ export default class Asset {
 		this.uuid = uuid || this.generateGuid();
 	}
 
+	/**
+	 * @returns {Promise<string>} The Asset's content in Base64
+	 */
 	public toString(): Promise<string> {
 		return new Promise<string>(resolve => {
 			try {
@@ -20,6 +23,9 @@ export default class Asset {
 		});
 	}
 
+	/**
+	 * @returns {Promise<any>} A version of the Asset that the XML generator can parse
+	 */
 	public async toXmlObject(): Promise<any> {
 		const b64 = await this.toString();
 
