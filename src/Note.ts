@@ -1,5 +1,6 @@
 import { NPXObject } from './NPXObject';
 import { format } from 'date-fns';
+import { Asset } from './index';
 
 export type NoteElement = {
 	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording';
@@ -22,6 +23,11 @@ export type Source = {
 	id: number;
 	item: string;
 	content: string;
+};
+
+export type MarkdownNote = {
+	title: string;
+	md: string;
 };
 
 export default class Note extends NPXObject {
@@ -106,6 +112,49 @@ export default class Note extends NPXObject {
 				...elements
 			}
 		};
+	}
+
+	public async toMarkdown(assets: Asset[]): Promise<MarkdownNote> {
+		const assetMap = {};
+		assets.forEach(a => assetMap[a.uuid] = a);
+
+		const md: string = (await Promise.all(this.elements
+			.filter(e => ['markdown', 'drawing', 'image'].includes(e.type))
+			.map(async e => {
+				let md: string | undefined;
+
+				switch (e.type) {
+					case 'markdown':
+						md = e.content + '\n\n';
+						break;
+
+					case 'drawing':
+					case 'image':
+						const asset = assetMap[e.args.ext || 0];
+						if (!asset) return '';
+
+						md = `![](${await asset.toString()})\n\n`;
+						break;
+				}
+				if (!md) return '';
+
+				// Bibliography
+				const bib = this.bibliography
+					.filter(s => s.item === e.args.id)
+					.map(s => s.content);
+
+				if (bib.length > 0) {
+					md += `***Bibliography***  \n`;
+					md += bib
+						.map(content => `- <${content}>\n`)
+						.reduce((str, source) => str += source, '') + '\n';
+				}
+
+				return md;
+			})))
+			.reduce((str, elementMd) => str += elementMd, '');
+
+		return { title: this.title, md };
 	}
 
 	public clone(opts: Partial<Note> = {}): Note {

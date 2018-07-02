@@ -3,6 +3,7 @@ import { Asset, FlatNotepad, Note, Parent, Section } from './';
 import stringify from 'json-stringify-safe';
 import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
+import { MarkdownNote } from './Note';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -109,6 +110,14 @@ export default class Notepad implements Parent {
 		this.sections.forEach(s => flattenSection(s));
 
 		return notepad;
+	}
+
+	public async toMarkdown(assets: Asset[]): Promise<MarkdownNote[]> {
+		return (
+			await Promise.all(
+				this.sections.map(s => s.toMarkdown(assets))
+			)
+		).reduce((acc, val) => acc.concat(val), []);
 	}
 
 	public clone(opts: Partial<NotepadOptions> = {}, title: string = this.title): Notepad {

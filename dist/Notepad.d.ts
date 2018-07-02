@@ -1,4 +1,5 @@
 import { Asset, FlatNotepad, Note, Parent, Section } from './';
+import { MarkdownNote } from './Note';
 export declare type NotepadOptions = {
     lastModified?: Date;
     sections?: Section[];
@@ -19,6 +20,7 @@ export default class Notepad implements Parent {
     toJson(): string;
     toXml(): Promise<string>;
     flatten(): FlatNotepad;
+    toMarkdown(assets: Asset[]): Promise<MarkdownNote[]>;
     clone(opts?: Partial<NotepadOptions>, title?: string): Notepad;
     private toXmlObject;
 }

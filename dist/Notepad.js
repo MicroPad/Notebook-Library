@@ -153,6 +153,16 @@ var Notepad = (function () {
         this.sections.forEach(function (s) { return flattenSection(s); });
         return notepad;
     };
+    Notepad.prototype.toMarkdown = function (assets) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, Promise.all(this.sections.map(function (s) { return s.toMarkdown(assets); }))];
+                    case 1: return [2, (_a.sent()).reduce(function (acc, val) { return acc.concat(val); }, [])];
+                }
+            });
+        });
+    };
     Notepad.prototype.clone = function (opts, title) {
         if (opts === void 0) { opts = {}; }
         if (title === void 0) { title = this.title; }

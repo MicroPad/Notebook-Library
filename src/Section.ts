@@ -1,6 +1,7 @@
 import { Parent } from './interfaces';
-import { Note } from './index';
+import { Asset, Note } from './index';
 import { NPXObject } from './NPXObject';
+import { MarkdownNote } from './Note';
 
 export default class Section extends NPXObject implements Parent {
 	constructor(
@@ -57,6 +58,20 @@ export default class Section extends NPXObject implements Parent {
 				note: this.notes.map(n => n.toXmlObject().note)
 			}
 		};
+	}
+
+	public async toMarkdown(assets: Asset[]): Promise<MarkdownNote[]> {
+		const subSectionNotes: MarkdownNote[] = (
+			await Promise.all(
+				this.sections.map(s => s.toMarkdown(assets))
+			)).reduce((acc, val) => acc.concat(val), []);
+
+		return [
+			...await Promise.all([
+				...this.notes.map(n => n.toMarkdown(assets)),
+			]),
+			...subSectionNotes
+		];
 	}
 
 	public clone(opts: Partial<Section> = {}): Section {

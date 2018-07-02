@@ -1,6 +1,9 @@
 import { Asset, Note, Notepad, Section } from '../';
 import { NotepadOptions } from '../Notepad';
 import { TestUtils } from './TestUtils';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Translators } from '../index';
 
 describe('Notepad', () => {
 	let options = getOptions();
@@ -189,6 +192,18 @@ describe('Notepad', () => {
 			expect(res).toMatchSnapshot();
 			expect(await res.toNotepad().toXml()).toEqual(await n.clone({ assets: [] }).toXml());
 		});
+	});
+
+	it('should convert a notepad an array of MarkdownNotes', async () => {
+		// Arrange
+		const helpNpx = fs.readFileSync(path.join(__dirname, 'Help.npx')).toString();
+		const notepad = await Translators.Xml.toNotepadFromNpx(helpNpx);
+
+		// Act
+		const res = await notepad.toMarkdown(notepad.assets);
+
+		// Assert
+		expect(res).toMatchSnapshot();
 	});
 });
 

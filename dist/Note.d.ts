@@ -1,4 +1,5 @@
 import { NPXObject } from './NPXObject';
+import { Asset } from './index';
 export declare type NoteElement = {
     type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording';
     content: string;
@@ -19,6 +20,10 @@ export declare type Source = {
     item: string;
     content: string;
 };
+export declare type MarkdownNote = {
+    title: string;
+    md: string;
+};
 export default class Note extends NPXObject {
     readonly title: string;
     readonly time: number;
@@ -29,5 +34,6 @@ export default class Note extends NPXObject {
     addSource(source: Source): Note;
     search(query: string): Note[];
     toXmlObject(): any;
+    toMarkdown(assets: Asset[]): Promise<MarkdownNote>;
     clone(opts?: Partial<Note>): Note;
 }
