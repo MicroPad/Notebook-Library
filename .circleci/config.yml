@@ -38,8 +38,8 @@ jobs:
       - run: yarn test
 
       - persist_to_workspace:
-        root: ~/repo
-        paths: .
+          root: ~/repo
+          paths: .
 
   publish:
     docker:
