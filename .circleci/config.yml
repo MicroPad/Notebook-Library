@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - attach_workspace:
-        at: ~/repo
+          at: ~/repo
 
       - run: yarn build
 
@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - attach_workspace:
-        at: ~/repo
+          at: ~/repo
 
       - run: npx docs
 
