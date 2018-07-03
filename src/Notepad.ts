@@ -12,6 +12,13 @@ export type NotepadOptions = {
 	assets?: Asset[];
 };
 
+/**
+ * This class is identical in structure to the old Notepad class from the original parser.
+ * This represents the notepad as a tree. If you're looking for a flatter structure you can use {@link FlatNotepad}.
+ *
+ * Something to remember is that all operations on this class like addSection, will return a <strong>new</strong>
+ * object of this class, and not modify the existing one.
+ */
 export default class Notepad implements Parent {
 	public readonly lastModified: string;
 	public readonly sections: Section[];
@@ -53,12 +60,22 @@ export default class Notepad implements Parent {
 		});
 	}
 
+	/**
+	 * This updates the lastModified date on the notepad. This date is used for syncing so it's important
+	 * to call this method whenever a change is made that will need to be synced.
+	 * @param {Date} lastModified
+	 * @returns {Notepad}
+	 */
 	public modified(lastModified: Date = new Date()): Notepad {
 		return this.clone({
 			lastModified
 		});
 	}
 
+	/**
+	 * @param {string} query Can either be a title-search or a hashtag-search
+	 * @returns {Note[]}
+	 */
 	public search(query: string): Note[] {
 		return this.sections
 			.map(s => s.search(query))

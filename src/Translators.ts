@@ -9,6 +9,10 @@ import TurndownService from 'turndown';
 
 export namespace Translators {
 	export namespace Json {
+		/**
+		 * @param {string} json A {@link Notepad} object in JSON format
+		 * @returns {Notepad}
+		 */
 		export function toNotepadFromNotepad(json: string): Notepad {
 			const jsonObj: Notepad = JSON.parse(json);
 			let notepad = new Notepad(jsonObj.title, {
@@ -34,6 +38,10 @@ export namespace Translators {
 			}
 		}
 
+		/**
+		 * @param {string} json A {@link Notepad} object in JSON format
+		 * @returns {FlatNotepad}
+		 */
 		export function toFlatNotepadFromNotepad(json: string): FlatNotepad {
 			const jsonObj: Notepad = JSON.parse(json);
 			let notepad = new FlatNotepad(jsonObj.title, {
@@ -59,6 +67,10 @@ export namespace Translators {
 			}
 		}
 
+		/**
+		 * @param {string} json A Jupyter notebook (.ipynb)
+		 * @returns {string} A Markdown translation of that notebook
+		 */
 		export function toMarkdownFromJupyter(json: string): string {
 			const np = JSON.parse(json);
 
@@ -87,6 +99,10 @@ export namespace Translators {
 	}
 
 	export namespace Xml {
+		/**
+		 * @param {string} xml The NPX file's contents as a string
+		 * @returns {Promise<Notepad>}
+		 */
 		export async function toNotepadFromNpx(xml: string): Promise<Notepad> {
 			const res = await parseXml(xml);
 			let notepad = new Notepad(res.notepad.$.title, { lastModified: res.notepad.$.lastModified });
@@ -155,6 +171,10 @@ export namespace Translators {
 			}
 		}
 
+		/**
+		 * @param {string} xml The exported Evernote notepad's XML as a string
+		 * @returns {Promise<Notepad>}
+		 */
 		export async function toNotepadFromEnex(xml: string): Promise<Notepad> {
 			const res = await parseXml(xml, { trim: true, normalize: false });
 			const exported = res['en-export'];

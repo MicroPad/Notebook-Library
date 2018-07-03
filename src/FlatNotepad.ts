@@ -17,6 +17,9 @@ export type FlatSection = {
 /**
  * A FlatNotepad is similar to the {@link Notepad} class, but it stores all the notes/sections
  * as in flat structures. FlatNotepads will likely be better for internal use in many situations.
+ *
+ * Something to remember is that all operations on this class like addSection, will return a <strong>new</strong>
+ * object of this class, and not modify the existing one.
  */
 export default class FlatNotepad {
 	public readonly lastModified: string;
@@ -70,10 +73,19 @@ export default class FlatNotepad {
 		});
 	}
 
+	/**
+	 * @param {string} query Can either be a title-search or a hashtag-search
+	 * @returns {Note[]}
+	 */
 	public search(query: string): Note[] {
 		return Object.values(this.notes).filter(n => n.search(query).length > 0);
 	}
 
+	/**
+	 * This will convert everything into the formal {@link Notepad} structure, however no {@link Asset}s will
+	 * be restored. The client should rebuild the assets after this using the values in {@link notepadAssets}
+	 * @returns {Notepad}
+	 */
 	public toNotepad(): Notepad {
 		const buildSection = (flat: FlatSection): Section => {
 			let section = new Section(flat.title, [], [], flat.internalRef);

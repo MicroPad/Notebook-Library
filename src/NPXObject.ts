@@ -16,6 +16,9 @@ export abstract class NPXObject {
 
 	public abstract search(query: string): Note[];
 
+	/**
+	 * @returns {Promise<any>} A version of the object that the XML generator can parse
+	 */
 	public abstract toXmlObject(): any;
 
 	protected generateGuid(): string {
@@ -25,6 +28,10 @@ export abstract class NPXObject {
 		return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 	}
 
+	/**
+	 * @param {string} str
+	 * @returns {string} The string without certain values that could cause parsing issues in the future
+	 */
 	protected clean(str: string) {
 		return str.replace(/<[^>]*>/, "");
 	}
