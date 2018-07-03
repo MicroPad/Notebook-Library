@@ -1,5 +1,6 @@
 *
-!dist/
+!dist/*.js
 !LICENCE
 !package.json
 !yarn.lock
+!README.md
