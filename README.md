@@ -5,7 +5,7 @@ You can find the docs here: <https://getmicropad.com/docs/upad-parse>.
 
 ## Install
 - NPM
-	- `npm install upad-parse`
+	- `npm install --save upad-parse`
 - Yarn
 	- `yarn add upad-parse`
 - Browser
