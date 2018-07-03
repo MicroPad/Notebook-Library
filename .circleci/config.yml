@@ -75,7 +75,7 @@ jobs:
 
 workflows:
   version: 2
-  test:
+  test-and-publish:
     jobs:
       - test
       - publish:
