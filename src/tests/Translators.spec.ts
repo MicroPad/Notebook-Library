@@ -27,6 +27,27 @@ describe('Translators', () => {
 				// Assert
 				expect(res).toEqual(expected);
 			});
+
+			it('should return a Notepad object from a plain object', () => {
+				// Arrange
+				let expected: Notepad = new Notepad('test', {
+					lastModified: new Date(1),
+					notepadAssets: ['test']
+				});
+
+				let section = TestUtils.makeSection('test');
+				section = section.addSection(TestUtils.makeSection('sub'));
+				section = section.addNote(TestUtils.makeNote('hello'));
+				expected = expected.addSection(section);
+
+				const obj = { ...expected };
+
+				// Act
+				const res = Translators.Json.toNotepadFromNotepad(obj);
+
+				// Assert
+				expect(res).toEqual(expected);
+			});
 		});
 
 		describe('toFlatNotepad', () => {
@@ -47,6 +68,28 @@ describe('Translators', () => {
 
 				// Act
 				const res = Translators.Json.toFlatNotepadFromNotepad(json);
+
+				// Assert
+				expect(res).toEqual(expected);
+			});
+
+			it('should return a FlatNotepad object from a plain object', () => {
+				// Arrange
+				let testNotepad: Notepad = new Notepad('test', {
+					lastModified: new Date(1),
+					notepadAssets: ['test']
+				});
+
+				let section = TestUtils.makeSection('test');
+				section = section.addSection(TestUtils.makeSection('sub'));
+				section = section.addNote(TestUtils.makeNote('hello'));
+				testNotepad = testNotepad.addSection(section);
+
+				const expected = testNotepad.flatten();
+				const obj = { ...testNotepad };
+
+				// Act
+				const res = Translators.Json.toFlatNotepadFromNotepad(obj);
 
 				// Assert
 				expect(res).toEqual(expected);

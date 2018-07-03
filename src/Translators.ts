@@ -10,11 +10,11 @@ import TurndownService from 'turndown';
 export namespace Translators {
 	export namespace Json {
 		/**
-		 * @param {string} json A {@link Notepad} object in JSON format
+		 * @param {string | object} json A {@link Notepad} object in JSON format or as a plain object
 		 * @returns {Notepad}
 		 */
-		export function toNotepadFromNotepad(json: string): Notepad {
-			const jsonObj: Notepad = JSON.parse(json);
+		export function toNotepadFromNotepad(json: string | object): Notepad {
+			const jsonObj: Notepad = (typeof json === 'string') ? JSON.parse(json) : json;
 			let notepad = new Notepad(jsonObj.title, {
 				lastModified: parse(jsonObj.lastModified),
 				notepadAssets: jsonObj.notepadAssets || []
@@ -39,11 +39,11 @@ export namespace Translators {
 		}
 
 		/**
-		 * @param {string} json A {@link Notepad} object in JSON format
+		 * @param {string | object} json A {@link Notepad} object in JSON format or as a plain object
 		 * @returns {FlatNotepad}
 		 */
-		export function toFlatNotepadFromNotepad(json: string): FlatNotepad {
-			const jsonObj: Notepad = JSON.parse(json);
+		export function toFlatNotepadFromNotepad(json: string | object): FlatNotepad {
+			const jsonObj: Notepad = (typeof json === 'string') ? JSON.parse(json) : json;
 			let notepad = new FlatNotepad(jsonObj.title, {
 				lastModified: parse(jsonObj.lastModified),
 				notepadAssets: jsonObj.notepadAssets || []
