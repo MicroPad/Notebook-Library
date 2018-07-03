@@ -1,0 +1,92 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  test:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10.4
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
+            - yarn-packages-
+
+      - run: yarn
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules/
+
+      - run: yarn test
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  publish:
+    docker:
+      - image: circleci/node:10.4
+    working_directory: ~/repo
+
+    steps:
+      - attach_workspace:
+        at: ~/repo
+
+      - run: yarn build
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+
+      - run: npm publish
+
+  update-docs:
+    docker:
+      - image: circleci/node:10.4
+    working_directory: ~/repo
+
+    steps:
+      - attach_workspace:
+        at: ~/repo
+
+      - run: npx docs
+
+      - run: sudo apt install rsync
+
+      - run: rsync -aue "ssh -p 1276 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" docs/* $SSH_PATH
+
+workflows:
+  version: 2
+  test-and-publish:
+    jobs:
+      - test
+      - publish:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - update-docs:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master

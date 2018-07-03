@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlatNotepad constructor should construct with lastModified 1`] = `"1970-01-01T12:00:00.001+12:00"`;
+
+exports[`FlatNotepad constructor should construct with notepadAssets 1`] = `
+Array [
+  "test",
+]
+`;
+
+exports[`FlatNotepad constructor should construct with notes 1`] = `
+Object {
+  "etc": Note {
+    "bibliography": Array [],
+    "elements": Array [],
+    "internalRef": "etc",
+    "parent": "abc",
+    "time": 1,
+    "title": "test note",
+  },
+}
+`;
+
+exports[`FlatNotepad constructor should construct with sections 1`] = `
+Object {
+  "abc": Object {
+    "internalRef": "abc",
+    "title": "test section",
+  },
+}
+`;
+
+exports[`FlatNotepad toNotepad should convert to a full Notepad object 1`] = `
+Notepad {
+  "assets": Array [],
+  "lastModified": "1970-01-01T12:00:00.001+12:00",
+  "notepadAssets": Array [
+    "test",
+  ],
+  "sections": Array [
+    Section {
+      "internalRef": "abc",
+      "notes": Array [
+        Note {
+          "bibliography": Array [],
+          "elements": Array [],
+          "internalRef": "etc",
+          "parent": [Circular],
+          "time": 1,
+          "title": "test note",
+        },
+      ],
+      "parent": Notepad {
+        "assets": Array [],
+        "lastModified": "1970-01-01T12:00:00.001+12:00",
+        "notepadAssets": Array [
+          "test",
+        ],
+        "sections": Array [
+          [Circular],
+        ],
+        "title": "test",
+      },
+      "sections": Array [
+        Section {
+          "internalRef": "1d",
+          "notes": Array [],
+          "parent": Section {
+            "internalRef": "abc",
+            "notes": Array [],
+            "sections": [Circular],
+            "title": "test section",
+          },
+          "sections": Array [],
+          "title": "one-deep",
+        },
+      ],
+      "title": "test section",
+    },
+    Section {
+      "internalRef": "r",
+      "notes": Array [],
+      "parent": [Circular],
+      "sections": Array [],
+      "title": "another root one",
+    },
+  ],
+  "title": "test",
+}
+`;
