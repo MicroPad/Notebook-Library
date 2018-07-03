@@ -67,6 +67,8 @@ jobs:
       - attach_workspace:
           at: ~/repo
 
+      - run: yarn
+
       - run: npx docs
 
       - run: sudo apt install rsync
