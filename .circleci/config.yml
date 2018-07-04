@@ -56,7 +56,9 @@ jobs:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
 
-      - run: npm publish
+      - run: npm publish &>publish.log
+
+      - run: cat publish.log; rm publish.log
 
   update-docs:
     docker:
