@@ -40,6 +40,19 @@ describe('FlatNotepad', () => {
 		);
 	});
 
+	it('should make a flat section', () => {
+		// Arrange
+		const expected = 'test section';
+
+		// Act
+		const res = FlatNotepad.makeFlatSection(expected);
+
+		// Assert
+		expect(res.title).toEqual(expected);
+		expect(res.internalRef).toBeDefined();
+		expect(res.parentRef).toBeUndefined();
+	});
+
 	describe('addSection', () => {
 		let notepad: FlatNotepad;
 		let section: FlatSection;
@@ -185,6 +198,45 @@ describe('FlatNotepad', () => {
 
 			// Assert
 			expect(res).toMatchSnapshot();
+		});
+	});
+
+	describe('pathFrom', () => {
+		const testNote = new Note('test note');
+		testNote.parent = '1d';
+
+		const notepad = new FlatNotepad('test', options)
+			.addSection({ title: 'one-deep', internalRef: '1d', parentRef: 'abc' })
+			.addSection({ title: 'another root one', internalRef: 'r' })
+			.addNote(testNote);
+
+		const mapToTitle = (obj: FlatNotepad | FlatSection): string => obj.title;
+
+		it('should return a list of parents for a note', () => {
+			// Arrange
+			// Act
+			const res = notepad.pathFrom(testNote);
+
+			// Assert
+			expect(res.map(mapToTitle)).toEqual([notepad.title, 'test section', 'one-deep']);
+		});
+
+		it('should return a list of parents for a FlatSection', () => {
+			// Arrange
+			// Act
+			const res = notepad.pathFrom({ parentRef: 'r' } as FlatSection);
+
+			// Assert
+			expect(res.map(mapToTitle)).toEqual([notepad.title, 'another root one']);
+		});
+
+		it('should return an empty list for root-level items', () => {
+			// Arrange
+			// Act
+			const res = notepad.pathFrom({} as FlatSection);
+
+			// Assert
+			expect(res.map(mapToTitle)).toEqual([notepad.title]);
 		});
 	});
 });

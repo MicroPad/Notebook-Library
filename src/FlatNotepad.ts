@@ -37,6 +37,11 @@ export default class FlatNotepad {
 		this.notepadAssets = opts.notepadAssets || [];
 	}
 
+	static makeFlatSection(title: string, parentRef?: string): FlatSection {
+		const tmpSection = new Section(title);
+		return { title: tmpSection.title, internalRef: tmpSection.internalRef, parentRef };
+	}
+
 	public addSection(section: FlatSection): FlatNotepad {
 		return this.clone({
 			sections: {
@@ -124,5 +129,27 @@ export default class FlatNotepad {
 			notepadAssets: this.notepadAssets,
 			...opts
 		});
+	}
+
+	public pathFrom(obj: Note | FlatSection): (FlatSection | FlatNotepad)[] {
+		const parents: FlatSection[] = [];
+
+		if (obj.constructor.name === 'Note') {
+			obj = this.sections[(obj as Note).parent as string];
+		} else {
+			const parent = (obj as FlatSection).parentRef;
+			if (!parent) return [this];
+
+			obj = this.sections[(obj as FlatSection).parentRef!];
+		}
+
+
+		let tmp: FlatSection = obj;
+		while (true) {
+			parents.unshift(tmp);
+
+			if (!tmp.parentRef) return [ this, ...parents ];
+			tmp = this.sections[tmp.parentRef];
+		}
 	}
 }
