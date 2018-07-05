@@ -60,7 +60,10 @@ export namespace Translators {
 
 				// Add this flat section
 				notepad = notepad.addSection(flat);
-				section.notes.forEach(n => notepad = notepad.addNote(n));
+				section.notes.forEach(n => notepad = notepad.addNote(new Note('').clone({
+					...n,
+					parent: flat.internalRef
+				})));
 
 				// Add all of its children recursively
 				section.sections.forEach(s => restoreFlatSection(s));

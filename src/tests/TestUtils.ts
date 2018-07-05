@@ -1,16 +1,16 @@
 import { Asset, Note, Section } from '../index';
 
 export namespace TestUtils {
-	export function makeSection(title: string, sections?: Section[], notes?: Note[]): Section {
+	export function makeSection(title: string, sections?: Section[], notes?: Note[], ref: string = 'abc'): Section {
 		const section = new Section(title, sections, notes);
-		(section as any).internalRef = 'abc';
+		(section as any).internalRef = ref;
 
 		return section;
 	}
 
-	export function makeNote(title: string, time: Date = new Date(1)): Note {
+	export function makeNote(title: string, time: Date = new Date(1), ref: string = 'abc'): Note {
 		const note = new Note(title, time.getTime());
-		(note as any).internalRef = 'abc';
+		(note as any).internalRef = ref;
 
 		return note;
 	}

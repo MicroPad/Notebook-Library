@@ -8,10 +8,12 @@ export abstract class NPXObject {
 
 	protected constructor(
 		title: string,
-		internalRef?: string
+		internalRef?: string,
+		parent?: Parent | string
 	) {
 		this.title = this.clean(title);
 		this.internalRef = internalRef || this.generateGuid();
+		this.parent = parent;
 	}
 
 	public abstract search(query: string): Note[];

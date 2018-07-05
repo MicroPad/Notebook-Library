@@ -111,7 +111,6 @@ describe('FlatNotepad', () => {
 			const res = notepad.addNote(note);
 
 			// Assert
-			expect(res.notes[note.internalRef]).toEqual(note);
 			expect(res.notes[note.internalRef].parent).toEqual('abc');
 		});
 

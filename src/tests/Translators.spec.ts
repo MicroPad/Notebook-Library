@@ -58,9 +58,9 @@ describe('Translators', () => {
 					notepadAssets: ['test']
 				});
 
-				let section = TestUtils.makeSection('test');
-				section = section.addSection(TestUtils.makeSection('sub'));
-				section = section.addNote(TestUtils.makeNote('hello'));
+				let section = TestUtils.makeSection('test', [], [], '1');
+				section = section.addSection(TestUtils.makeSection('sub', [], [], '2'));
+				section = section.addNote(TestUtils.makeNote('hello', new Date(1), '3'));
 				testNotepad = testNotepad.addSection(section);
 
 				const expected = testNotepad.flatten();
@@ -71,6 +71,7 @@ describe('Translators', () => {
 
 				// Assert
 				expect(res).toEqual(expected);
+				expect(res.toNotepad()).toEqual(testNotepad);
 			});
 
 			it('should return a FlatNotepad object from a plain object', () => {
@@ -80,9 +81,9 @@ describe('Translators', () => {
 					notepadAssets: ['test']
 				});
 
-				let section = TestUtils.makeSection('test');
-				section = section.addSection(TestUtils.makeSection('sub'));
-				section = section.addNote(TestUtils.makeNote('hello'));
+				let section = TestUtils.makeSection('test', [], [], '1');
+				section = section.addSection(TestUtils.makeSection('sub', [], [], '2'));
+				section = section.addNote(TestUtils.makeNote('hello', new Date(1), '3'));
 				testNotepad = testNotepad.addSection(section);
 
 				const expected = testNotepad.flatten();
@@ -93,6 +94,7 @@ describe('Translators', () => {
 
 				// Assert
 				expect(res).toEqual(expected);
+				expect(res.toNotepad()).toEqual(testNotepad);
 			});
 		});
 

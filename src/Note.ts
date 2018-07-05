@@ -1,6 +1,6 @@
 import { NPXObject } from './NPXObject';
 import { format } from 'date-fns';
-import { Asset } from './index';
+import { Asset, Parent } from './index';
 
 export type NoteElement = {
 	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording';
@@ -36,9 +36,10 @@ export default class Note extends NPXObject {
 		public readonly time: number = new Date().getTime(),
 		public readonly elements: NoteElement[] = [],
 		public readonly bibliography: Source[] = [],
-		internalRef?: string
+		internalRef?: string,
+		parent?: Parent | string
 	) {
-		super(title, internalRef);
+		super(title, internalRef, parent);
 	}
 
 	public addElement(element: NoteElement): Note {
@@ -163,7 +164,8 @@ export default class Note extends NPXObject {
 			opts.time || this.time,
 			opts.elements || this.elements,
 			opts.bibliography || this.bibliography,
-			opts.internalRef || this.internalRef
+			opts.internalRef || this.internalRef,
+			opts.parent || this.parent
 		);
 	}
 }

@@ -53,7 +53,11 @@ export default class FlatNotepad {
 
 	public addNote(note: Note): FlatNotepad {
 		// Ensure our parent is just a string for the section's internalRef, not the whole Parent object
-		if (typeof note.parent !== 'string') note.parent = (note.parent as Section).internalRef;
+		if (typeof note.parent !== 'string') {
+			note = note.clone({
+				parent: (note.parent as Section).internalRef
+			});
+		}
 
 		return this.clone({
 			notes: {
