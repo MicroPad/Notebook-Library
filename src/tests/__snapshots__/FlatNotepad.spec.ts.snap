@@ -68,6 +68,7 @@ Notepad {
           "parent": Section {
             "internalRef": "abc",
             "notes": Array [],
+            "parent": undefined,
             "sections": [Circular],
             "title": "test section",
           },

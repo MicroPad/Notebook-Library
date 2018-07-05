@@ -36,6 +36,7 @@ Array [
   Section {
     "internalRef": "abc",
     "notes": Array [],
+    "parent": undefined,
     "sections": Array [],
     "title": "test section",
   },
