@@ -43,31 +43,7 @@ export namespace Translators {
 		 * @returns {FlatNotepad}
 		 */
 		export function toFlatNotepadFromNotepad(json: string | object): FlatNotepad {
-			const jsonObj: Notepad = (typeof json === 'string') ? JSON.parse(json) : json;
-			let notepad = new FlatNotepad(jsonObj.title, {
-				lastModified: parse(jsonObj.lastModified),
-				notepadAssets: jsonObj.notepadAssets || []
-			});
-
-			// Restore sections
-			jsonObj.sections.forEach(section => restoreFlatSection(section));
-
-			return notepad;
-
-			function restoreFlatSection(section: Section) {
-				let flat: FlatSection = { title: section.title, internalRef: section.internalRef };
-				if (section.parent) flat.parentRef = (section.parent as Section).internalRef;
-
-				// Add this flat section
-				notepad = notepad.addSection(flat);
-				section.notes.forEach(n => notepad = notepad.addNote(new Note('').clone({
-					...n,
-					parent: flat.internalRef
-				})));
-
-				// Add all of its children recursively
-				section.sections.forEach(s => restoreFlatSection(s));
-			}
+			return toNotepadFromNotepad(json).flatten();
 		}
 
 		/**
