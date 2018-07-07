@@ -8,31 +8,36 @@ export default class Section extends NPXObject implements Parent {
 		public readonly title: string,
 		public readonly sections: Section[] = [],
 		public readonly notes: Note[] = [],
-		internalRef?: string
+		internalRef?: string,
+		parent?: Parent | string
 	) {
-		super(title, internalRef);
+		super(title, internalRef, parent);
 	}
 
 	public addSection(section: Section): Section {
+		const sectionClone = section.clone();
+
 		const parent = this.clone({
 			sections: [
 				...this.sections,
-				section
+				sectionClone
 			]
 		});
-		section.parent = parent;
+		sectionClone.parent = parent;
 
 		return parent;
 	}
 
 	public addNote(note: Note): Section {
+		const noteClone = note.clone();
+
 		const parent = this.clone({
 			notes: [
 				...this.notes,
-				note
+				noteClone
 			]
 		});
-		note.parent = parent;
+		noteClone.parent = parent;
 
 		return parent;
 	}
@@ -77,9 +82,14 @@ export default class Section extends NPXObject implements Parent {
 	public clone(opts: Partial<Section> = {}): Section {
 		return new Section(
 			opts.title || this.title,
-			opts.sections || this.sections,
-			opts.notes || this.notes,
-			opts.internalRef || this.internalRef
+			[
+				...(opts.sections || this.sections),
+			],
+			[
+				...(opts.notes || this.notes),
+			],
+			opts.internalRef || this.internalRef,
+			opts.parent || this.parent
 		);
 	}
 }

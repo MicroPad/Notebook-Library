@@ -29,7 +29,7 @@ describe('Section', () => {
 			const res = parent.addSection(child);
 
 			// Assert
-			expect(res.sections[0]).toEqual(child);
+			expect(res.sections[0]).toEqual(child.clone({ parent: res }));
 		});
 
 		it('should create a new object', () => {
@@ -57,7 +57,7 @@ describe('Section', () => {
 			const res = parent.addNote(child);
 
 			// Assert
-			expect(res.notes[0]).toEqual(child);
+			expect(res.notes[0]).toEqual(child.clone({ parent: res }));
 		});
 
 		it('should create a new object', () => {
