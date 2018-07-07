@@ -162,8 +162,12 @@ export default class Note extends NPXObject {
 		return new Note(
 			opts.title || this.title,
 			opts.time || this.time,
-			opts.elements || this.elements,
-			opts.bibliography || this.bibliography,
+			[
+				...(opts.elements || this.elements),
+			],
+			[
+				...(opts.bibliography || this.bibliography),
+			],
 			opts.internalRef || this.internalRef,
 			opts.parent || this.parent
 		);

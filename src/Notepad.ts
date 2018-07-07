@@ -83,9 +83,11 @@ export default class Notepad implements Parent {
 	}
 
 	public toJson(): string {
-		return stringify({
+		return JSON.stringify({
 			...(<object> this),
 			assets: undefined
+		}, (key, value) => {
+			return (key === 'parent') ? undefined : value;
 		});
 	}
 
@@ -140,9 +142,9 @@ export default class Notepad implements Parent {
 	public clone(opts: Partial<NotepadOptions> = {}, title: string = this.title): Notepad {
 		return new Notepad(title, {
 			lastModified: parse(this.lastModified),
-			sections: this.sections,
-			notepadAssets: this.notepadAssets,
-			assets: this.assets,
+			sections: [...this.sections],
+			notepadAssets: [...this.notepadAssets],
+			assets: [...this.assets],
 			...opts
 		});
 	}

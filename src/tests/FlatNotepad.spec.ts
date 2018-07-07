@@ -198,6 +198,19 @@ describe('FlatNotepad', () => {
 			// Assert
 			expect(res).toMatchSnapshot();
 		});
+
+		it('should be repeatable', () => {
+			// Arrange
+			let notepad = new FlatNotepad('test', options);
+			notepad = notepad.addSection({ title: 'one-deep', internalRef: '1d', parentRef: 'abc' });
+			notepad = notepad.addSection({ title: 'another root one', internalRef: 'r' });
+
+			// Act
+			const res = notepad.toNotepad().flatten().toNotepad().flatten();
+
+			// Assert
+			expect(res).toEqual(notepad);
+		});
 	});
 
 	describe('pathFrom', () => {
