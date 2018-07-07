@@ -96,6 +96,20 @@ describe('Translators', () => {
 				expect(res).toEqual(expected);
 				expect(res.toNotepad()).toEqual(testNotepad);
 			});
+
+			it('should have identical results to going via a Notepad object', async () => {
+				// Arrange
+				const npx = fs.readFileSync(path.join(__dirname, '__data__', 'Broken.npx')).toString();
+
+				// Act
+				const notepad = await Translators.Xml.toNotepadFromNpx(npx);
+				const flat = notepad.flatten();
+				const flatViaJson = Translators.Json.toFlatNotepadFromNotepad(notepad.toJson());
+
+				// Assert
+				expect(flat.toNotepad()).toEqual(notepad);
+				expect(flatViaJson.toNotepad()).toEqual(notepad);
+			});
 		});
 
 		describe('toMarkdownFromJupyter', () => {
