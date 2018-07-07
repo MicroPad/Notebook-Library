@@ -100,6 +100,7 @@ describe('Translators', () => {
 			it('should have identical results to going via a Notepad object', async () => {
 				// Arrange
 				const npx = fs.readFileSync(path.join(__dirname, '__data__', 'Broken.npx')).toString();
+				console.warn = jest.fn(() => { return; });
 
 				// Act
 				const notepad = await Translators.Xml.toNotepadFromNpx(npx);
