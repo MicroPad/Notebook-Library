@@ -83,9 +83,11 @@ export default class Notepad implements Parent {
 	}
 
 	public toJson(): string {
-		return stringify({
+		return JSON.stringify({
 			...(<object> this),
 			assets: undefined
+		}, (key, value) => {
+			return (key === 'parent') ? undefined : value;
 		});
 	}
 
