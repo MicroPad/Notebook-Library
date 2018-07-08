@@ -138,7 +138,7 @@ export default class FlatNotepad {
 	public pathFrom(obj: Note | FlatSection): (FlatSection | FlatNotepad)[] {
 		const parents: FlatSection[] = [];
 
-		if (obj.constructor.name === 'Note') {
+		if (!!(obj as Note).parent) { // This is a note
 			obj = this.sections[(obj as Note).parent as string];
 		} else {
 			const parent = (obj as FlatSection).parentRef;
