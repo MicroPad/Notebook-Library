@@ -95,14 +95,61 @@ export namespace Translators {
 			if (res.notepad.assets) {
 				((res.notepad.assets[0] || {}).asset || []).forEach(item => {
 					try {
-						notepad = notepad.addAsset(new Asset(dataURItoBlob(item._), item.$.uuid))
+						notepad = notepad.addAsset(new Asset(dataURItoBlob(item._), item.$.uuid));
 					} catch (e) {
 						console.warn(`Can't parse the asset ${item.$.uuid}`);
 					}
 				});
 			}
 
-			return notepad;
+			// Convert inline assets to full-assets
+			const flatNotepad = notepad.flatten();
+			const convertedAssets: Asset[] = [];
+			Object.values(flatNotepad.notes)
+				.forEach(note => {
+					let elements: NoteElement[] = [];
+
+					// Import inline assets
+					for (const element of note.elements) {
+						// If it's not a binary asset with inline base64, skip
+						if (element.type === 'markdown' || element.content === 'AS') {
+							elements.push(element);
+							continue;
+						}
+
+						try {
+							const asset = new Asset(dataURItoBlob(element.content));
+							elements.push({
+								...element,
+								content: 'AS',
+								args: {
+									...element.args,
+									ext: asset.uuid
+								}
+							});
+							convertedAssets.push(asset);
+
+						} catch (e) {
+							console.warn(`Can't parse asset`);
+						}
+					}
+
+					// Update the note with the new elements
+					flatNotepad.notes[note.internalRef] = flatNotepad.notes[note.internalRef].clone({
+						elements
+					});
+				});
+
+			return flatNotepad.toNotepad().clone({
+				assets: [
+					...notepad.assets,
+					...convertedAssets
+				],
+				notepadAssets: [
+					...notepad.notepadAssets,
+					...convertedAssets.map(asset => asset.uuid)
+				]
+			});
 
 			function parseSection(sectionObj: any): Section {
 				let section = new Section(sectionObj.$.title);

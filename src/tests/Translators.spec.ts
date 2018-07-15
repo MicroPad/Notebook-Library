@@ -131,6 +131,7 @@ describe('Translators', () => {
 		describe('toNotepadFromNpx', () => {
 			const helpNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Help.npx')).toString();
 			const brokenNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Broken.npx')).toString();
+			const exampleNpx = fs.readFileSync(path.join(__dirname, '__data__', 'Example Notepad.npx')).toString();
 
 			it('should be identical to the source data', async () => {
 				// Arrange
@@ -151,6 +152,15 @@ describe('Translators', () => {
 
 				// Assert
 				expect(parsed.notepadAssets).toHaveLength(0);
+			});
+
+			it('should convert inline assets (v1) to use the v2 asset system', async () => {
+				// Arrange
+				// Act
+				const parsed = await Translators.Xml.toNotepadFromNpx(exampleNpx);
+
+				// Assert
+				expect(parsed.notepadAssets).toHaveLength(3);
 			});
 		});
 
