@@ -163,7 +163,7 @@ For more powerful maths you can always use ;;\LaTeX;; like so:
 ;;a^2 = b^2 + c^2;;
 ```
 
-;;a^2 = b^2 + c^2;;]]></markdown></note><note title="Keyboard Shortcuts" time="2017-05-02T17:34:32.349+12:00"><addons/><bibliography/><markdown id="markdown1" x="10px" y="10px" width="auto" height="auto" fontSize="16px"># Web + Desktop App
+;;a^2 = b^2 + c^2;;]]></markdown></note><note title="Keyboard Shortcuts" time="2017-05-02T17:34:32.349+12:00"><addons/><bibliography/><markdown id="markdown1" x="10px" y="10px" width="auto" height="auto" fontSize="16px" dueDate="1"># Web + Desktop App
 | Shortcut | Use |
 |--|--|
 | F | Shows/hides the *Notepad Explorer* (side-bar) |
