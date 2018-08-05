@@ -17,7 +17,7 @@ export type ElementArgs = {
 	fontSize?: string;
 	filename?: string;
 	ext?: string;
-	dueDate?: number;
+	dueDate?: string;
 };
 
 export type Source = {
