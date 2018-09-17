@@ -81,6 +81,16 @@ export default class Note extends NPXObject {
 		return [];
 	}
 
+	public getHashtags(): string[] {
+		return this.elements
+			.filter(e => e.type === 'markdown')
+			.map(e => e.content.match(/(^|\s)(#[a-z\d-]+)/gi))
+			.filter(Boolean)
+			.map(matches => Array.from(matches!))
+			.reduce((acc, val) => acc.concat(val), [])
+			.map(hashtag => hashtag.trim());
+	}
+
 	public toXmlObject(): any {
 		const elements = {};
 		this.elements.forEach(e => {

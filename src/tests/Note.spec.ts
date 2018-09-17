@@ -170,6 +170,46 @@ describe('Note', () => {
 		});
 	});
 
+	describe('getHashTags', () => {
+		it('should return no matches with no hashtags', () => {
+			// Arrange
+			let note = TestUtils.makeNote('test');
+			note = note.addElement({
+				type: 'markdown',
+				args: {} as ElementArgs,
+				content: 'Hello.\n\nThere are no hashtags here.'
+			});
+
+			// Act
+			const res = note.getHashtags();
+
+			// Assert
+			expect(res).toEqual([]);
+		});
+
+		it('should return all the hashtags in all the elements', () => {
+			// Arrange
+			let note = TestUtils.makeNote('test');
+			note = note
+				.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: 'Hello.\n\nThere is #todo here.'
+				})
+				.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: 'We have #blah and #bloop here.'
+				});
+
+			// Act
+			const res = note.getHashtags();
+
+			// Assert
+			expect(res).toEqual(['#todo', '#blah', '#bloop']);
+		});
+	});
+
 	it('should generate XML Object with required data', () => {
 		// Arrange
 		let note = TestUtils.makeNote('test note');

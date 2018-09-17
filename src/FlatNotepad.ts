@@ -1,4 +1,4 @@
-import { Note, Notepad, Section } from './index';
+import { Note, Notepad, Section, Trie } from './index';
 import { format, parse } from 'date-fns';
 
 export type FlatNotepadOptions = {
@@ -35,6 +35,21 @@ export default class FlatNotepad {
 		this.sections = opts.sections || {};
 		this.notes = opts.notes || {};
 		this.notepadAssets = opts.notepadAssets || [];
+
+		// Index if need-be
+		let trie: Trie = Trie.INDICES[this.title];
+		if (!trie || !trie.shouldReindex(opts.lastModified || new Date())) {
+			trie = new Trie();
+			Object.entries(this.notes).forEach(entry => {
+				// Add the note title
+				trie.add(entry[1].title, entry[0]);
+
+				// Add note hashtags
+				entry[1].getHashtags().forEach(hashtag => trie.add(hashtag, entry[0]));
+			});
+
+			Trie.INDICES[this.title] = trie;
+		}
 	}
 
 	static makeFlatSection(title: string, parentRef?: string): FlatSection {
@@ -83,11 +98,14 @@ export default class FlatNotepad {
 	}
 
 	/**
+	 * Unlike the {@link Notepad}, this uses an indexed lookup system. This should be faster than a
+	 * traditional notepad search.
+	 *
 	 * @param {string} query Can either be a title-search or a hashtag-search
 	 * @returns {Note[]}
 	 */
 	public search(query: string): Note[] {
-		return Object.values(this.notes).filter(n => n.search(query).length > 0);
+		return Trie.INDICES[this.title].search(query).map(ref => this.notes[ref]);
 	}
 
 	/**
