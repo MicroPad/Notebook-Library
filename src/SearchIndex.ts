@@ -3,6 +3,7 @@ export class Trie {
 
 	private readonly root: TrieNode;
 	private readonly lastModified: Date;
+	private readonly hashtags: { [hashtag: string]: string[] } = {};
 	private _size: number = 0;
 
 	constructor(lastModified = new Date()) {
@@ -15,6 +16,12 @@ export class Trie {
 	}
 
 	public add(key: string, ref: string): void {
+		if (key.charAt(0) === '#') {
+			const notes = this.hashtags[key] || [];
+			this.hashtags[key] = [...notes, ref];
+			return;
+		}
+
 		const keyChars = [...key];
 		let node: TrieNode = this.root;
 
@@ -28,6 +35,10 @@ export class Trie {
 	}
 
 	public search(query: string): string[] {
+		if (query.charAt(0) === '#') {
+			return this.hashtags[query] || [];
+		}
+
 		const keyChars = [...query];
 		let node: TrieNode = this.root;
 
@@ -36,7 +47,7 @@ export class Trie {
 			node = node.children[ch];
 		}
 
-		return (query.charAt(0) === '#') ? node.notes : node.getAllFrom();
+		return node.getAllFrom();
 	}
 
 	public get size() {
