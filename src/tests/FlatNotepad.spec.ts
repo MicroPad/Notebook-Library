@@ -209,6 +209,29 @@ describe('FlatNotepad', () => {
 			// Assert
 			expect(res).toMatchSnapshot();
 		});
+
+		it('should not partial match hashtags', () => {
+			// Arrange
+			const notepad = new FlatNotepad('test', {
+				lastModified: new Date(1),
+				notes: {
+					abc: TestUtils.makeNote('hi'),
+					abc2: TestUtils.makeNote('nope'),
+					abc3: TestUtils.makeNote('hello')
+						.addElement({
+							type: 'markdown',
+							args: {} as ElementArgs,
+							content: 'Sup #test'
+						})
+				}
+			});
+
+			// Act
+			const res = notepad.search('#te');
+
+			// Assert
+			expect(res).toEqual([]);
+		});
 	});
 
 	describe('toNotepad', () => {

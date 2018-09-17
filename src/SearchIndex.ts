@@ -36,7 +36,7 @@ export class Trie {
 			node = node.children[ch];
 		}
 
-		return node.getAllFrom();
+		return (query.charAt(0) === '#') ? node.notes : node.getAllFrom();
 	}
 
 	public get size() {
