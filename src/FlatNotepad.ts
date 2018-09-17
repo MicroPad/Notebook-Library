@@ -38,7 +38,7 @@ export default class FlatNotepad {
 
 		// Index if need-be
 		let trie: Trie = Trie.INDICES[this.title];
-		if (!trie || !trie.shouldReindex(opts.lastModified || new Date())) {
+		if (!trie || trie.shouldReindex(opts.lastModified || new Date(), Object.keys(this.notes).length)) {
 			trie = new Trie();
 			Object.entries(this.notes).forEach(entry => {
 				// Add the note title

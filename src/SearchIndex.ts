@@ -3,14 +3,15 @@ export class Trie {
 
 	private readonly root: TrieNode;
 	private readonly lastModified: Date;
+	private _size: number = 0;
 
 	constructor(lastModified = new Date()) {
 		this.root = new TrieNode();
 		this.lastModified = lastModified;
 	}
 
-	public shouldReindex(lastModified: Date): boolean {
-		return this.lastModified.getTime() > lastModified.getTime();
+	public shouldReindex(lastModified: Date, numberOfNotes: number): boolean {
+		return this.lastModified.getTime() > lastModified.getTime() || numberOfNotes !== this.size;
 	}
 
 	public add(key: string, ref: string): void {
@@ -23,6 +24,7 @@ export class Trie {
 		}
 
 		node.notes.push(ref);
+		this._size++;
 	}
 
 	public search(query: string): string[] {
@@ -35,6 +37,10 @@ export class Trie {
 		}
 
 		return node.getAllFrom();
+	}
+
+	public get size() {
+		return this._size;
 	}
 }
 

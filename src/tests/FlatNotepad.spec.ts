@@ -170,7 +170,8 @@ describe('FlatNotepad', () => {
 	describe('search', () => {
 		it('should return the notes that match the search', () => {
 			// Arrange
-			const notepad = new FlatNotepad('test', {
+			let notepad = new FlatNotepad('test');
+			notepad = notepad.clone({
 				lastModified: new Date(1),
 				notes: {
 					abc: TestUtils.makeNote('hi'),
