@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchIndex should return the notes that match the search 1`] = `
+Array [
+  Note {
+    "bibliography": Array [],
+    "elements": Array [],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "hi",
+  },
+  Note {
+    "bibliography": Array [],
+    "elements": Array [],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "hello",
+  },
+]
+`;
+
+exports[`SearchIndex should search by hashtag 1`] = `
+Array [
+  Note {
+    "bibliography": Array [],
+    "elements": Array [
+      Object {
+        "args": Object {},
+        "content": "Sup #test",
+        "type": "markdown",
+      },
+    ],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "hello",
+  },
+]
+`;

@@ -1,5 +1,18 @@
+import { Note } from './index';
+
 export class Trie {
-	public static readonly INDICES: { [notepadTitle: string]: Trie } = {};
+	public static buildTrie(notes: { [internalRef: string]: Note }, date = new Date()): Trie {
+		const trie = new Trie(date);
+		Object.entries(notes).forEach(entry => {
+			// Add the note title
+			trie.add(entry[1].title, entry[0]);
+
+			// Add note hashtags
+			entry[1].getHashtags().forEach(hashtag => trie.add(hashtag, entry[0]));
+		});
+
+		return trie;
+	}
 
 	private readonly root: TrieNode;
 	private readonly lastModified: Date;
@@ -12,7 +25,7 @@ export class Trie {
 	}
 
 	public shouldReindex(lastModified: Date, numberOfNotes: number): boolean {
-		return this.lastModified.getTime() > lastModified.getTime() || numberOfNotes !== this.size;
+		return lastModified.getTime() > this.lastModified.getTime() || numberOfNotes !== this.size;
 	}
 
 	public add(key: string, ref: string): void {
