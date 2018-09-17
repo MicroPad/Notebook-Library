@@ -18,6 +18,8 @@ export class Trie {
 	public add(key: string, ref: string): void {
 		if (key.charAt(0) === '#') {
 			const notes = this.hashtags[key] || [];
+			if (notes.indexOf(ref) !== -1) return;
+
 			this.hashtags[key] = [...notes, ref];
 			return;
 		}
@@ -47,7 +49,7 @@ export class Trie {
 			node = node.children[ch];
 		}
 
-		return node.getAllFrom();
+		return [...new Set(node.getAllFrom())];
 	}
 
 	public get size() {
