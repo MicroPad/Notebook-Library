@@ -30,46 +30,6 @@ Object {
 }
 `;
 
-exports[`FlatNotepad search should return the notes that match the search 1`] = `
-Array [
-  Note {
-    "bibliography": Array [],
-    "elements": Array [],
-    "internalRef": "abc",
-    "parent": undefined,
-    "time": 1,
-    "title": "hi",
-  },
-  Note {
-    "bibliography": Array [],
-    "elements": Array [],
-    "internalRef": "abc",
-    "parent": undefined,
-    "time": 1,
-    "title": "hello",
-  },
-]
-`;
-
-exports[`FlatNotepad search should search by hashtag 1`] = `
-Array [
-  Note {
-    "bibliography": Array [],
-    "elements": Array [
-      Object {
-        "args": Object {},
-        "content": "Sup #test",
-        "type": "markdown",
-      },
-    ],
-    "internalRef": "abc",
-    "parent": undefined,
-    "time": 1,
-    "title": "hello",
-  },
-]
-`;
-
 exports[`FlatNotepad toNotepad should convert to a full Notepad object 1`] = `
 Notepad {
   "assets": Array [],
