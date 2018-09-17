@@ -1,14 +1,11 @@
-import {FlatNotepad, Note, Section, Trie} from '../index';
+import { FlatNotepad, Note, Section } from '../index';
 import { FlatNotepadOptions, FlatSection } from '../FlatNotepad';
-import { TestUtils } from './TestUtils';
-import {ElementArgs} from "../Note";
 
 describe('FlatNotepad', () => {
 	let options = getOptions();
 
 	beforeEach(() => {
 		options = getOptions();
-		delete Trie.INDICES['test'];
 	});
 
 	describe('constructor', () => {
@@ -164,73 +161,6 @@ describe('FlatNotepad', () => {
 
 			// Assert
 			expect(notepad.lastModified).toEqual(expected.lastModified);
-		});
-	});
-
-	describe('search', () => {
-		it('should return the notes that match the search', () => {
-			// Arrange
-			let notepad = new FlatNotepad('test');
-			notepad = notepad.clone({
-				lastModified: new Date(1),
-				notes: {
-					abc: TestUtils.makeNote('hi'),
-					abc2: TestUtils.makeNote('nope'),
-					abc3: TestUtils.makeNote('hello')
-				}
-			});
-
-			// Act
-			const res = notepad.search('h');
-
-			// Assert
-			expect(res).toMatchSnapshot();
-		});
-
-		it('should search by hashtag', () => {
-			// Arrange
-			const notepad = new FlatNotepad('test', {
-				lastModified: new Date(1),
-				notes: {
-					abc: TestUtils.makeNote('hi'),
-					abc2: TestUtils.makeNote('nope'),
-					abc3: TestUtils.makeNote('hello')
-						.addElement({
-							type: 'markdown',
-							args: {} as ElementArgs,
-							content: 'Sup #test'
-						})
-				}
-			});
-
-			// Act
-			const res = notepad.search('#test');
-
-			// Assert
-			expect(res).toMatchSnapshot();
-		});
-
-		it('should not partial match hashtags', () => {
-			// Arrange
-			const notepad = new FlatNotepad('test', {
-				lastModified: new Date(1),
-				notes: {
-					abc: TestUtils.makeNote('hi'),
-					abc2: TestUtils.makeNote('nope'),
-					abc3: TestUtils.makeNote('hello')
-						.addElement({
-							type: 'markdown',
-							args: {} as ElementArgs,
-							content: 'Sup #test'
-						})
-				}
-			});
-
-			// Act
-			const res = notepad.search('#te');
-
-			// Assert
-			expect(res).toEqual([]);
 		});
 	});
 
