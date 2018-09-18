@@ -37,7 +37,7 @@ export class Trie {
 			return;
 		}
 
-		const keyChars = [...key];
+		const keyChars = [...key.toLowerCase()];
 		let node: TrieNode = this.root;
 
 		for (let ch of keyChars) {
@@ -54,7 +54,7 @@ export class Trie {
 			return this.hashtags[query] || [];
 		}
 
-		const keyChars = [...query];
+		const keyChars = [...query.toLowerCase()];
 		let node: TrieNode = this.root;
 
 		for (let ch of keyChars) {
