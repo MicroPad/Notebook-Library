@@ -39,3 +39,16 @@ Array [
   },
 ]
 `;
+
+exports[`SearchIndex should search by word 1`] = `
+Array [
+  Note {
+    "bibliography": Array [],
+    "elements": Array [],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "hello there",
+  },
+]
+`;

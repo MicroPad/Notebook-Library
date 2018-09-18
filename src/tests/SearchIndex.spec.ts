@@ -29,6 +29,26 @@ describe('SearchIndex', () => {
 		expect(res).toMatchSnapshot();
 	});
 
+	it('should search by word', () => {
+		// Arrange
+		let notepad = new FlatNotepad('test');
+		notepad = notepad.clone({
+			lastModified: new Date(1),
+			notes: {
+				abc: TestUtils.makeNote('hi'),
+				abc2: TestUtils.makeNote('nope'),
+				abc3: TestUtils.makeNote('hello there')
+			}
+		});
+		const trie = Trie.buildTrie(notepad.notes);
+
+		// Act
+		const res = notepad.search(trie, 'there');
+
+		// Assert
+		expect(res).toMatchSnapshot();
+	});
+
 	it('should search by hashtag', () => {
 		// Arrange
 		const notepad = new FlatNotepad('test', {
