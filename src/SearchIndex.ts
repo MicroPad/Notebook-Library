@@ -29,6 +29,7 @@ export class Trie {
 	}
 
 	public add(key: string, ref: string): void {
+		key = key.toLowerCase();
 		if (key.charAt(0) === '#') {
 			const notes = this.hashtags[key] || [];
 			if (notes.indexOf(ref) !== -1) return;
@@ -37,7 +38,7 @@ export class Trie {
 			return;
 		}
 
-		const keyChars = [...key.toLowerCase()];
+		const keyChars = [...key];
 		let node: TrieNode = this.root;
 
 		for (let ch of keyChars) {
@@ -50,11 +51,12 @@ export class Trie {
 	}
 
 	public search(query: string): string[] {
+		query = query.toLowerCase()
 		if (query.charAt(0) === '#') {
 			return this.hashtags[query] || [];
 		}
 
-		const keyChars = [...query.toLowerCase()];
+		const keyChars = [...query];
 		let node: TrieNode = this.root;
 
 		for (let ch of keyChars) {
