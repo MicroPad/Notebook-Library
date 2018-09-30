@@ -5,8 +5,8 @@ export class Trie {
 		const trie = new Trie(date);
 		Object.entries(notes).forEach(entry => {
 			// Add the note title
-			const title = entry[1].title.replace(/[(),]/, '');
-			title.split(/[\s\/\\]/).forEach(word => trie.add(word, entry[0]));
+			const title = entry[1].title.replace(/[()]/, '');
+			title.split(/[\s\/\\,]/).forEach(word => trie.add(word, entry[0]));
 
 			// Add note hashtags
 			entry[1].getHashtags().forEach(hashtag => trie.add(hashtag, entry[0]));
