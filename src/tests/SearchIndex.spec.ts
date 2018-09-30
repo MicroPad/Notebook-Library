@@ -70,11 +70,12 @@ describe('SearchIndex', () => {
 		expect(res).toEqual([expected]);
 	});
 
-	it('should split by slash', () => {
+	it('should split by slashes and commas', () => {
 		// Arrange
 		const expected = [
 			TestUtils.makeNote('hello/that'),
-			TestUtils.makeNote('hi\\that')
+			TestUtils.makeNote('hi\\that'),
+			TestUtils.makeNote('hi,that')
 		];
 
 		let notepad = new FlatNotepad('test');
@@ -84,7 +85,8 @@ describe('SearchIndex', () => {
 				abc: TestUtils.makeNote('hi'),
 				abc2: TestUtils.makeNote('nope'),
 				abc3: expected[0],
-				abc4: expected[1]
+				abc4: expected[1],
+				abc5: expected[2]
 			}
 		});
 		const trie = Trie.buildTrie(notepad.notes);
