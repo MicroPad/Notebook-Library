@@ -49,6 +49,53 @@ describe('SearchIndex', () => {
 		expect(res).toMatchSnapshot();
 	});
 
+	it('should ignore brackets', () => {
+		// Arrange
+		const expected = TestUtils.makeNote('hello (there)');
+		let notepad = new FlatNotepad('test');
+		notepad = notepad.clone({
+			lastModified: new Date(1),
+			notes: {
+				abc: TestUtils.makeNote('hi'),
+				abc2: TestUtils.makeNote('nope'),
+				abc3: expected
+			}
+		});
+		const trie = Trie.buildTrie(notepad.notes);
+
+		// Act
+		const res = notepad.search(trie, 'there');
+
+		// Assert
+		expect(res).toEqual([expected]);
+	});
+
+	it('should split by slash', () => {
+		// Arrange
+		const expected = [
+			TestUtils.makeNote('hello/that'),
+			TestUtils.makeNote('hi\\that')
+		];
+
+		let notepad = new FlatNotepad('test');
+		notepad = notepad.clone({
+			lastModified: new Date(1),
+			notes: {
+				abc: TestUtils.makeNote('hi'),
+				abc2: TestUtils.makeNote('nope'),
+				abc3: expected[0],
+				abc4: expected[1]
+			}
+		});
+		const trie = Trie.buildTrie(notepad.notes);
+
+		// Act
+		const res = notepad.search(trie, 'that');
+
+		// Assert
+		expect(res).toEqual(expected);
+	});
+
 	it('should search by hashtag', () => {
 		// Arrange
 		const notepad = new FlatNotepad('test', {
