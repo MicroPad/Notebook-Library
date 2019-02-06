@@ -2,10 +2,11 @@ import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
 import { format, parse } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
-import { FlatSection } from './FlatNotepad';
 import { pd } from 'pretty-data';
 import { gfm } from 'turndown-plugin-gfm';
 import TurndownService from 'turndown';
+import { NotepadShell } from './interfaces';
+import { decrypt } from './crypto';
 
 export namespace Translators {
 	export namespace Json {
@@ -36,6 +37,11 @@ export namespace Translators {
 			function restoreNote(note: Note) {
 				return new Note(note.title, note.time, note.elements, note.bibliography, note.internalRef);
 			}
+		}
+
+		export async function toNotepadFromEncryptedNotepad(json: string | object, key: string): Promise<Notepad> {
+			const jsonObj: NotepadShell = (typeof json === 'string') ? JSON.parse(json) : json;
+			return decrypt(jsonObj, key);
 		}
 
 		/**

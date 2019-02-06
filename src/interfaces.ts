@@ -1,6 +1,7 @@
 import Section from './Section';
 import Note, { MarkdownNote } from './Note';
 import Asset from './Asset';
+import { EncryptionMethod } from './crypto/Crypto';
 
 export interface Parent {
 	title: string;
@@ -19,6 +20,8 @@ export interface NotepadShell {
 	 * This is the either the cypher-text of the {@link Section} array or the actual {@link Section} array
 	 */
 	sections: string | Section[];
+
+	crypto?: EncryptionMethod;
 }
 
 export interface FileReaderEventTarget extends EventTarget {
