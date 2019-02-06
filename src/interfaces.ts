@@ -9,6 +9,18 @@ export interface Parent {
 	toMarkdown: (asset: Asset[]) => Promise<MarkdownNote[]>;
 }
 
+export interface NotepadShell {
+	title: string;
+	lastModified: string;
+	notepadAssets: string[];
+	assets?: Asset[];
+
+	/**
+	 * This is the either the cypher-text of the {@link Section} array or the actual {@link Section} array
+	 */
+	sections: string | Section[];
+}
+
 export interface FileReaderEventTarget extends EventTarget {
 	result: string;
 }

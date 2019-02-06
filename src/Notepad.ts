@@ -1,9 +1,9 @@
 import { format, parse } from 'date-fns';
-import { Asset, FlatNotepad, Note, Parent, Section } from './';
-import stringify from 'json-stringify-safe';
+import { Asset, FlatNotepad, Note, Section } from './';
 import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
 import { MarkdownNote } from './Note';
+import { NotepadShell } from "./interfaces";
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -19,7 +19,7 @@ export type NotepadOptions = {
  * Something to remember is that all operations on this class like addSection, will return a <strong>new</strong>
  * object of this class, and not modify the existing one.
  */
-export default class Notepad implements Parent {
+export default class Notepad implements NotepadShell {
 	public readonly lastModified: string;
 	public readonly sections: Section[];
 	public readonly notepadAssets: string[];
