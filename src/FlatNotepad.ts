@@ -1,11 +1,13 @@
 import { Note, Notepad, Section, Trie } from './index';
 import { format, parse } from 'date-fns';
+import { EncryptionMethod } from './crypto';
 
 export type FlatNotepadOptions = {
 	lastModified?: Date;
 	notepadAssets?: string[];
 	sections?: { [internalRef: string]: FlatSection };
 	notes?: { [internalRef: string]: Note };
+	crypto?: EncryptionMethod;
 };
 
 export type FlatSection = {
@@ -26,6 +28,7 @@ export default class FlatNotepad {
 	public readonly sections: { [internalRef: string]: FlatSection };
 	public readonly notes: { [internalRef: string]: Note };
 	public readonly notepadAssets: string[];
+	public readonly crypto?: EncryptionMethod;
 
 	constructor(
 		public readonly title: string,
@@ -35,6 +38,7 @@ export default class FlatNotepad {
 		this.sections = opts.sections || {};
 		this.notes = opts.notes || {};
 		this.notepadAssets = opts.notepadAssets || [];
+		if (opts.crypto) this.crypto = opts.crypto;
 	}
 
 	static makeFlatSection(title: string, parentRef?: string): FlatSection {
