@@ -1,5 +1,5 @@
-import { NotepadShell } from '../interfaces';
-import Notepad from '../Notepad';
+import { NotepadShell } from './interfaces';
+import Notepad from './Notepad';
 import { AES256 } from './AES256';
 
 export type EncryptionMethod = 'AES-256';

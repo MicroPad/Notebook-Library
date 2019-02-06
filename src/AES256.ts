@@ -1,11 +1,11 @@
-import { EncryptionMethodImpl } from './index';
-import { NotepadShell } from '../interfaces';
-import Notepad from '../Notepad';
+import { NotepadShell } from './interfaces';
+import Notepad from './Notepad';
 import scrypt from 'scrypt-js';
 import buffer from 'scrypt-js/thirdparty/buffer';
 import * as AES from 'aes-js';
-import { Translators } from '../Translators';
+import { Translators } from './Translators';
 import stringify from 'json-stringify-safe';
+import { EncryptionMethodImpl } from './crypto';
 
 
 export class AES256 implements EncryptionMethodImpl {
