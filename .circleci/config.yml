@@ -19,13 +19,13 @@ jobs:
     steps:
       - checkout
 
-#      - restore_cache:
-#          name: Restore Yarn Package Cache
-#          keys:
-#            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-#            - yarn-packages-{{ .Branch }}
-#            - yarn-packages-master
-#            - yarn-packages-
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
+            - yarn-packages-
 
       - run: yarn
 
