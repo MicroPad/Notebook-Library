@@ -4,12 +4,14 @@ import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
 import { MarkdownNote } from './Note';
 import { NotepadShell } from "./interfaces";
+import { EncryptionMethod } from './crypto';
 
 export type NotepadOptions = {
 	lastModified?: Date;
 	sections?: Section[];
 	notepadAssets?: string[];
 	assets?: Asset[];
+	crypto?: EncryptionMethod;
 };
 
 /**
@@ -24,6 +26,7 @@ export default class Notepad implements NotepadShell {
 	public readonly sections: Section[];
 	public readonly notepadAssets: string[];
 	public readonly assets: Asset[];
+	public readonly crypto?: EncryptionMethod;
 
 	constructor(
 		public readonly title: string,
@@ -33,6 +36,7 @@ export default class Notepad implements NotepadShell {
 		this.sections = opts.sections || [];
 		this.notepadAssets = opts.notepadAssets || [];
 		this.assets = opts.assets || [];
+		if (opts.crypto) this.crypto = opts.crypto;
 	}
 
 	public addSection(section: Section): Notepad {

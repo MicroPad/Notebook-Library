@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Crypto decrypt AES256 1`] = `
+Notepad {
+  "assets": Array [],
+  "lastModified": "1970-01-01T12:00:00.001+12:00",
+  "notepadAssets": Array [
+    "test",
+  ],
+  "sections": Array [
+    Section {
+      "internalRef": "abc",
+      "notes": Array [
+        Note {
+          "bibliography": Array [],
+          "elements": Array [],
+          "internalRef": "abc",
+          "parent": [Circular],
+          "time": 1,
+          "title": "test note",
+        },
+      ],
+      "parent": [Circular],
+      "sections": Array [],
+      "title": "test section",
+    },
+  ],
+  "title": "test",
+}
+`;
+
+exports[`Crypto encrypt AES256 1`] = `
+Object {
+  "assets": Array [
+    Asset {
+      "data": Blob {
+        Symbol(impl): BlobImpl {
+          "_buffer": Object {
+            "data": Array [
+              116,
+              101,
+              115,
+              116,
+            ],
+            "type": "Buffer",
+          },
+          "type": "",
+          Symbol(wrapper): [Circular],
+        },
+      },
+      "uuid": "abc",
+    },
+  ],
+  "crypto": "AES-256",
+  "lastModified": "1970-01-01T12:00:00.001+12:00",
+  "notepadAssets": Array [
+    "test",
+  ],
+  "sections": "7eb35fbc575bb93b53ba118ad3378f0167aa0c9c3391fa134e7f174f5049d1f566689747f3523914435a6d71cf049ae8154979940fc15783ba8c4d1d15bd87eb720af9f9aaf294c46c40931c1a4d4166974e8d7ee7dea7aea372f0b4f175362b507a323750de5794331e22c09a2dc4dacbac7705872123708323975301a4b1e583e737211188ee822ef7b2a6d3d759db48b226f93a02f536d2db7d33af3f38af70fcfb2d8e522116dc2f2bfa49eec6fe2b5a7d",
+  "title": "test",
+}
+`;
