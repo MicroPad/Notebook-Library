@@ -1,9 +1,8 @@
-import { Asset, Note, Notepad, Section } from '../';
+import { Asset, Note, Notepad, Section, Translators } from '../';
 import { NotepadOptions } from '../Notepad';
 import { TestUtils } from './TestUtils';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Translators } from '../index';
 
 describe('Notepad', () => {
 	let options = getOptions();

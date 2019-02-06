@@ -1,4 +1,4 @@
-import {FileReaderEventTarget} from "./interfaces";
+import { FileReaderEventTarget } from "./interfaces";
 
 export default class Asset {
 	public readonly uuid: string;

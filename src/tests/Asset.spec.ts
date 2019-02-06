@@ -25,7 +25,7 @@ describe('Asset', () => {
 
 		it('should return an empty string on invalid data', async () => {
 			// Arrange
-			const asset = new Asset(null, 'abc');
+			const asset = new Asset(null as any, 'abc');
 
 			// Act
 			const res = await asset.toString();

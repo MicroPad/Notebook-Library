@@ -1,15 +1,17 @@
 import { format, parse } from 'date-fns';
-import { Asset, FlatNotepad, Note, Parent, Section } from './';
-import stringify from 'json-stringify-safe';
+import { Asset, FlatNotepad, Note, Section } from './';
 import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
 import { MarkdownNote } from './Note';
+import { NotepadShell } from "./interfaces";
+import { EncryptionMethod } from './crypto';
 
 export type NotepadOptions = {
 	lastModified?: Date;
 	sections?: Section[];
 	notepadAssets?: string[];
 	assets?: Asset[];
+	crypto?: EncryptionMethod;
 };
 
 /**
@@ -19,11 +21,12 @@ export type NotepadOptions = {
  * Something to remember is that all operations on this class like addSection, will return a <strong>new</strong>
  * object of this class, and not modify the existing one.
  */
-export default class Notepad implements Parent {
+export default class Notepad implements NotepadShell {
 	public readonly lastModified: string;
 	public readonly sections: Section[];
 	public readonly notepadAssets: string[];
 	public readonly assets: Asset[];
+	public readonly crypto?: EncryptionMethod;
 
 	constructor(
 		public readonly title: string,
@@ -33,6 +36,7 @@ export default class Notepad implements Parent {
 		this.sections = opts.sections || [];
 		this.notepadAssets = opts.notepadAssets || [];
 		this.assets = opts.assets || [];
+		if (opts.crypto) this.crypto = opts.crypto;
 	}
 
 	public addSection(section: Section): Notepad {
