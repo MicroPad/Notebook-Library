@@ -1,3 +1,5 @@
+import {FileReaderEventTarget} from "./interfaces";
+
 export default class Asset {
 	public readonly uuid: string;
 
@@ -15,7 +17,7 @@ export default class Asset {
 		return new Promise<string>(resolve => {
 			try {
 				const reader = new FileReader();
-				reader.onload = event => resolve(event.target!.result);
+				reader.onload = event => resolve((event.target as FileReaderEventTarget).result);
 				reader.readAsDataURL(this.data);
 			} catch (e) {
 				resolve('');

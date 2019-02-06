@@ -1,6 +1,6 @@
 {
 	"name": "upad-parse",
-	"version": "4.0.6",
+	"version": "4.0.7",
 	"description": "This is a parser for the NPX file format that µPad uses",
 	"main": "dist/index.js",
 	"scripts": {
@@ -34,7 +34,7 @@
 		"jest": "^23.2.0",
 		"ts-jest": "^22.4.6",
 		"typedoc": "^0.11.1",
-		"typescript": "^2.9.2"
+		"typescript": "^3.3.1"
 	},
 	"jest": {
 		"rootDir": "./src",

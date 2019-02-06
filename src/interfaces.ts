@@ -8,3 +8,7 @@ export interface Parent {
 	search: (query: string) => Note[];
 	toMarkdown: (asset: Asset[]) => Promise<MarkdownNote[]>;
 }
+
+export interface FileReaderEventTarget extends EventTarget {
+	result: string;
+}
