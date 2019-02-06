@@ -1,7 +1,8 @@
 import { EncryptionMethodImpl } from './index';
 import { NotepadShell } from '../interfaces';
 import Notepad from '../Notepad';
-import { scrypt } from 'crypto';
+import scrypt from 'scrypt-js';
+import buffer from 'scrypt-js/thirdparty/buffer';
 import * as AES from 'aes-js';
 import { Translators } from '../Translators';
 import stringify from 'json-stringify-safe';
@@ -28,10 +29,12 @@ export class AES256 implements EncryptionMethodImpl {
 		return { ...notepad, sections: cipherText };
 	}
 
-	private keyGenerator(passkey: string): Promise<Uint8Array> {
-		return new Promise<Uint8Array>((resolve, reject) => {
+	private keyGenerator(passkey: string): Promise<ReadonlyArray<number>> {
+		return new Promise<ReadonlyArray<number>>((resolve, reject) => {
 			passkey = passkey.normalize('NFKC');
-			scrypt(passkey, '', 32, (err, key) => {
+			const passkeyBuff = new buffer.SlowBuffer(passkey);
+
+			scrypt(passkeyBuff, new buffer.SlowBuffer(''), 1024, 8, 1, 32, (err, progress, key) => {
 				if (!!err) reject(err);
 				if (!!key) resolve(key);
 			});

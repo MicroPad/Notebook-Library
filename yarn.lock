@@ -75,6 +75,13 @@
   version "10.5.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.6.tgz#1640f021dd0eaf12e731e54198c12ad2e020dc8e"
 
+"@types/scrypt-js@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/scrypt-js/-/scrypt-js-2.0.2.tgz#bfd8c0e234cb7a38042a8567298a3862f129203a"
+  integrity sha512-U7KFWJEZUoLM89UZeL+2hgBT71var2Q0ANwhKqGJJszBddMSdFuNZwhTj9Y0GKqFqfT8W+EwfUmFB8mQ/OFjpw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/shelljs@0.7.8":
   version "0.7.8"
   resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.7.8.tgz#4b4d6ee7926e58d7bca448a50ba442fd9f6715bd"
