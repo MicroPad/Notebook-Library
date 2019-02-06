@@ -1,7 +1,7 @@
 import Section from './Section';
 import Note, { MarkdownNote } from './Note';
 import Asset from './Asset';
-import { EncryptionMethod } from './crypto/Crypto';
+import { EncryptionMethod } from './crypto';
 
 export interface Parent {
 	title: string;
