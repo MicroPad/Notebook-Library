@@ -116,7 +116,8 @@ export default class Notepad implements NotepadShell {
 	public flatten(): FlatNotepad {
 		let notepad = new FlatNotepad(this.title, {
 			lastModified: parse(this.lastModified),
-			notepadAssets: this.notepadAssets
+			notepadAssets: this.notepadAssets,
+			crypto: this.crypto
 		});
 
 		const flattenSection = (section: Section) => {

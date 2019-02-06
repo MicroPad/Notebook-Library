@@ -122,7 +122,8 @@ export default class FlatNotepad {
 
 		let notepad = new Notepad(this.title, {
 			lastModified: parse(this.lastModified),
-			notepadAssets: this.notepadAssets
+			notepadAssets: this.notepadAssets,
+			crypto: this.crypto
 		});
 
 		// Add all the sections + notes
