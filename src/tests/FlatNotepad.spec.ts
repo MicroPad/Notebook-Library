@@ -241,6 +241,7 @@ function getOptions(): FlatNotepadOptions {
 		lastModified: new Date(1),
 		sections: { abc: testSection },
 		notes: { etc: testNote },
-		notepadAssets: ['test']
+		notepadAssets: ['test'],
+		crypto: 'AES-256'
 	};
 }

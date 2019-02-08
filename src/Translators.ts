@@ -12,14 +12,20 @@ export namespace Translators {
 	export namespace Json {
 		/**
 		 * @param {string | object} json A {@link Notepad} object in JSON format or as a plain object
+		 * @param {string | undefined} passkey The passkey to decrypt the notepad if it's encrypted.
 		 * @returns {Notepad}
 		 */
-		export function toNotepadFromNotepad(json: string | object): Notepad {
-			const jsonObj: Notepad = (typeof json === 'string') ? JSON.parse(json) : json;
+		export async function toNotepadFromNotepad(json: string | object, passkey?: string): Promise<Notepad> {
+			const jsonObj: NotepadShell = (typeof json === 'string') ? JSON.parse(json) : json;
 			let notepad = new Notepad(jsonObj.title, {
 				lastModified: parse(jsonObj.lastModified),
 				notepadAssets: jsonObj.notepadAssets || []
 			});
+
+			if (typeof jsonObj.sections === 'string') {
+				if (!passkey) throw new Error('This notepad is encrypted. A passkey is needed to unlock it.');
+				jsonObj.sections = (await decrypt(jsonObj, passkey)).sections;
+			}
 
 			// Restore sections
 			jsonObj.sections.forEach(section => notepad = notepad.addSection(restoreSection(section)));
@@ -39,17 +45,12 @@ export namespace Translators {
 			}
 		}
 
-		export async function toNotepadFromEncryptedNotepad(json: string | object, key: string): Promise<Notepad> {
-			const jsonObj: NotepadShell = (typeof json === 'string') ? JSON.parse(json) : json;
-			return decrypt(jsonObj, key);
-		}
-
 		/**
 		 * @param {string | object} json A {@link Notepad} object in JSON format or as a plain object
 		 * @returns {FlatNotepad}
 		 */
-		export function toFlatNotepadFromNotepad(json: string | object): FlatNotepad {
-			return toNotepadFromNotepad(json).flatten();
+		export async function toFlatNotepadFromNotepad(json: string | object): Promise<FlatNotepad> {
+			return (await toNotepadFromNotepad(json)).flatten();
 		}
 
 		/**

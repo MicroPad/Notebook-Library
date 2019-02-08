@@ -142,7 +142,7 @@ describe('Notepad', () => {
 	});
 
 	describe('toJson', () => {
-		it('should generate a JSON object of the notepad', () => {
+		it('should generate a JSON object of the notepad', async () => {
 			// Arrange
 			const title = 'test';
 
@@ -150,7 +150,24 @@ describe('Notepad', () => {
 			const n = new Notepad(title, options);
 
 			// Assert
-			expect(n.toJson()).toMatchSnapshot();
+			expect(await n.toJson()).toMatchSnapshot();
+		});
+
+		it('should generate a JSON object of the notepad with encrypted sections', async () => {
+			// Arrange
+			const title = 'test';
+			let n = new Notepad(title, {
+				...options,
+				crypto: 'AES-256'
+			});
+
+			n = n.addSection(TestUtils.makeSection('this is a test section'));
+
+			// Act
+			const json = await n.toJson('test');
+
+			// Assert
+			expect(json).toMatchSnapshot();
 		});
 	});
 

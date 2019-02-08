@@ -4,7 +4,7 @@ import { Builder } from 'xml2js';
 import { FlatSection } from './FlatNotepad';
 import { MarkdownNote } from './Note';
 import { NotepadShell } from "./interfaces";
-import { EncryptionMethod } from './crypto';
+import { encrypt, EncryptionMethod } from './crypto';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -86,11 +86,19 @@ export default class Notepad implements NotepadShell {
 			.reduce((acc, val) => acc.concat(val), []);
 	}
 
-	public toJson(): string {
-		return JSON.stringify({
-			...(<object> this),
-			assets: undefined
-		}, (key, value) => {
+	public async toJson(passkey?: string): Promise<string> {
+		let notepad: Notepad = {
+			...this,
+			assets: undefined,
+
+			// If we're given a passkey but encryption hasn't been setup on the notepad, set it up
+			crypto: (!this.crypto && !!passkey) ? 'AES-256' : this.crypto
+		};
+
+		let notepadToStringify: NotepadShell = notepad;
+		if (!!notepad.crypto && !!passkey) notepadToStringify = await encrypt(notepad, passkey);
+
+		return JSON.stringify(notepadToStringify, (key, value) => {
 			return (key === 'parent') ? undefined : value;
 		});
 	}
@@ -150,6 +158,7 @@ export default class Notepad implements NotepadShell {
 			sections: [...this.sections],
 			notepadAssets: [...this.notepadAssets],
 			assets: [...this.assets],
+			crypto: this.crypto,
 			...opts
 		});
 	}

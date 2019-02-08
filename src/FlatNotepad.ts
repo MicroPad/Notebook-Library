@@ -140,6 +140,7 @@ export default class FlatNotepad {
 			sections: this.sections,
 			notes: this.notes,
 			notepadAssets: this.notepadAssets,
+			crypto: this.crypto,
 			...opts
 		});
 	}

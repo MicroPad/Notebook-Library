@@ -7,7 +7,7 @@ import Asset from '../Asset';
 describe('Translators', () => {
 	describe('Json', () => {
 		describe('toNotepad', () => {
-			it('should return a Notepad object from JSON', () => {
+			it('should return a Notepad object from JSON', async () => {
 				// Arrange
 				let expected: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
@@ -19,16 +19,16 @@ describe('Translators', () => {
 				section = section.addNote(TestUtils.makeNote('hello'));
 				expected = expected.addSection(section);
 
-				const json = expected.toJson();
+				const json = await expected.toJson();
 
 				// Act
-				const res = Translators.Json.toNotepadFromNotepad(json);
+				const res = await Translators.Json.toNotepadFromNotepad(json);
 
 				// Assert
 				expect(res).toEqual(expected);
 			});
 
-			it('should return a Notepad object from a plain object', () => {
+			it('should return a Notepad object from a plain object', async () => {
 				// Arrange
 				let expected: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
@@ -43,7 +43,7 @@ describe('Translators', () => {
 				const obj = { ...expected };
 
 				// Act
-				const res = Translators.Json.toNotepadFromNotepad(obj);
+				const res = await Translators.Json.toNotepadFromNotepad(obj);
 
 				// Assert
 				expect(res).toEqual(expected);
@@ -51,7 +51,7 @@ describe('Translators', () => {
 		});
 
 		describe('toFlatNotepad', () => {
-			it('should return a FlatNotepad object from JSON', () => {
+			it('should return a FlatNotepad object from JSON', async () => {
 				// Arrange
 				let testNotepad: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
@@ -64,17 +64,17 @@ describe('Translators', () => {
 				testNotepad = testNotepad.addSection(section);
 
 				const expected = testNotepad.flatten();
-				const json = testNotepad.toJson();
+				const json = await testNotepad.toJson();
 
 				// Act
-				const res = Translators.Json.toFlatNotepadFromNotepad(json);
+				const res = await Translators.Json.toFlatNotepadFromNotepad(json);
 
 				// Assert
 				expect(res).toEqual(expected);
 				expect(res.toNotepad()).toEqual(testNotepad);
 			});
 
-			it('should return a FlatNotepad object from a plain object', () => {
+			it('should return a FlatNotepad object from a plain object', async () => {
 				// Arrange
 				let testNotepad: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
@@ -90,7 +90,7 @@ describe('Translators', () => {
 				const obj = { ...testNotepad };
 
 				// Act
-				const res = Translators.Json.toFlatNotepadFromNotepad(obj);
+				const res = await Translators.Json.toFlatNotepadFromNotepad(obj);
 
 				// Assert
 				expect(res).toEqual(expected);
@@ -105,7 +105,7 @@ describe('Translators', () => {
 				// Act
 				const notepad = await Translators.Xml.toNotepadFromNpx(npx);
 				const flat = notepad.flatten();
-				const flatViaJson = Translators.Json.toFlatNotepadFromNotepad(notepad.toJson());
+				const flatViaJson = await Translators.Json.toFlatNotepadFromNotepad(await notepad.toJson());
 
 				// Assert
 				expect(flat.toNotepad()).toEqual(notepad);
