@@ -161,7 +161,7 @@ describe('Notepad', () => {
 				crypto: 'AES-256'
 			});
 
-			n = n.addSection(new Section('this is a section').clone({ internalRef: 'a section is here' }));
+			n = n.addSection(TestUtils.makeSection('this is a test section'));
 
 			// Act
 			const json = await n.toJson('test');
