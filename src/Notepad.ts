@@ -158,6 +158,7 @@ export default class Notepad implements NotepadShell {
 			sections: [...this.sections],
 			notepadAssets: [...this.notepadAssets],
 			assets: [...this.assets],
+			crypto: this.crypto,
 			...opts
 		});
 	}

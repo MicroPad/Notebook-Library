@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FlatNotepad constructor should construct with crypto 1`] = `"AES-256"`;
+
 exports[`FlatNotepad constructor should construct with lastModified 1`] = `"1970-01-01T12:00:00.001+12:00"`;
 
 exports[`FlatNotepad constructor should construct with notepadAssets 1`] = `
@@ -33,6 +35,7 @@ Object {
 exports[`FlatNotepad toNotepad should convert to a full Notepad object 1`] = `
 Notepad {
   "assets": Array [],
+  "crypto": "AES-256",
   "lastModified": "1970-01-01T12:00:00.001+12:00",
   "notepadAssets": Array [
     "test",
@@ -52,6 +55,7 @@ Notepad {
       ],
       "parent": Notepad {
         "assets": Array [],
+        "crypto": "AES-256",
         "lastModified": "1970-01-01T12:00:00.001+12:00",
         "notepadAssets": Array [
           "test",
