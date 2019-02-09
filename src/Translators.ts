@@ -24,7 +24,7 @@ export namespace Translators {
 
 			if (typeof jsonObj.sections === 'string') {
 				if (!passkey) throw new Error('This notepad is encrypted. A passkey is needed to unlock it.');
-				jsonObj.sections = (await decrypt(jsonObj, passkey)).sections;
+				return await decrypt(jsonObj, passkey);
 			}
 
 			// Restore sections
