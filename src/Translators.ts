@@ -47,10 +47,11 @@ export namespace Translators {
 
 		/**
 		 * @param {string | object} json A {@link Notepad} object in JSON format or as a plain object
+		 * @param {string | undefined} passkey The passkey to decrypt the notepad if it's encrypted.
 		 * @returns {FlatNotepad}
 		 */
-		export async function toFlatNotepadFromNotepad(json: string | object): Promise<FlatNotepad> {
-			return (await toNotepadFromNotepad(json)).flatten();
+		export async function toFlatNotepadFromNotepad(json: string | object, passkey?: string): Promise<FlatNotepad> {
+			return (await toNotepadFromNotepad(json, passkey)).flatten();
 		}
 
 		/**
