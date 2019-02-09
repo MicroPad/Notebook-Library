@@ -19,7 +19,8 @@ export namespace Translators {
 			const jsonObj: NotepadShell = (typeof json === 'string') ? JSON.parse(json) : json;
 			let notepad = new Notepad(jsonObj.title, {
 				lastModified: parse(jsonObj.lastModified),
-				notepadAssets: jsonObj.notepadAssets || []
+				notepadAssets: jsonObj.notepadAssets || [],
+				crypto: jsonObj.crypto
 			});
 
 			if (typeof jsonObj.sections === 'string') {
