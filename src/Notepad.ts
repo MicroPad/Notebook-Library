@@ -98,6 +98,10 @@ export default class Notepad implements NotepadShell {
 		let notepadToStringify: NotepadShell = notepad;
 		if (!!notepad.crypto && !!passkey) notepadToStringify = await encrypt(notepad, passkey);
 
+		if (!!notepad.crypto && !passkey) {
+			notepadToStringify = { ...notepadToStringify, crypto: undefined };
+		}
+
 		return JSON.stringify(notepadToStringify, (key, value) => {
 			return (key === 'parent') ? undefined : value;
 		});
