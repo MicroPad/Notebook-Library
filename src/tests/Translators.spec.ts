@@ -11,8 +11,7 @@ describe('Translators', () => {
 				// Arrange
 				let expected: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
-					notepadAssets: ['test'],
-					crypto: 'AES-256'
+					notepadAssets: ['test']
 				});
 
 				let section = TestUtils.makeSection('test');
@@ -57,8 +56,7 @@ describe('Translators', () => {
 				// Arrange
 				let testNotepad: Notepad = new Notepad('test', {
 					lastModified: new Date(1),
-					notepadAssets: ['test'],
-					crypto: 'AES-256'
+					notepadAssets: ['test']
 				});
 
 				let section = TestUtils.makeSection('test', [], [], '1');
