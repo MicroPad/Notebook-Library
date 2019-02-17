@@ -92,7 +92,7 @@ export default class Notepad implements NotepadShell {
 			assets: undefined,
 
 			// If we're given a passkey but encryption hasn't been setup on the notepad, set it up
-			crypto: (!this.crypto && !!passkey) ? 'AES-256' : this.crypto
+			crypto: (!this.crypto && !!passkey) ? 'AES-256-GZ' : this.crypto
 		};
 
 		let notepadToStringify: NotepadShell = notepad;

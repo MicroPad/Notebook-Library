@@ -63,6 +63,11 @@
   version "4.14.104"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.104.tgz#53ee2357fa2e6e68379341d92eb2ecea4b11bb80"
 
+"@types/lz-string@^1.3.33":
+  version "1.3.33"
+  resolved "https://registry.yarnpkg.com/@types/lz-string/-/lz-string-1.3.33.tgz#de2d6105ea7bcaf67dd1d9451d580700d30473fc"
+  integrity sha512-yWj3OnlKlwNpq9+Jh/nJkVAD3ta8Abk2kIRpjWpVkDlAD43tn6Q6xk5hurp84ndcq54jBDBGCD/WcIR0pspG0A==
+
 "@types/marked@0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.3.0.tgz#583c223dd33385a1dda01aaf77b0cd0411c4b524"
@@ -2861,6 +2866,11 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+lz-string@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
+  integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
 
 make-error@1.x:
   version "1.3.5"
