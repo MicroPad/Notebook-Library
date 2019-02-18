@@ -4,7 +4,6 @@ import scrypt from 'scrypt-js';
 import buffer from 'scrypt-js/thirdparty/buffer';
 import * as AES from 'aes-js';
 import { Translators } from './Translators';
-import stringify from 'json-stringify-safe';
 import { EncryptionMethodImpl } from './crypto';
 
 
@@ -21,7 +20,7 @@ export class AES256 implements EncryptionMethodImpl {
 	}
 
 	async encrypt(notepad: Notepad, passkey: string): Promise<NotepadShell> {
-		const plainText = stringify(notepad.sections);
+		const plainText = AES256.stringifyNotepadObj(notepad.sections);
 		const key = await this.keyGenerator(passkey);
 		const controller = new AES.ModeOfOperation.ctr(key);
 
@@ -38,6 +37,12 @@ export class AES256 implements EncryptionMethodImpl {
 				if (!!err) reject(err);
 				if (!!key) resolve(key);
 			});
+		});
+	}
+
+	protected static stringifyNotepadObj(obj: object): string {
+		return JSON.stringify(obj, (key, value) => {
+			return (key === 'parent') ? undefined : value;
 		});
 	}
 }

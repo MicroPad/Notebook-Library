@@ -3,7 +3,6 @@ import { EncryptionMethodImpl } from './crypto';
 import { NotepadShell } from './interfaces';
 import Notepad from './Notepad';
 import { Translators } from './Translators';
-import stringify from 'json-stringify-safe';
 import * as AES from 'aes-js';
 import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 
@@ -22,7 +21,7 @@ export class AES256GZ extends AES256 implements EncryptionMethodImpl {
 	}
 
 	async encrypt(notepad: Notepad, passkey: string): Promise<NotepadShell> {
-		const plainText = stringify(notepad.sections);
+		const plainText = AES256.stringifyNotepadObj(notepad.sections);
 		const plainTextGz = compressToUTF16(plainText);
 
 		const key = await this.keyGenerator(passkey);
