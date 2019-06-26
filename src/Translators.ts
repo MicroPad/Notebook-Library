@@ -346,7 +346,7 @@ export namespace Translators {
 		/**
 		 * @param {Array<MarkdownImport>} markdown A list of all the markdown to be imported into notes
 		 */
-		export function toNotepadFromMarkdown(...markdown: MarkdownImport[]): Notepad {
+		export function toNotepadFromMarkdown(markdown: MarkdownImport[]): Notepad {
 			let importCounter = 0;
 
 			const section = markdown
@@ -355,7 +355,7 @@ export namespace Translators {
 						{
 							type: 'markdown',
 							content,
-							args: { id: 'markdown1', x: '10px', y: '10px', width: '500px', height: 'auto', fontSize: '16px' }
+							args: { id: 'markdown1', x: '10px', y: '10px', width: '550px', height: 'auto', fontSize: '16px' }
 						}
 					]
 				}))
