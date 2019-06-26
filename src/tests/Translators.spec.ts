@@ -170,7 +170,8 @@ describe('Translators', () => {
 
 			it('should convert the notepad correctly', async () => {
 				// Arrange
-				(Asset as any).prototype.generateGuid = jest.fn(() => 'abc');
+				let guidCounter = 0;
+				(Asset as any).prototype.generateGuid = jest.fn(() => 'abc' + ++guidCounter);
 
 				// Act
 				const res = await Translators.Xml.toNotepadFromEnex(sampleEnex);
