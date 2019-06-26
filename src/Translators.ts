@@ -342,6 +342,31 @@ export namespace Translators {
 		}
 	}
 
+	export namespace Markdown {
+		/**
+		 * @param {Array<MarkdownImport>} markdown A list of all the markdown to be imported into notes
+		 */
+		export function toNotepadFromMarkdown(...markdown: MarkdownImport[]): Notepad {
+			let importCounter = 0;
+
+			const section = markdown
+				.map(({ title, content }) => new Note(`${title} (Import ${++importCounter})`).clone({
+					elements: [
+						{
+							type: 'markdown',
+							content,
+							args: { id: 'markdown1', x: '10px', y: '10px', width: '500px', height: 'auto', fontSize: '16px' }
+						}
+					]
+				}))
+				.reduce((section, note) => section.addNote(note), new Section('Imported Notes'));
+
+			return new Notepad('Markdown Import ' + format(new Date(), 'D MMM h:mmA')).addSection(section);
+		}
+
+		export type MarkdownImport = { title: string, content: string };
+	}
+
 	// Thanks to http://stackoverflow.com/a/12300351/998467
 	function dataURItoBlob(dataURI: string) {
 		// convert base64 to raw binary data held in a string
