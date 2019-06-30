@@ -237,13 +237,13 @@ export namespace Translators {
 
 					let fileCount = 0;
 					let imageCount = 0;
-					(enexNote.resource || []).map(resource => {
+					(enexNote.resource || []).reverse().map(resource => {
 						const asset = new Asset(dataURItoBlob(
 							`data:${resource.mime};base64,${resource.data[0]._.replace(/\r?\n|\r/g, '')}`
 						));
 						notepad = notepad.addAsset(asset);
 
-						const y = 50 + (200 * (fileCount + imageCount));
+						const y = 10 + (335 * (fileCount + imageCount));
 
 						if (resource.mime[0].includes('image')) {
 							note = note.addElement({
@@ -253,7 +253,7 @@ export namespace Translators {
 									x: '650px',
 									y: y + 'px',
 									width: 'auto',
-									height: '200px',
+									height: '300px',
 									ext: asset.uuid
 								},
 								content: 'AS'
