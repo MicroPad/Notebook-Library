@@ -243,7 +243,7 @@ export namespace Translators {
 						));
 						notepad = notepad.addAsset(asset);
 
-						const y = 10 + (200 * (fileCount + imageCount));
+						const y = 50 + (200 * (fileCount + imageCount));
 
 						if (resource.mime[0].includes('image')) {
 							note = note.addElement({
