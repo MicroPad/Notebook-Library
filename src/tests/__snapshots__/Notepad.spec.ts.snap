@@ -3,21 +3,7 @@
 exports[`Notepad constructor should construct with assets 1`] = `
 Array [
   Asset {
-    "data": Blob {
-      Symbol(impl): BlobImpl {
-        "_buffer": Object {
-          "data": Array [
-            116,
-            101,
-            115,
-            116,
-          ],
-          "type": "Buffer",
-        },
-        "type": "",
-        Symbol(wrapper): [Circular],
-      },
-    },
+    "data": Blob {},
     "uuid": "abc",
   },
 ]

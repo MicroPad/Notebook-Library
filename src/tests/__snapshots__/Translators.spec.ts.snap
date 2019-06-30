@@ -834,5 +834,5 @@ Test _of_ mass **nesting**
   
 
 - [ ] An item that I haven't completed yet.  
-- [x] An completed item.</markdown><image id=\\"image1\\" x=\\"650px\\" y=\\"10px\\" width=\\"auto\\" height=\\"200px\\" ext=\\"abc1\\">AS</image><image id=\\"image2\\" x=\\"650px\\" y=\\"210px\\" width=\\"auto\\" height=\\"200px\\" ext=\\"abc2\\">AS</image></note></section></notepad>"
+- [x] An completed item.</markdown><image id=\\"image1\\" x=\\"650px\\" y=\\"50px\\" width=\\"auto\\" height=\\"200px\\" ext=\\"abc1\\">AS</image><image id=\\"image2\\" x=\\"650px\\" y=\\"250px\\" width=\\"auto\\" height=\\"200px\\" ext=\\"abc2\\">AS</image></note></section></notepad>"
 `;
