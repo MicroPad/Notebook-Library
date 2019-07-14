@@ -52,7 +52,8 @@
 			"json",
 			"node"
 		],
-		"testURL": "http://localhost"
+		"testURL": "http://localhost",
+		"setupTestFrameworkScriptFile": "./tests/TestSetup.ts"
 	},
 	"dependencies": {
 		"aes-js": "^3.1.2",
