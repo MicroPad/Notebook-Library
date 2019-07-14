@@ -3,6 +3,7 @@ import { TestUtils } from './TestUtils';
 import * as fs from 'fs';
 import * as path from 'path';
 import Asset from '../Asset';
+import MarkdownImport = Translators.Markdown.MarkdownImport;
 
 describe('Translators', () => {
 	describe('Json', () => {
@@ -179,6 +180,35 @@ describe('Translators', () => {
 				// Assert
 				expect(await (res.clone({ lastModified: new Date(1) })).toXml()).toMatchSnapshot();
 			})
+		});
+	});
+
+	describe('Markdown', () => {
+		it('should convert the notepad correctly', async () => {
+			// Arrange
+			const md: MarkdownImport[] = [
+				{
+					title: 'Test Import',
+					content: '# This is some md\n\n**yeet**'
+				},
+				{
+					title: 'Test Duplicate',
+					content: 'yeet'
+				},
+				{
+					title: 'Test Duplicate',
+					content: 'yeet'
+				}
+			];
+
+			// Act
+			const res = Translators.Markdown.toNotepadFromMarkdown(md);
+			res.sections[0].notes.forEach(note => (<any>note).time = 1);
+
+			let t = await res.clone({ lastModified: new Date(1) }, 'Import Test').toXml();
+
+			// Assert
+			expect(await res.clone({ lastModified: new Date(1) }, 'Import Test').toXml()).toMatchSnapshot();
 		});
 	});
 });

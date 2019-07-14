@@ -246,13 +246,13 @@ export namespace Translators {
 					let imageCount = 0;
 
 					await Promise.all(
-						(enexNote.resource || []).map(async resource => {
+						(enexNote.resource || []).reverse().map(async resource => {
 							const asset = new Asset(await dataURItoBlob(
 								`data:${resource.mime};base64,${resource.data[0]._.replace(/\r?\n|\r/g, '')}`
 							));
 							notepad = notepad.addAsset(asset);
 
-							const y = 10 + (200 * (fileCount + imageCount));
+							const y = 10 + (335 * (fileCount + imageCount));
 
 							if (resource.mime[0].includes('image')) {
 								note = note.addElement({
@@ -262,7 +262,7 @@ export namespace Translators {
 										x: '650px',
 										y: y + 'px',
 										width: 'auto',
-										height: '200px',
+										height: '300px',
 										ext: asset.uuid
 									},
 									content: 'AS'
@@ -350,6 +350,31 @@ export namespace Translators {
 				});
 			});
 		}
+	}
+
+	export namespace Markdown {
+		/**
+		 * @param {Array<MarkdownImport>} markdown A list of all the markdown to be imported into notes
+		 */
+		export function toNotepadFromMarkdown(markdown: MarkdownImport[]): Notepad {
+			let importCounter = 0;
+
+			const section = markdown
+				.map(({ title, content }) => new Note(`${title} (Import ${++importCounter})`).clone({
+					elements: [
+						{
+							type: 'markdown',
+							content,
+							args: { id: 'markdown1', x: '10px', y: '10px', width: '550px', height: 'auto', fontSize: '16px' }
+						}
+					]
+				}))
+				.reduce((section, note) => section.addNote(note), new Section('Imported Notes'));
+
+			return new Notepad('Markdown Import ' + format(new Date(), 'D MMM h:mmA')).addSection(section);
+		}
+
+		export type MarkdownImport = { title: string, content: string };
 	}
 
 	async function dataURItoBlob(dataURI: string) {
