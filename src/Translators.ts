@@ -102,20 +102,25 @@ export namespace Translators {
 
 			// Parse assets
 			if (res.notepad.assets) {
-				((res.notepad.assets[0] || {}).asset || []).forEach(item => {
+				const assets = await Promise.all<Asset | null>(((res.notepad.assets[0] || {}).asset || []).map(async item => {
 					try {
-						notepad = notepad.addAsset(new Asset(dataURItoBlob(item._), item.$.uuid));
+						return new Asset(await dataURItoBlob(item._), item.$.uuid);
 					} catch (e) {
-						console.warn(`Can't parse the asset ${item.$.uuid}`);
+						console.warn(`Can't parse the asset ${item.$.uuid}\n${e}`);
+						return null;
 					}
-				});
+				}));
+
+				assets
+					.filter(asset => asset !== null)
+					.forEach(asset => notepad = notepad.addAsset(asset!));
 			}
 
 			// Convert inline assets to full-assets
 			const flatNotepad = notepad.flatten();
 			const convertedAssets: Asset[] = [];
-			Object.values(flatNotepad.notes)
-				.forEach(note => {
+			const convertedNotes = await Promise.all(Object.values(flatNotepad.notes)
+				.map(async note => {
 					let elements: NoteElement[] = [];
 
 					// Import inline assets
@@ -127,7 +132,7 @@ export namespace Translators {
 						}
 
 						try {
-							const asset = new Asset(dataURItoBlob(element.content));
+							const asset = new Asset(await dataURItoBlob(element.content));
 							elements.push({
 								...element,
 								content: 'AS',
@@ -139,15 +144,17 @@ export namespace Translators {
 							convertedAssets.push(asset);
 
 						} catch (e) {
-							console.warn(`Can't parse asset`);
+							console.warn(`Can't parse asset\n${e}`);
 						}
 					}
 
 					// Update the note with the new elements
-					flatNotepad.notes[note.internalRef] = flatNotepad.notes[note.internalRef].clone({
+					return flatNotepad.notes[note.internalRef].clone({
 						elements
 					});
-				});
+				}));
+
+			convertedNotes.forEach(note => flatNotepad.notes[note.internalRef] = note);
 
 			return flatNotepad.toNotepad().clone({
 				assets: [
@@ -217,8 +224,8 @@ export namespace Translators {
 			let notepad = new Notepad(`${exported.$.application} Import ${format(parse(exported.$['export-date']), 'D MMM h:mmA')}`);
 			let section = new Section('Imported Notes');
 
-			(exported.note || [])
-				.map(enexNote => {
+			(await Promise.all<Note>((exported.note || [])
+				.map(async enexNote => {
 					let note = new Note((enexNote.title || ['Imported Note'])[0], parse(enexNote.created[0]).getTime(), [
 						// Add the general note content (text/to-do)
 						{
@@ -237,60 +244,63 @@ export namespace Translators {
 
 					let fileCount = 0;
 					let imageCount = 0;
-					(enexNote.resource || []).reverse().map(resource => {
-						const asset = new Asset(dataURItoBlob(
-							`data:${resource.mime};base64,${resource.data[0]._.replace(/\r?\n|\r/g, '')}`
-						));
-						notepad = notepad.addAsset(asset);
 
-						const y = 10 + (335 * (fileCount + imageCount));
+					await Promise.all(
+						(enexNote.resource || []).reverse().map(async resource => {
+							const asset = new Asset(await dataURItoBlob(
+								`data:${resource.mime};base64,${resource.data[0]._.replace(/\r?\n|\r/g, '')}`
+							));
+							notepad = notepad.addAsset(asset);
 
-						if (resource.mime[0].includes('image')) {
-							note = note.addElement({
-								type: 'image',
-								args: {
-									id: `image${++imageCount}`,
-									x: '650px',
-									y: y + 'px',
-									width: 'auto',
-									height: '300px',
-									ext: asset.uuid
-								},
-								content: 'AS'
-							});
-						} else {
-							// Add the resource as a file
-							let filename;
-							try {
-								if (resource['resource-attributes'][0]['file-name']) {
-									filename = resource['resource-attributes'][0]['file-name'][0];
-								} else if (resource['resource-attributes'][0]['source-url']) {
-									filename = resource['resource-attributes'][0]['source-url'][0].split('/').pop();
-								} else {
-									filename = `file${fileCount}.${resource.mime[0].split('/').pop()}`
+							const y = 10 + (335 * (fileCount + imageCount));
+
+							if (resource.mime[0].includes('image')) {
+								note = note.addElement({
+									type: 'image',
+									args: {
+										id: `image${++imageCount}`,
+										x: '650px',
+										y: y + 'px',
+										width: 'auto',
+										height: '300px',
+										ext: asset.uuid
+									},
+									content: 'AS'
+								});
+							} else {
+								// Add the resource as a file
+								let filename;
+								try {
+									if (resource['resource-attributes'][0]['file-name']) {
+										filename = resource['resource-attributes'][0]['file-name'][0];
+									} else if (resource['resource-attributes'][0]['source-url']) {
+										filename = resource['resource-attributes'][0]['source-url'][0].split('/').pop();
+									} else {
+										filename = `file${fileCount}.${resource.mime[0].split('/').pop()}`
+									}
+								} catch (e) {
+									filename = 'imported-file' + fileCount;
 								}
-							} catch (e) {
-								filename = 'imported-file' + fileCount;
-							}
 
-							note = note.addElement({
-								type: 'file',
-								args: {
-									id: `file${++fileCount}`,
-									x: '650px',
-									y: y + 'px',
-									width: 'auto',
-									height: 'auto',
-									ext: asset.uuid,
-									filename
-								},
-								content: 'AS'
-							});
-						}
-					});
+								note = note.addElement({
+									type: 'file',
+									args: {
+										id: `file${++fileCount}`,
+										x: '650px',
+										y: y + 'px',
+										width: 'auto',
+										height: 'auto',
+										ext: asset.uuid,
+										filename
+									},
+									content: 'AS'
+								});
+							}
+						})
+					);
 
 					return note;
-				})
+				})))
 				.forEach(note => section = section.addNote(note));
 
 			return notepad.addSection(section);
@@ -367,23 +377,7 @@ export namespace Translators {
 		export type MarkdownImport = { title: string, content: string };
 	}
 
-	// Thanks to http://stackoverflow.com/a/12300351/998467
-	function dataURItoBlob(dataURI: string) {
-		// convert base64 to raw binary data held in a string
-		// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-		let byteString = atob(dataURI.split(',')[1]);
-
-		// separate out the mime component
-		let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-		// write the bytes of the string to an ArrayBuffer
-		let ab = new ArrayBuffer(byteString.length);
-		let ia = new Uint8Array(ab);
-		for (let i = 0; i < byteString.length; i++) {
-			ia[i] = byteString.charCodeAt(i);
-		}
-
-		// write the ArrayBuffer to a blob, and you're done
-		return new Blob([ab], { type: mimeString });
+	async function dataURItoBlob(dataURI: string) {
+		return fetch(dataURI).then(res => res.blob());
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "upad-parse",
-	"version": "6.2.2",
+	"version": "6.2.3",
 	"description": "This is a parser for the NPX file format that µPad uses",
 	"main": "dist/index.js",
 	"scripts": {
@@ -52,7 +52,8 @@
 			"json",
 			"node"
 		],
-		"testURL": "http://localhost"
+		"testURL": "http://localhost",
+		"setupTestFrameworkScriptFile": "./tests/TestSetup.ts"
 	},
 	"dependencies": {
 		"aes-js": "^3.1.2",
