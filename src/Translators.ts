@@ -184,7 +184,8 @@ export namespace Translators {
 									'drawing',
 									'image',
 									'file',
-									'recording'
+									'recording',
+									'pdf'
 								]
 								.map(type =>
 									(item[type] || []).map(e => {
