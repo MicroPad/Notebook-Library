@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { Asset, Parent } from './index';
 
 export type NoteElement = {
-	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording';
+	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording' | 'pdf';
 	content: string;
 	args: ElementArgs;
 };
