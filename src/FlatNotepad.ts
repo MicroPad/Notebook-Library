@@ -95,7 +95,7 @@ export default class FlatNotepad {
 	 * @returns {Note[]}
 	 */
 	public search(trie: Trie, query: string): Note[] {
-		return trie.search(query).map(ref => this.notes[ref]);
+		return Trie.search(trie, query).map(ref => this.notes[ref]);
 	}
 
 	/**

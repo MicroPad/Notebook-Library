@@ -15,32 +15,22 @@ export class Trie {
 		return trie;
 	}
 
-	private readonly root: TrieNode;
-	private readonly lastModified: Date;
-	private readonly hashtags: { [hashtag: string]: string[] } = {};
-	private _size: number = 0;
-
-	constructor(lastModified = new Date()) {
-		this.root = new TrieNode();
-		this.lastModified = lastModified;
+	public static shouldReindex(trie: Trie, lastModified: Date, numberOfNotes: number): boolean {
+		return lastModified.getTime() > trie.lastModified.getTime() || numberOfNotes !== trie.size;
 	}
 
-	public shouldReindex(lastModified: Date, numberOfNotes: number): boolean {
-		return lastModified.getTime() > this.lastModified.getTime() || numberOfNotes !== this.size;
-	}
-
-	public add(key: string, ref: string): void {
+	public static add(trie: Trie, key: string, ref: string): void {
 		key = key.toLowerCase();
 		if (key.charAt(0) === '#') {
-			const notes = this.hashtags[key] || [];
+			const notes = trie.hashtags[key] || [];
 			if (notes.indexOf(ref) !== -1) return;
 
-			this.hashtags[key] = [...notes, ref];
+			trie.hashtags[key] = [...notes, ref];
 			return;
 		}
 
 		const keyChars = [...key];
-		let node: TrieNode = this.root;
+		let node: TrieNode = trie.root;
 
 		for (let ch of keyChars) {
 			if (!node.children[ch]) node.children[ch] = new TrieNode(ch);
@@ -48,17 +38,17 @@ export class Trie {
 		}
 
 		node.notes.push(ref);
-		this._size++;
+		trie.size++;
 	}
 
-	public search(query: string): string[] {
-		query = query.toLowerCase()
+	public static search(trie: Trie, query: string): string[] {
+		query = query.toLowerCase();
 		if (query.charAt(0) === '#') {
-			return this.hashtags[query] || [];
+			return trie.hashtags[query] || [];
 		}
 
 		const keyChars = [...query];
-		let node: TrieNode = this.root;
+		let node: TrieNode = trie.root;
 
 		for (let ch of keyChars) {
 			if (!node.children[ch]) return [];
@@ -68,12 +58,48 @@ export class Trie {
 		return [...new Set(node.getAllFrom())];
 	}
 
-	public get size() {
-		return this._size;
+	public size: number = 0;
+
+	private readonly root: TrieNode;
+	private readonly lastModified: Date;
+	private readonly hashtags: { [hashtag: string]: string[] } = {};
+
+	constructor(lastModified = new Date()) {
+		this.root = new TrieNode();
+		this.lastModified = lastModified;
+	}
+
+	/**
+	 * @deprecated Use static methods instead
+	 */
+	public shouldReindex(lastModified: Date, numberOfNotes: number): boolean {
+		return Trie.shouldReindex(this, lastModified, numberOfNotes);
+	}
+
+	/**
+	 * @deprecated Use static methods instead
+	 */
+	public add(key: string, ref: string): void {
+		return Trie.add(this, key, ref);
+	}
+
+	/**
+	 * @deprecated Use static methods instead
+	 */
+	public search(query: string): string[] {
+		return Trie.search(this, query);
 	}
 }
 
 class TrieNode {
+	public static getAllFrom(node: TrieNode): string[] {
+		return [
+			...node.notes,
+			...(Object.values(node.children))
+				.reduce((acc, val) => acc.concat(val.getAllFrom()), [] as string[])
+		];
+	}
+
 	public readonly key: string;
 	public readonly notes: string[] = [];
 	public readonly children: { [ch: string]: TrieNode } = {};
@@ -83,10 +109,6 @@ class TrieNode {
 	}
 
 	public getAllFrom(): string[] {
-		return [
-			...this.notes,
-			...(Object.values(this.children))
-				.reduce((acc, val) => acc.concat(val.getAllFrom()), [] as string[])
-		];
+		return TrieNode.getAllFrom(this);
 	}
 }
