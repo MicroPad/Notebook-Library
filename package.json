@@ -1,6 +1,6 @@
 {
 	"name": "upad-parse",
-	"version": "6.4.1",
+	"version": "6.4.2",
 	"description": "This is a parser for the NPX file format that µPad uses",
 	"main": "dist/index.js",
 	"scripts": {
@@ -62,7 +62,7 @@
 		"date-fns": "^1.30.1",
 		"json-stringify-safe": "^5.0.1",
 		"lz-string": "^1.4.4",
-		"pretty-data": "^0.40.0",
+		"pretty-data": "https://github.com/vkiryukhin/pretty-data#22a34a534745714ea974f72db2e9bf7561b3fdc7",
 		"scrypt-js": "^2.0.4",
 		"turndown": "^4.0.2",
 		"turndown-plugin-gfm": "^1.0.2",
