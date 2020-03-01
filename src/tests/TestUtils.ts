@@ -1,4 +1,5 @@
 import { Asset, Note, Section } from '../index';
+import { Source } from '../Note';
 
 export namespace TestUtils {
 	export function makeSection(title: string, sections?: Section[], notes?: Note[], ref: string = 'abc'): Section {
@@ -9,7 +10,15 @@ export namespace TestUtils {
 	}
 
 	export function makeNote(title: string, time: Date = new Date(1), ref: string = 'abc'): Note {
-		const note = new Note(title, time.getTime());
+		const source: Omit<Source, 'id'> = {
+			content: 'test',
+			item: 'markdown1'
+		};
+
+		const note = new Note(title, time.getTime())
+			.addSource({ ...source, id: 1 })
+			.addSource({ ...source, id: 2 });
+
 		(note as any).internalRef = ref;
 
 		return note;

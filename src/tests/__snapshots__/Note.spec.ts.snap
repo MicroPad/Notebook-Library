@@ -10,17 +10,24 @@ Object {
     "addons": Array [
       Array [],
     ],
-    "bibliography": Array [
-      Object {
-        "source": Object {
+    "bibliography": Object {
+      "source": Array [
+        Object {
           "$": Object {
             "id": 1,
             "item": "markdown1",
           },
-          "_": "https://nick.geek.nz",
+          "_": "test",
         },
-      },
-    ],
+        Object {
+          "$": Object {
+            "id": 2,
+            "item": "markdown1",
+          },
+          "_": "test",
+        },
+      ],
+    },
     "markdown": Array [
       Object {
         "$": Object {

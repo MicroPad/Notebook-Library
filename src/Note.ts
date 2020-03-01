@@ -103,13 +103,11 @@ export default class Note extends NPXObject {
 
 		const bibliography = this.bibliography.map(source => {
 			return {
-				source: {
-					$: {
-						id: source.id,
-						item: source.item
-					},
-					_: source.content
-				}
+				$: {
+					id: source.id,
+					item: source.item
+				},
+				_: source.content
 			};
 		});
 
@@ -120,7 +118,7 @@ export default class Note extends NPXObject {
 					time: format(this.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
 				},
 				addons: [[]], // We aren't supporting addons in v3 of the parser but we'll keep this for NPX compatibility
-				bibliography: (bibliography.length > 0) ? bibliography : [[]],
+				bibliography: (bibliography.length > 0) ? { source: bibliography } : [[]],
 				...elements
 			}
 		};

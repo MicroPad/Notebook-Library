@@ -67,6 +67,7 @@ describe('Note', () => {
 
 		beforeEach(() => {
 			note = TestUtils.makeNote('test note');
+			(note as any).bibliography = [];
 		});
 
 		it('should add a new source', () => {
@@ -77,6 +78,21 @@ describe('Note', () => {
 			// Assert
 			expect(res.bibliography[0]).toEqual(source);
 		});
+
+		it('should store sources under one bibliography array', () => {
+			//Arrange
+			// Act
+			const res = note
+				.addSource(source)
+				.addSource({
+					...source,
+					id: 2
+				});
+
+			// Assert
+			expect(res.bibliography).toHaveLength(2);
+		});
+
 
 		it('should create a new object', () => {
 			//Arrange
@@ -214,7 +230,6 @@ describe('Note', () => {
 		// Arrange
 		let note = TestUtils.makeNote('test note');
 		note = note.addElement(element);
-		note = note.addSource(source);
 
 		// Act
 		const res = note.toXmlObject();
