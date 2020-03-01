@@ -1,10 +1,10 @@
 import { NotepadShell } from './interfaces';
 import Notepad from './Notepad';
-import scrypt from 'scrypt-js';
 import buffer from 'scrypt-js/thirdparty/buffer';
 import * as AES from 'aes-js';
 import { Translators } from './Translators';
 import { EncryptionMethodImpl } from './crypto';
+import * as scrypt from 'scrypt-js';
 
 
 export class AES256 implements EncryptionMethodImpl {
@@ -29,15 +29,10 @@ export class AES256 implements EncryptionMethodImpl {
 	}
 
 	protected keyGenerator(passkey: string): Promise<ReadonlyArray<number>> {
-		return new Promise<ReadonlyArray<number>>((resolve, reject) => {
-			passkey = passkey.normalize('NFKC');
-			const passkeyBuff = new buffer.SlowBuffer(passkey);
+		passkey = passkey.normalize('NFKC');
+		const passkeyBuff = new buffer.SlowBuffer(passkey);
 
-			scrypt(passkeyBuff, new buffer.SlowBuffer(''), 1024, 8, 1, 32, (err, progress, key) => {
-				if (!!err) reject(err);
-				if (!!key) resolve(key);
-			});
-		});
+		return scrypt.scrypt(passkeyBuff, new buffer.SlowBuffer(''), 1024, 8, 1, 32);
 	}
 
 	protected static stringifyNotepadObj(obj: object): string {
