@@ -21,9 +21,24 @@ Object {
             "addons": Array [
               Array [],
             ],
-            "bibliography": Array [
-              Array [],
-            ],
+            "bibliography": Object {
+              "source": Array [
+                Object {
+                  "$": Object {
+                    "id": 1,
+                    "item": "markdown1",
+                  },
+                  "_": "test",
+                },
+                Object {
+                  "$": Object {
+                    "id": 2,
+                    "item": "markdown1",
+                  },
+                  "_": "test",
+                },
+              ],
+            },
           },
         ],
         "section": Array [],

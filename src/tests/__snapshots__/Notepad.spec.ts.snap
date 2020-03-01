@@ -37,7 +37,18 @@ FlatNotepad {
   ],
   "notes": Object {
     "unique": Note {
-      "bibliography": Array [],
+      "bibliography": Array [
+        Object {
+          "content": "test",
+          "id": 1,
+          "item": "markdown1",
+        },
+        Object {
+          "content": "test",
+          "id": 2,
+          "item": "markdown1",
+        },
+      ],
       "elements": Array [],
       "internalRef": "unique",
       "parent": "abc",
