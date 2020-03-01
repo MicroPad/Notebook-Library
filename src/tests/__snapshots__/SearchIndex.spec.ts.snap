@@ -3,7 +3,18 @@
 exports[`SearchIndex should return the notes that match the search 1`] = `
 Array [
   Note {
-    "bibliography": Array [],
+    "bibliography": Array [
+      Object {
+        "content": "test",
+        "id": 1,
+        "item": "markdown1",
+      },
+      Object {
+        "content": "test",
+        "id": 2,
+        "item": "markdown1",
+      },
+    ],
     "elements": Array [],
     "internalRef": "abc",
     "parent": undefined,
@@ -11,7 +22,18 @@ Array [
     "title": "hi",
   },
   Note {
-    "bibliography": Array [],
+    "bibliography": Array [
+      Object {
+        "content": "test",
+        "id": 1,
+        "item": "markdown1",
+      },
+      Object {
+        "content": "test",
+        "id": 2,
+        "item": "markdown1",
+      },
+    ],
     "elements": Array [],
     "internalRef": "abc",
     "parent": undefined,

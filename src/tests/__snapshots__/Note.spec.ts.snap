@@ -20,6 +20,15 @@ Object {
           "_": "https://nick.geek.nz",
         },
       },
+      Object {
+        "source": Object {
+          "$": Object {
+            "id": 2,
+            "item": "markdown1",
+          },
+          "_": "https://nick.geek.nz",
+        },
+      },
     ],
     "markdown": Array [
       Object {
