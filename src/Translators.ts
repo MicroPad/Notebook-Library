@@ -192,7 +192,7 @@ export namespace Translators {
 										return {
 											type: type,
 											args: e.$,
-											content: e._
+											content: e._ || ''
 										} as NoteElement;
 									})
 								)

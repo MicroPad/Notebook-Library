@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<notepad xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://getmicropad.com/schema.xsd" title="Empty Content">
+    <section title="Test section">
+        <note title="Test note">
+            <addons/>
+            <bibliography/>
+            <markdown id="markdown9" x="25px" y="2990px" width="auto" height="auto" fontSize="16px"/>
+        </note>
+    </section>
+</notepad>

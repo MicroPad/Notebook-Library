@@ -1,4 +1,4 @@
-import { Notepad, Translators } from '../index';
+import { Notepad, Translators, Trie } from '../index';
 import { TestUtils } from './TestUtils';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -163,6 +163,17 @@ describe('Translators', () => {
 
 				// Assert
 				expect(parsed.notepadAssets).toHaveLength(3);
+			});
+
+			it('should never allow for element content to be undefined', async () => {
+				// Arrange
+				const emptyContent = fs.readFileSync(path.join(__dirname, '__data__', 'EmptyContent.npx')).toString();
+
+				// Act
+				const notepad = await Translators.Xml.toNotepadFromNpx(emptyContent);
+
+				// Assert
+				expect(notepad.sections[0].notes[0].elements[0].content).toEqual('');
 			});
 		});
 
