@@ -28,7 +28,7 @@ export class AES256 implements EncryptionMethodImpl {
 		return { ...notepad, sections: cipherText };
 	}
 
-	protected keyGenerator(passkey: string): Promise<ReadonlyArray<number>> {
+	protected keyGenerator(passkey: string): Promise<Uint8Array> {
 		passkey = passkey.normalize('NFKC');
 		const passkeyBuff = new buffer.SlowBuffer(passkey);
 
