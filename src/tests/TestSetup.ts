@@ -1,6 +1,6 @@
 // @ts-ignore
 global.fetch = async (url) => Promise.resolve({
-	blob: () => dataURItoBlob(url)
+	blob: () => dataURItoBlob(url as string)
 });
 
 // Thanks to http://stackoverflow.com/a/12300351/998467

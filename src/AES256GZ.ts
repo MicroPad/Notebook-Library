@@ -14,8 +14,13 @@ export class AES256GZ extends AES256 implements EncryptionMethodImpl {
 
 		const plainTextGz = AES.utils.utf8.fromBytes(controller.decrypt(AES.utils.hex.toBytes(cipherText)));
 		const plainText = decompressFromUTF16(plainTextGz);
+		if (!plainText) throw new Error(`The notebook couldn't be decrypted`);
 
-		notepad = { ...notepad, sections: JSON.parse(plainText) };
+		try {
+			notepad = { ...notepad, sections: JSON.parse(plainText) };
+		} catch(e) {
+			throw new Error(`The notebook couldn't be decrypted`);
+		}
 
 		return Translators.Json.toNotepadFromNotepad(notepad);
 	}
