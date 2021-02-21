@@ -1,12 +1,12 @@
 {
 	"name": "upad-parse",
-	"version": "6.4.9",
+	"version": "7.0.0",
 	"description": "This is a parser for the NPX file format that µPad uses",
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "rm -rf ./dist; npx tsc; npx browserify -s NPXParser dist/index.js -o dist/upad-parse.browser.js",
 		"test": "TZ=NZ npx jest",
-		"docs": "npx typedoc --out docs/ --mode modules --excludePrivate --ignoreCompilerErrors"
+		"docs": "rm -rf ./dist; npx typedoc --out docs/ --excludePrivate src/index.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -30,10 +30,10 @@
 		"@types/json-stringify-safe": "^5.0.0",
 		"@types/lz-string": "^1.3.33",
 		"@types/xml2js": "^0.4.4",
-		"browserify": "^16.2.3",
+		"browserify": "^17.0.0",
 		"jest": "^26.0.1",
 		"ts-jest": "^26.0.0",
-		"typedoc": "^0.19.2",
+		"typedoc": "^0.20.0",
 		"typescript": "^4.0.3"
 	},
 	"jest": {
@@ -62,7 +62,7 @@
 		"lz-string": "^1.4.4",
 		"pretty-data": "https://github.com/vkiryukhin/pretty-data#22a34a534745714ea974f72db2e9bf7561b3fdc7",
 		"scrypt-js": "^3.0.0",
-		"turndown": "^4.0.2",
+		"turndown": "^7.0.0",
 		"turndown-plugin-gfm": "^1.0.2",
 		"xml2js": "^0.4.19"
 	}
