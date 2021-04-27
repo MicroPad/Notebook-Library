@@ -1,4 +1,4 @@
-import { Notepad, Translators, Trie } from '../index';
+import { Notepad, Translators } from '../index';
 import { TestUtils } from './TestUtils';
 import * as fs from 'fs';
 import * as path from 'path';
