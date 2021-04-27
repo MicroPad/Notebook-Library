@@ -1,4 +1,4 @@
-import { FlatNotepad, Trie } from '../index';
+import { FlatNotepad, Translators, Trie } from '../index';
 import { TestUtils } from './TestUtils';
 import { ElementArgs } from '../Note';
 
@@ -144,6 +144,34 @@ describe('SearchIndex', () => {
 
 		// Assert
 		expect(res).toEqual([]);
+	});
+
+	// See https://github.com/MicroPad/MicroPad-Core/issues/215
+	it('should handle sections with trailing spaces in their name', async () => {
+		// Arrange
+		const npx = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<notepad lastModified="2020-04-03T16:27:09.722+13:00" title="Trailing space bug" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://getmicropad.com/schema.xsd">
+	<assets/>
+	<section title="I have a space at the end ">
+		<note time="2020-04-03T16:26:46.716+13:00" title="Click me">
+			<addons/>
+			<bibliography/>
+		</note>
+	</section>
+</notepad>`;
+
+		const notepad = await Translators.Xml.toNotepadFromNpx(npx);
+		const expected = notepad.sections[0]?.notes[0]?.internalRef;
+		if (!expected) throw new Error('Missing internalRef');
+
+		const trie = Trie.buildTrie(notepad.flatten().notes);
+
+		// Act
+		const res = Trie.search(trie, "Click");
+
+		// Assert
+		expect(res).toEqual([expected])
 	});
 
 	describe('shouldReindex', () => {
