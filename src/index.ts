@@ -6,3 +6,4 @@ export { default as Asset } from './Asset';
 export { Translators } from './Translators';
 export { Parent } from './interfaces';
 export { Trie } from './SearchIndex'
+export * from './move-notes/move-notes'
