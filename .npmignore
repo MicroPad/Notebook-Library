@@ -1,5 +1,6 @@
 *
 !dist/*.*
+!dist/**/*.*
 !LICENCE
 !package.json
 !yarn.lock
