@@ -22,6 +22,9 @@ export function moveNote(internalRef: string, source: FlatNotepad, destination: 
 		destination = destination.addSection(destSection);
 	}
 
+	source = source.clone({ lastModified: new Date() });
+	destination = destination.clone({ lastModified: new Date() });
+
 	return moveNoteHelper(internalRef, source, destination, destSection.internalRef);
 }
 
@@ -39,7 +42,9 @@ export function moveSection(internalRef: string, source: FlatNotepad, destinatio
 		destination = destination.addSection(destSection);
 	}
 
-	// First, move this section
+	source = source.clone({ lastModified: new Date() });
+	destination = destination.clone({ lastModified: new Date() });
+
 	return moveSectionHelper(internalRef, source, destination, destSection.internalRef);
 }
 
