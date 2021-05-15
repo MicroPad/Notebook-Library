@@ -1,6 +1,7 @@
 import { NPXObject } from './NPXObject';
 import { format } from 'date-fns';
 import { Asset, Parent } from './index';
+import { LAST_MODIFIED_FORMAT } from './date-formats';
 
 export type NoteElement = {
 	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording' | 'pdf';
@@ -115,7 +116,7 @@ export default class Note extends NPXObject {
 			note: {
 				$: {
 					title: this.title,
-					time: format(this.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+					time: format(new Date(this.time), LAST_MODIFIED_FORMAT)
 				},
 				addons: [[]], // We aren't supporting addons in v3 of the parser but we'll keep this for NPX compatibility
 				bibliography: (bibliography.length > 0) ? { source: bibliography } : [[]],

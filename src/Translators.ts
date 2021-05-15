@@ -1,5 +1,5 @@
 import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
-import { format, parse } from 'date-fns';
+import { format, parse, parseISO } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
 import { pd } from 'pretty-data';
@@ -7,6 +7,12 @@ import { gfm } from 'turndown-plugin-gfm';
 import TurndownService from 'turndown';
 import { NotepadShell } from './interfaces';
 import { decrypt } from './crypto';
+import {
+	ENEX_FORMAT,
+	IMPORTED_EVERNOTE_NOTEBOOK_TIME,
+	IMPORTED_MARKDOWN_NOTE_TIME,
+	LAST_MODIFIED_FORMAT
+} from './date-formats';
 
 export namespace Translators {
 	export namespace Json {
@@ -18,7 +24,7 @@ export namespace Translators {
 		export async function toNotepadFromNotepad(json: string | object, passkey?: string): Promise<Notepad> {
 			const jsonObj: NotepadShell = (typeof json === 'string') ? JSON.parse(json) : json;
 			let notepad = new Notepad(jsonObj.title, {
-				lastModified: parse(jsonObj.lastModified),
+				lastModified: parse(jsonObj.lastModified, LAST_MODIFIED_FORMAT, new Date()),
 				notepadAssets: jsonObj.notepadAssets || [],
 				crypto: jsonObj.crypto
 			});
@@ -93,7 +99,9 @@ export namespace Translators {
 		 */
 		export async function toNotepadFromNpx(xml: string): Promise<Notepad> {
 			const res = await parseXml(xml);
-			let notepad = new Notepad(res.notepad.$.title, { lastModified: res.notepad.$.lastModified });
+
+			const lastModifiedStr: string = res.notepad.$.lastModified;
+			let notepad = new Notepad(res.notepad.$.title, { lastModified: lastModifiedStr ? parse(lastModifiedStr, LAST_MODIFIED_FORMAT, new Date()) : new Date() });
 
 			// Parse sections/notes
 			if (res.notepad.section) {
@@ -174,10 +182,12 @@ export namespace Translators {
 				(sectionObj.section || []).forEach(item => section = section.addSection(parseSection(item)));
 
 				// Parse notes
-				(sectionObj.note || []).forEach(item =>
+				(sectionObj.note || []).forEach(item => {
+					const posixTimeStr: string = item.$.time;
+
 					section = section.addNote(new Note(
 						item.$.title,
-						item.$.time,
+						parseISO(posixTimeStr).getTime(),
 						[
 							...([
 									'markdown',
@@ -208,7 +218,7 @@ export namespace Translators {
 							})
 						]
 					))
-				);
+			});
 
 				return section;
 			}
@@ -222,12 +232,12 @@ export namespace Translators {
 			const res = await parseXml(xml, { trim: true, normalize: false });
 			const exported = res['en-export'];
 
-			let notepad = new Notepad(`${exported.$.application} Import ${format(parse(exported.$['export-date']), 'D MMM h:mmA')}`);
+			let notepad = new Notepad(`${exported.$.application} Import ${format(parse(exported.$['export-date'], ENEX_FORMAT, new Date()), IMPORTED_EVERNOTE_NOTEBOOK_TIME)}`);
 			let section = new Section('Imported Notes');
 
 			(await Promise.all<Note>((exported.note || [])
 				.map(async enexNote => {
-					let note = new Note((enexNote.title || ['Imported Note'])[0], parse(enexNote.created[0]).getTime(), [
+					let note = new Note((enexNote.title || ['Imported Note'])[0], parse(enexNote.created[0], ENEX_FORMAT, new Date()).getTime(), [
 						// Add the general note content (text/to-do)
 						{
 							type: 'markdown',
@@ -372,7 +382,7 @@ export namespace Translators {
 				}))
 				.reduce((section, note) => section.addNote(note), new Section('Imported Notes'));
 
-			return new Notepad('Markdown Import ' + format(new Date(), 'D MMM h:mmA')).addSection(section);
+			return new Notepad('Markdown Import ' + format(new Date(), IMPORTED_MARKDOWN_NOTE_TIME)).addSection(section);
 		}
 
 		export type MarkdownImport = { title: string, content: string };

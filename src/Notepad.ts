@@ -5,6 +5,7 @@ import { FlatSection } from './FlatNotepad';
 import { MarkdownNote } from './Note';
 import { NotepadShell } from "./interfaces";
 import { encrypt, EncryptionMethod } from './crypto';
+import { LAST_MODIFIED_FORMAT } from './date-formats';
 
 export type NotepadOptions = {
 	lastModified?: Date;
@@ -32,7 +33,7 @@ export default class Notepad implements NotepadShell {
 		public readonly title: string,
 		opts: NotepadOptions = {}
 	) {
-		this.lastModified = format(opts.lastModified || new Date(), 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+		this.lastModified = format(opts.lastModified || new Date(), LAST_MODIFIED_FORMAT);
 		this.sections = opts.sections || [];
 		this.notepadAssets = opts.notepadAssets || [];
 		this.assets = opts.assets || [];
@@ -127,7 +128,7 @@ export default class Notepad implements NotepadShell {
 
 	public flatten(): FlatNotepad {
 		let notepad = new FlatNotepad(this.title, {
-			lastModified: parse(this.lastModified),
+			lastModified: parse(this.lastModified, LAST_MODIFIED_FORMAT, new Date()),
 			notepadAssets: this.notepadAssets,
 			crypto: this.crypto
 		});
@@ -158,7 +159,7 @@ export default class Notepad implements NotepadShell {
 
 	public clone(opts: Partial<NotepadOptions> = {}, title: string = this.title): Notepad {
 		return new Notepad(title, {
-			lastModified: parse(this.lastModified),
+			lastModified: parse(this.lastModified, LAST_MODIFIED_FORMAT, new Date()),
 			sections: [...this.sections],
 			notepadAssets: [...this.notepadAssets],
 			assets: [...this.assets],

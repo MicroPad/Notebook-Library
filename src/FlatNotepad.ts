@@ -1,6 +1,7 @@
 import { Note, Notepad, Section, Trie } from './index';
 import { format, parse } from 'date-fns';
 import { EncryptionMethod } from './crypto';
+import { LAST_MODIFIED_FORMAT } from './date-formats';
 
 export type FlatNotepadOptions = {
 	lastModified?: Date;
@@ -34,7 +35,7 @@ export default class FlatNotepad {
 		public readonly title: string,
 		opts: FlatNotepadOptions = {}
 	) {
-		this.lastModified = format(opts.lastModified || new Date(), 'YYYY-MM-DDTHH:mm:ss.SSSZ');
+		this.lastModified = format(opts.lastModified || new Date(), LAST_MODIFIED_FORMAT);
 		this.sections = opts.sections || {};
 		this.notes = opts.notes || {};
 		this.notepadAssets = opts.notepadAssets || [];
@@ -121,7 +122,7 @@ export default class FlatNotepad {
 		};
 
 		let notepad = new Notepad(this.title, {
-			lastModified: parse(this.lastModified),
+			lastModified: parse(this.lastModified, LAST_MODIFIED_FORMAT, new Date()),
 			notepadAssets: this.notepadAssets,
 			crypto: this.crypto
 		});
@@ -136,7 +137,7 @@ export default class FlatNotepad {
 
 	public clone(opts: Partial<FlatNotepadOptions> = {}, title: string = this.title): FlatNotepad {
 		return new FlatNotepad(title, {
-			lastModified: parse(this.lastModified),
+			lastModified: parse(this.lastModified, LAST_MODIFIED_FORMAT, new Date()),
 			sections: this.sections,
 			notes: this.notes,
 			notepadAssets: this.notepadAssets,
