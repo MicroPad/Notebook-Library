@@ -71,7 +71,7 @@ FlatNotepad {
 }
 `;
 
-exports[`Notepad should convert a notepad an array of MarkdownNotes 1`] = `
+exports[`Notepad should convert a notepad to an array of MarkdownNotes 1`] = `
 Array [
   Object {
     "md": "# What is µPad?
