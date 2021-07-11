@@ -16,7 +16,7 @@ export class Trie {
 	}
 
 	public static shouldReindex(trie: Trie, lastModified: Date, numberOfNotes: number): boolean {
-		return lastModified.getTime() > trie.lastModified.getTime() || numberOfNotes !== trie.size;
+		return lastModified.getTime() > trie.lastModified.getTime() || numberOfNotes !== trie._size;
 	}
 
 	public static add(trie: Trie, key: string, ref: string): void {
@@ -38,7 +38,7 @@ export class Trie {
 		}
 
 		node.notes.push(ref);
-		trie.size++;
+		trie._size++;
 	}
 
 	public static search(trie: Trie, query: string): string[] {
@@ -58,7 +58,7 @@ export class Trie {
 		return [...new Set(node.getAllFrom())];
 	}
 
-	public size: number = 0;
+	private _size: number = 0;
 
 	private readonly root: TrieNode;
 	private readonly lastModified: Date;
@@ -67,6 +67,14 @@ export class Trie {
 	constructor(lastModified = new Date()) {
 		this.root = new TrieNode();
 		this.lastModified = lastModified;
+	}
+
+	public get size(): number {
+		return this._size;
+	}
+
+	public get availableHashtags(): string[] {
+		return Object.keys(this.hashtags);
 	}
 
 	/**

@@ -122,6 +122,32 @@ describe('SearchIndex', () => {
 		expect(res).toMatchSnapshot();
 	});
 
+	it('should be able to return a list of all known hashtags', () => {
+		// Arrange
+		const notepad = new FlatNotepad('test', {
+			lastModified: new Date(1),
+			notes: {
+				abc: TestUtils.makeNote('hi'),
+				abc2: TestUtils.makeNote('nope'),
+				abc3: TestUtils.makeNote('hello')
+					.addElement({
+						type: 'markdown',
+						args: {} as ElementArgs,
+						content: 'Sup #test'
+					})
+			}
+		});
+		const trie = Trie.buildTrie(notepad.notes);
+
+		const expected = ['#test'];
+
+		// Act
+		const res = trie.availableHashtags;
+
+		// Assert
+		expect(res).toEqual(expected);
+	});
+
 	it('should not partial match hashtags', () => {
 		// Arrange
 		const notepad = new FlatNotepad('test', {
@@ -193,7 +219,7 @@ describe('SearchIndex', () => {
 			const trie = Trie.buildTrie(notepad.notes, new Date(1));
 
 			// Act
-			const res = trie.shouldReindex(new Date(5), 3);
+			const res = Trie.shouldReindex(trie, new Date(5), 3);
 
 			// Assert
 			expect(res).toEqual(true);
@@ -217,7 +243,7 @@ describe('SearchIndex', () => {
 			const trie = Trie.buildTrie(notepad.notes, new Date(1));
 
 			// Act
-			const res = trie.shouldReindex(new Date(1), 5);
+			const res = Trie.shouldReindex(trie, new Date(1), 5);
 
 			// Assert
 			expect(res).toEqual(true);
@@ -241,7 +267,7 @@ describe('SearchIndex', () => {
 			const trie = Trie.buildTrie(notepad.notes, new Date(1));
 
 			// Act
-			const res = trie.shouldReindex(new Date(1), 3);
+			const res = Trie.shouldReindex(trie, new Date(1), 3);
 
 			// Assert
 			expect(res).toEqual(false);
