@@ -14,6 +14,14 @@ import {
 	LAST_MODIFIED_FORMAT
 } from './date-formats';
 
+if (typeof atob === 'undefined') {
+	global.Buffer = global.Buffer ?? require('buffer');
+
+	global.atob = function (b64Encoded) {
+		return new Buffer(b64Encoded, 'base64').toString('binary');
+	};
+}
+
 export namespace Translators {
 	export namespace Json {
 		/**

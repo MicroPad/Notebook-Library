@@ -7,7 +7,7 @@ global.fetch = async (url) => Promise.resolve({
 function dataURItoBlob(dataURI: string) {
 	// convert base64 to raw binary data held in a string
 	// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-	let byteString = atob(dataURI.split(',')[1]);
+	let byteString = Buffer.from(dataURI.split(',')[1], 'base64').toString('binary');
 
 	// separate out the mime component
 	let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
