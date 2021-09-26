@@ -22,6 +22,12 @@ if (typeof atob === 'undefined') {
 	};
 }
 
+if (typeof Blob === 'undefined') {
+	const { Blob, FileReader } = require('vblob');
+	global.Blob = Blob;
+	global.FileReader = FileReader;
+}
+
 export namespace Translators {
 	export namespace Json {
 		/**

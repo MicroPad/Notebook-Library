@@ -5,8 +5,8 @@ Object {
   "$": Object {
     "uuid": "abc",
   },
-  "_": "data:application/octet-stream;base64,dGVzdA==",
+  "_": "data:;base64,dGVzdA==",
 }
 `;
 
-exports[`Asset toString should generate base64 from the asset 1`] = `"data:application/octet-stream;base64,dGVzdA=="`;
+exports[`Asset toString should generate base64 from the asset 1`] = `"data:;base64,dGVzdA=="`;

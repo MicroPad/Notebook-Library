@@ -3,7 +3,13 @@
 exports[`Notepad constructor should construct with assets 1`] = `
 Array [
   Asset {
-    "data": Blob {},
+    "data": VBlob {
+      "_offset": 0,
+      "_path": "",
+      "_size": 4,
+      "_type": "",
+      "_writeTask": Promise {},
+    },
     "uuid": "abc",
   },
 ]
@@ -349,4 +355,4 @@ exports[`Notepad toJson should generate a JSON object of the notepad 1`] = `"{\\
 
 exports[`Notepad toJson should generate a JSON object of the notepad with encrypted sections 1`] = `"{\\"title\\":\\"test\\",\\"lastModified\\":\\"1970-01-01T12:00:00.001+12:00\\",\\"sections\\":\\"89903092d8904acdc75bce44ebdbc4c389761608bb8bab581f6ec528884b042ddacf3c8adf96710c918a999d48cd62eda7dadf01ebe47058825942f9d6396a640da25c33bbd7c13deaa834ab707af102332f87a4f44a93ccc1795cc762219da73d5584cf5d5404243e868da97576a4ac192f1b4b5b2b722d7b071c789580316de391a6c8e95d6192ce1cfc64c0823e12edd34e00c9ed0b\\",\\"notepadAssets\\":[\\"test\\"],\\"crypto\\":\\"AES-256\\"}"`;
 
-exports[`Notepad toXml should generate the notepad's NPX file 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"no\\"?><notepad xsi:noNamespaceSchemaLocation=\\"https://getmicropad.com/schema.xsd\\" title=\\"test\\" lastModified=\\"1970-01-01T12:00:00.001+12:00\\" xmlns:xsi=\\"http://www.w3.org/2001/XMLSchema-instance\\"><assets><asset uuid=\\"abc\\">data:application/octet-stream;base64,dGVzdA==</asset></assets><section title=\\"test section\\"><note title=\\"test note\\" time=\\"1970-01-01T12:00:00.001+12:00\\"><addons/><bibliography><source id=\\"1\\" item=\\"markdown1\\">test</source><source id=\\"2\\" item=\\"markdown1\\">test</source></bibliography></note></section></notepad>"`;
+exports[`Notepad toXml should generate the notepad's NPX file 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"no\\"?><notepad xsi:noNamespaceSchemaLocation=\\"https://getmicropad.com/schema.xsd\\" title=\\"test\\" lastModified=\\"1970-01-01T12:00:00.001+12:00\\" xmlns:xsi=\\"http://www.w3.org/2001/XMLSchema-instance\\"><assets><asset uuid=\\"abc\\">data:;base64,dGVzdA==</asset></assets><section title=\\"test section\\"><note title=\\"test note\\" time=\\"1970-01-01T12:00:00.001+12:00\\"><addons/><bibliography><source id=\\"1\\" item=\\"markdown1\\">test</source><source id=\\"2\\" item=\\"markdown1\\">test</source></bibliography></note></section></notepad>"`;

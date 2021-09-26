@@ -7,7 +7,7 @@
 		"build": "yarn clean && tsc -p tsconfig.json && yarn build:browser",
 		"build:browser": "cp -r node_modules/timers-browserify node_modules/timers && esbuild src/index.ts --bundle --minify --sourcemap --global-name='NPXParser' --target=chrome86,firefox84,safari12 --outfile=dist/upad-parse.browser.js",
 		"clean": "rm -rf ./dist && rm -rf node_modules/timers",
-		"test": "TZ=NZ npx jest",
+		"test": "TZ=NZ yarn jest",
 		"docs": "rm -rf ./dist; npx typedoc --out docs/ --excludePrivate src/index.ts"
 	},
 	"repository": {
@@ -59,6 +59,7 @@
 		"timers-browserify": "^2.0.12",
 		"turndown": "^7.0.0",
 		"turndown-plugin-gfm": "^1.0.2",
+		"vblob": "^1.0.2",
 		"xml2js": "^0.4.19"
 	},
 	"devDependencies": {
