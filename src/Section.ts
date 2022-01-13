@@ -1,7 +1,7 @@
 import { Parent } from './interfaces';
-import { Asset, Note } from './index';
 import { NPXObject } from './NPXObject';
-import { MarkdownNote } from './Note';
+import Note, { MarkdownNote } from './Note';
+import Asset from './Asset';
 
 export default class Section extends NPXObject implements Parent {
 	constructor(

@@ -1,5 +1,5 @@
 import { Parent } from './interfaces';
-import { Note } from './index';
+import Note from './Note';
 
 export abstract class NPXObject {
 	public parent: Parent | string | undefined;

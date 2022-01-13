@@ -1,4 +1,4 @@
-import { Note } from './index';
+import Note from './Note';
 
 export class Trie {
 	public static buildTrie(notes: { [internalRef: string]: Note }, date = new Date()): Trie {

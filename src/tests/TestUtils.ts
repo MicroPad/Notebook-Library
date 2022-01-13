@@ -1,5 +1,6 @@
-import { Asset, Note, Section } from '../index';
-import { Source } from '../Note';
+import Note, { Source } from '../Note';
+import Asset from '../Asset';
+import Section from '../Section';
 
 if (typeof Blob === 'undefined') {
 	const { Blob, FileReader } = require('vblob');

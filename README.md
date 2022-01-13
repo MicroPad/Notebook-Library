@@ -20,12 +20,3 @@ import { Notepad } from 'upad-parse/dist';
 let notepad = new Notepad('Test Notepad');
 notepad.toXml().then(xml => console.log(xml));
 ```
-
-## Browser
-```html
-<script type="text/javascript" src="https://unpkg.com/upad-parse@^7/dist/upad-parse.browser.js"></script>
-<script type="text/javascript">
-	let notepad = new NPXParser.Notepad('Test Notepad');
-	notepad.toXml().then(xml => console.log(xml));
-</script>
-```

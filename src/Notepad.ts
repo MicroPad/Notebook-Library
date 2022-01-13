@@ -1,11 +1,12 @@
 import { format, parse } from 'date-fns';
-import { Asset, FlatNotepad, Note, Section } from './';
 import { Builder } from 'xml2js';
-import { FlatSection } from './FlatNotepad';
-import { MarkdownNote } from './Note';
+import FlatNotepad, { FlatSection } from './FlatNotepad';
+import Note, { MarkdownNote } from './Note';
 import { NotepadShell } from "./interfaces";
 import { encrypt, EncryptionMethod } from './crypto';
 import { LAST_MODIFIED_FORMAT } from './date-formats';
+import Asset from './Asset';
+import Section from './Section';
 
 export type NotepadOptions = {
 	lastModified?: Date;

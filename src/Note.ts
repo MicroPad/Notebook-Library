@@ -1,7 +1,8 @@
 import { NPXObject } from './NPXObject';
 import { format } from 'date-fns';
-import { Asset, Parent } from './index';
 import { LAST_MODIFIED_FORMAT } from './date-formats';
+import { Parent } from './interfaces';
+import Asset from './Asset';
 
 export type NoteElement = {
 	type: 'markdown' | 'image' | 'drawing' | 'file' | 'recording' | 'pdf';

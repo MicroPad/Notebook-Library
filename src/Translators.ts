@@ -1,7 +1,6 @@
-import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
 import { format, parse, parseISO } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
-import { NoteElement, Source } from './Note';
+import Note, { NoteElement, Source } from './Note';
 import { pd } from 'pretty-data';
 import { gfm } from 'turndown-plugin-gfm';
 import TurndownService from 'turndown';
@@ -13,6 +12,10 @@ import {
 	IMPORTED_MARKDOWN_NOTE_TIME,
 	LAST_MODIFIED_FORMAT
 } from './date-formats';
+import Notepad from './Notepad';
+import FlatNotepad from './FlatNotepad';
+import Section from './Section';
+import Asset from './Asset';
 
 if (typeof atob === 'undefined') {
 	global.Buffer = global.Buffer ?? require('buffer');

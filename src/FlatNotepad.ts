@@ -1,7 +1,10 @@
-import { Note, Notepad, Section, Trie } from './index';
 import { format, parse } from 'date-fns';
 import { EncryptionMethod } from './crypto';
 import { LAST_MODIFIED_FORMAT } from './date-formats';
+import Notepad from './Notepad';
+import Section from './Section';
+import { Trie } from './SearchIndex';
+import Note from './Note';
 
 export type FlatNotepadOptions = {
 	lastModified?: Date;
