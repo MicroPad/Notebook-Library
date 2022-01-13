@@ -196,12 +196,12 @@ Creating lists in Markdown couldn't  be simpler:
 A todo list is just a list with a little \`[ ]\` next to it:
 \`\`\`
 - [ ] like
-- [] this
+- [ ] this
 - [x] and I did this one
 \`\`\`
 
 - [ ] like
-- [] this
+- [ ] this
 - [x] and I did this one
 
 ### Quotes
