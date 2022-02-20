@@ -19,6 +19,8 @@ export type ElementArgs = {
 	filename?: string;
 	ext?: string;
 	dueDate?: string;
+	/** Allows the binary in this element to be optimised. Defaults to true with image elements when unspecified. */
+	canOptimise?: boolean;
 };
 
 export type Source = {
@@ -191,4 +193,8 @@ export default class Note extends NPXObject {
 			opts.parent || this.parent
 		);
 	}
+}
+
+export function canOptimiseElement(el: NoteElement): boolean {
+	return el.args.canOptimise ?? el.type === 'image';
 }

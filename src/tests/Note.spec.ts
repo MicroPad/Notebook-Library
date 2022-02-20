@@ -1,6 +1,6 @@
 import { TestUtils } from './TestUtils';
 import { Note } from '../index';
-import { ElementArgs, NoteElement, Source } from '../Note';
+import { canOptimiseElement, ElementArgs, NoteElement, Source } from '../Note';
 
 describe('Note', () => {
 	let element: NoteElement;
@@ -279,6 +279,62 @@ describe('Note', () => {
 
 			// Assert
 			expect(note.elements[0].content).toEqual(expected);
+		});
+	});
+
+	describe('canOptimiseElement', () => {
+		it('should be true for image elements when not specified', () => {
+			expect(canOptimiseElement({
+				type: 'image',
+				content: 'AS',
+				args: {
+					id: 'image46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto'
+				}
+			})).toBe(true);
+		});
+
+		it('should be true for any element when tagged', () => {
+			expect(canOptimiseElement({
+				type: 'markdown',
+				content: 'AS',
+				args: {
+					id: 'markdown46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto',
+					canOptimise: true
+				}
+			})).toBe(true);
+		});
+
+		it('should be false for image elements when tagged as false', () => {
+			expect(canOptimiseElement({
+				type: 'image',
+				content: 'AS',
+				args: {
+					id: 'image46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto',
+					canOptimise: false
+				}
+			})).toBe(false);
+		});
+
+		it('should be false for any element when not tagged', () => {
+			expect(canOptimiseElement({
+				type: 'markdown',
+				content: 'AS',
+				args: {
+					id: 'markdown46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto'
+				}
+			})).toBe(false);
 		});
 	});
 });
