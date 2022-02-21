@@ -4,6 +4,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import Asset from '../Asset';
 import MarkdownImport = Translators.Markdown.MarkdownImport;
+import makeSection = TestUtils.makeSection;
+import makeNote = TestUtils.makeNote;
 
 describe('Translators', () => {
 	describe('Json', () => {
@@ -174,6 +176,100 @@ describe('Translators', () => {
 
 				// Assert
 				expect(notepad.sections[0].notes[0].elements[0].content).toEqual('');
+			});
+
+			describe('should keep canOptimise consistent', () => {
+				it(`should not be present in the element if it's not in the XML`, async () => {
+					// Arrange
+					let n = new Notepad('test', { lastModified: new Date(0) });
+					n = n.clone({
+						sections: [
+							makeSection('foo', [], [
+								makeNote('test note').clone({
+									elements: [{
+										type: 'image',
+										content: 'AS',
+										args: {
+											id: 'image12234-4546',
+											ext: 'fedsrf',
+											x: '0',
+											y: '0'
+										}
+									}]
+								})
+							])
+						]
+					});
+					const npx = await n.toXml();
+
+					// Act
+					const res = await Translators.Xml.toNotepadFromNpx(npx);
+
+					// Assert
+					expect(res.sections[0].notes[0].elements[0].args.canOptimise).toBeUndefined();
+				});
+
+				it(`should be false on the element if it's false in the XML`, async () => {
+					// Arrange
+					let n = new Notepad('test', { lastModified: new Date(0) });
+					n = n.clone({
+						sections: [
+							makeSection('foo', [], [
+								makeNote('test note').clone({
+									elements: [{
+										type: 'image',
+										content: 'AS',
+										args: {
+											id: 'image12234-4546',
+											ext: 'fedsrf',
+											x: '0',
+											y: '0',
+											canOptimise: false
+										}
+									}]
+								})
+							])
+						]
+					});
+					const npx = await n.toXml();
+
+					// Act
+					const res = await Translators.Xml.toNotepadFromNpx(npx);
+
+					// Assert
+					expect(res.sections[0].notes[0].elements[0].args.canOptimise).toBe(false);
+				});
+
+				it(`should be true on the element if it's false in the XML`, async () => {
+					// Arrange
+					let n = new Notepad('test', { lastModified: new Date(0) });
+					n = n.clone({
+						sections: [
+							makeSection('foo', [], [
+								makeNote('test note').clone({
+									elements: [{
+										type: 'image',
+										content: 'AS',
+										args: {
+											id: 'image12234-4546',
+											ext: 'fedsrf',
+											x: '0',
+											y: '0',
+											canOptimise: true
+										}
+									}]
+								})
+							])
+						]
+					});
+					const npx = await n.toXml();
+
+					// Act
+					const res = await Translators.Xml.toNotepadFromNpx(npx);
+
+					// Assert
+					expect(res.sections[0].notes[0].elements[0].args.canOptimise).toBe(true);
+				});
 			});
 		});
 

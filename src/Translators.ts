@@ -201,7 +201,10 @@ export namespace Translators {
 									(item[type] || []).map(e => {
 										return {
 											type: type,
-											args: e.$,
+											args: {
+												...e.$,
+												canOptimise: e.$.canOptimise && (e.$.canOptimise.toLowerCase() == 'true')
+											},
 											content: e._ || ''
 										} as NoteElement;
 									})
