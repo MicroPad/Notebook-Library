@@ -43,7 +43,7 @@ jobs:
 
   publish:
     docker:
-      - image: circleci/node:10.16.0-jessie
+      - image: circleci/node:lts
     working_directory: ~/repo
 
     steps:
@@ -60,7 +60,7 @@ jobs:
 
   update-docs:
     docker:
-      - image: circleci/node:10.16.0-jessie
+      - image: circleci/node:lts
     working_directory: ~/repo
 
     steps:
