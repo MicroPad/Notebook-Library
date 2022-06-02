@@ -94,6 +94,13 @@ export default class Note extends NPXObject {
 			.map(hashtag => hashtag.trim());
 	}
 
+	public getHeadingWords(): Set<string> {
+		return new Set<string>(this.elements
+			.filter(e => e.type === 'markdown')
+			.flatMap(e => Array.from(e.content.matchAll(/^#{1,3} (.+)$/gmi)))
+			.flatMap(matches => matches[1].trim().split(' ')));
+	}
+
 	public toXmlObject(): any {
 		const elements = {};
 		this.elements.forEach(e => {

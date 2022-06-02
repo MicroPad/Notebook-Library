@@ -122,6 +122,48 @@ describe('SearchIndex', () => {
 		expect(res).toMatchSnapshot();
 	});
 
+	describe('heading search', () => {
+		it('should search by heading', () => {
+			// Arrange
+			const notepad = new FlatNotepad('test', {
+				lastModified: new Date(1),
+				notes: {
+					abc: TestUtils.makeNote('hi')
+						.addElement({
+							type: 'markdown',
+							args: {} as ElementArgs,
+							content: '# Nothing interesting here\nNot at _all_'
+						}),
+					abc2: TestUtils.makeNote('nope')
+						.addElement({
+							type: 'markdown',
+							args: {} as ElementArgs,
+							content: '# This is a heading'
+						}),
+					abc3: TestUtils.makeNote('hello')
+						.addElement({
+							type: 'markdown',
+							args: {} as ElementArgs,
+							content: '## This is also a heading'
+						}),
+					abc4: TestUtils.makeNote('nah')
+						.addElement({
+							type: 'markdown',
+							args: {} as ElementArgs,
+							content: '## This #heading will not match because hashtag'
+						})
+				}
+			});
+			const trie = Trie.buildTrie(notepad.notes);
+
+			// Act
+			const res = notepad.search(trie, 'headi');
+
+			// Assert
+			expect(res).toMatchSnapshot();
+		});
+	});
+
 	it('should be able to return a list of all known hashtags', () => {
 		// Arrange
 		const notepad = new FlatNotepad('test', {

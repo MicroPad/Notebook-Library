@@ -226,6 +226,51 @@ describe('Note', () => {
 		});
 	});
 
+	describe('getHeadingWords', () => {
+		it('should return no matches with no headings', () => {
+			// Arrange
+			let note = TestUtils.makeNote('test');
+			note = note.addElement({
+				type: 'markdown',
+				args: {} as ElementArgs,
+				content: 'Hello.\n\nThere are no headings here.'
+			});
+
+			// Act
+			const res = note.getHeadingWords();
+
+			// Assert
+			expect(res.size).toBe(0);
+		});
+
+		it('should return all the heading words in all the elements', () => {
+			// Arrange
+			let note = TestUtils.makeNote('test');
+			note = note
+				.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: '# Hello\n\nThere is #todo here.'
+				})
+				.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: 'This\n\n## Has a sub-heading'
+				})
+				.addElement({
+					type: 'markdown',
+					args: {} as ElementArgs,
+					content: 'This\n\n## Has a sub-heading\n# And a primary'
+				});
+
+			// Act
+			const res = note.getHeadingWords();
+
+			// Assert
+			expect(res).toEqual(new Set(['Hello', 'Has', 'a', 'sub-heading', 'And', 'primary']));
+		});
+	});
+
 	it('should generate XML Object with required data', () => {
 		// Arrange
 		let note = TestUtils.makeNote('test note');

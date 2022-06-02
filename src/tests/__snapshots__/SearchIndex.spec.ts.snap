@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SearchIndex heading search should search by heading 1`] = `
+Array [
+  Note {
+    "bibliography": Array [
+      Object {
+        "content": "test",
+        "id": 1,
+        "item": "markdown1",
+      },
+      Object {
+        "content": "test",
+        "id": 2,
+        "item": "markdown1",
+      },
+    ],
+    "elements": Array [
+      Object {
+        "args": Object {},
+        "content": "# This is a heading",
+        "type": "markdown",
+      },
+    ],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "nope",
+  },
+  Note {
+    "bibliography": Array [
+      Object {
+        "content": "test",
+        "id": 1,
+        "item": "markdown1",
+      },
+      Object {
+        "content": "test",
+        "id": 2,
+        "item": "markdown1",
+      },
+    ],
+    "elements": Array [
+      Object {
+        "args": Object {},
+        "content": "## This is also a heading",
+        "type": "markdown",
+      },
+    ],
+    "internalRef": "abc",
+    "parent": undefined,
+    "time": 1,
+    "title": "hello",
+  },
+]
+`;
+
 exports[`SearchIndex should return the notes that match the search 1`] = `
 Array [
   Note {
