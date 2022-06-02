@@ -238,50 +238,6 @@ describe('Note', () => {
 		expect(res).toMatchSnapshot();
 	});
 
-	describe('task list compatibility', () => {
-		const expected = '- [ ] not done\n* - [ ] not done\n\t- [x] done\n* [X] also done';
-
-		it('should ignore correct GFM syntax', () => {
-			// Arrange
-			// Act
-			let note = new Note('So much to do, so little time', 0, [
-				{
-					type: 'markdown',
-					content: expected,
-					args: {
-						id: 'testmd',
-						x: '0',
-						y: '0',
-						width: 'auto'
-					}
-				}
-			]);
-
-			// Assert
-			expect(note.elements[0].content).toEqual(expected);
-		});
-
-		it('should fix incorrect GFM syntax', () => {
-			// Arrange
-			// Act
-			let note = new Note('So much to do, so little time', 0, [
-				{
-					type: 'markdown',
-					content: '- [] not done\n* - [] not done\n\t- [x] done\n* [X] also done',
-					args: {
-						id: 'testmd',
-						x: '0',
-						y: '0',
-						width: 'auto'
-					}
-				}
-			]);
-
-			// Assert
-			expect(note.elements[0].content).toEqual(expected);
-		});
-	});
-
 	describe('canOptimiseElement', () => {
 		it('should be true for image elements when not specified', () => {
 			expect(canOptimiseElement({

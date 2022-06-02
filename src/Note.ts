@@ -35,24 +35,15 @@ export type MarkdownNote = {
 };
 
 export default class Note extends NPXObject {
-	public readonly elements: NoteElement[];
-
 	constructor(
 		public readonly title: string,
 		public readonly time: number = new Date().getTime(),
-		elements: NoteElement[] = [],
+		public readonly elements: NoteElement[] = [],
 		public readonly bibliography: Source[] = [],
 		internalRef?: string,
 		parent?: Parent | string
 	) {
 		super(title, internalRef, parent);
-
-		// Fix historical GFM task list inconsistency
-		this.elements = elements.map(el =>
-			el.type === 'markdown'
-				? { ...el, content: el.content.replace(/[-*] \[\]/gm, '- [ ]') }
-				: el
-		);
 	}
 
 	public addElement(element: NoteElement): Note {
@@ -97,7 +88,7 @@ export default class Note extends NPXObject {
 		return this.elements
 			.filter(e => e.type === 'markdown')
 			.map(e => e.content.match(/(^|\s)(#[a-z\d-]+)/gi))
-			.filter(Boolean)
+			.filter(res => !!res)
 			.map(matches => Array.from(matches!))
 			.reduce((acc, val) => acc.concat(val), [])
 			.map(hashtag => hashtag.trim());
