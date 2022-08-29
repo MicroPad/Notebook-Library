@@ -292,7 +292,8 @@ describe('Note', () => {
 					id: 'image46-ghjg',
 					x: '0',
 					y: '0',
-					width: 'auto'
+					width: '100px',
+					height: '100px',
 				}
 			})).toBe(true);
 		});
@@ -305,10 +306,53 @@ describe('Note', () => {
 					id: 'markdown46-ghjg',
 					x: '0',
 					y: '0',
-					width: 'auto',
+					width: '100px',
+					height: '100px',
 					canOptimise: true
 				}
 			})).toBe(true);
+		});
+
+		it('should be false for image elements when width is auto', () => {
+			expect(canOptimiseElement({
+				type: 'image',
+				content: 'AS',
+				args: {
+					id: 'image46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto',
+					height: '100px',
+				}
+			})).toBe(false);
+		});
+
+		it('should be false for image elements when height is auto', () => {
+			expect(canOptimiseElement({
+				type: 'image',
+				content: 'AS',
+				args: {
+					id: 'image46-ghjg',
+					x: '0',
+					y: '0',
+					width: '100px',
+					height: 'auto',
+				}
+			})).toBe(false);
+		});
+
+		it('should be false for image elements when width and height is auto', () => {
+			expect(canOptimiseElement({
+				type: 'image',
+				content: 'AS',
+				args: {
+					id: 'image46-ghjg',
+					x: '0',
+					y: '0',
+					width: 'auto',
+					height: 'auto',
+				}
+			})).toBe(false);
 		});
 
 		it('should be false for image elements when tagged as false', () => {
