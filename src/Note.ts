@@ -194,5 +194,12 @@ export default class Note extends NPXObject {
 }
 
 export function canOptimiseElement(el: NoteElement): boolean {
-	return el.args.canOptimise ?? el.type === 'image';
+	const isEligible = el.args.canOptimise ?? el.type === 'image';
+
+	// Only fixed sizes can be optimised
+	const width = parseInt(el.args.width!, 10);
+	const height = parseInt(el.args.height!, 10);
+	if (isNaN(width) || isNaN(height)) return false;
+
+	return isEligible;
 }
