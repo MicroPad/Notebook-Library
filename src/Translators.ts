@@ -2,7 +2,6 @@ import { Asset, FlatNotepad, Note, Notepad, Section } from './index';
 import { format, parse, parseISO } from 'date-fns';
 import { OptionsV2, parseString } from 'xml2js';
 import { NoteElement, Source } from './Note';
-import { pd } from 'pretty-data';
 import { gfm } from 'turndown-plugin-gfm';
 import TurndownService from 'turndown';
 import { NotepadShell } from './interfaces';
@@ -252,7 +251,7 @@ export namespace Translators {
 								height: 'auto',
 								fontSize: '16px'
 							},
-							content: enmlToMarkdown(pd.xml(enexNote.content[0]))
+							content: enmlToMarkdown(enexNote.content[0])
 						}
 					]);
 
