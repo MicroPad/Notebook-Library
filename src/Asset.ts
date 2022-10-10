@@ -1,6 +1,14 @@
 import { FileReaderEventTarget } from "./interfaces";
+import Note from './Note';
 
 export default class Asset {
+	public static getAssets(notes: Note[]): string[] {
+		return Object.values(notes)
+			.flatMap(n => n.elements)
+			.map(es => es.args.ext)
+			.filter((assetId): assetId is string => !!assetId);
+	}
+
 	public readonly uuid: string;
 
 	constructor(

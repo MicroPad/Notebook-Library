@@ -40,6 +40,7 @@ export default class Note extends NPXObject {
 		public readonly time: number = new Date().getTime(),
 		public readonly elements: NoteElement[] = [],
 		public readonly bibliography: Source[] = [],
+		public readonly lastModified: string,
 		internalRef?: string,
 		parent?: Parent | string
 	) {
@@ -179,16 +180,17 @@ export default class Note extends NPXObject {
 
 	public clone(opts: Partial<Note> = {}): Note {
 		return new Note(
-			opts.title || this.title,
-			opts.time || this.time,
+			opts.title ?? this.title,
+			opts.time ?? this.time,
 			[
-				...(opts.elements || this.elements),
+				...(opts.elements ?? this.elements),
 			],
 			[
-				...(opts.bibliography || this.bibliography),
+				...(opts.bibliography ?? this.bibliography),
 			],
-			opts.internalRef || this.internalRef,
-			opts.parent || this.parent
+			opts.lastModified ?? this.lastModified,
+			opts.internalRef ?? this.internalRef,
+			opts.parent ?? this.parent
 		);
 	}
 }

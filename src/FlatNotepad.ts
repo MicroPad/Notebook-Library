@@ -1,7 +1,8 @@
 import { Note, Notepad, Section, Trie } from './index';
-import { format, parse } from 'date-fns';
+import { format, isAfter, parse } from 'date-fns';
 import { EncryptionMethod } from './crypto';
 import { LAST_MODIFIED_FORMAT } from './date-formats';
+import Asset from './Asset';
 
 export type FlatNotepadOptions = {
 	lastModified?: Date;
@@ -166,5 +167,34 @@ export default class FlatNotepad {
 			if (!tmp.parentRef) return [ this, ...parents ];
 			tmp = this.sections[tmp.parentRef];
 		}
+	}
+
+	/**
+	 * Merge two notebooks together, creating sections to wrap conflicting notes.
+	 * If one of the two notebooks does not support merging, the one that supports merging will overwrite.
+	 * If neither support merging, the newer notebook will win.
+	 * @param other The other notebook being merged in.
+	 */
+	public merge(other: FlatNotepad): FlatNotepad {
+		// Figure out the timeline
+		let old: FlatNotepad, next: FlatNotepad;
+		if (isAfter(parse(this.lastModified, LAST_MODIFIED_FORMAT, new Date()), parse(other.lastModified, LAST_MODIFIED_FORMAT, new Date()))) {
+			old = other;
+			next = this;
+		} else {
+			old = this;
+			next = other;
+		}
+
+		let sections: typeof FlatNotepad['sections'] = next.sections;
+		let notes: typeof FlatNotepad['notes'] = next.notes;
+
+		return new FlatNotepad(next.title, {
+			lastModified: new Date(),
+			crypto: next.crypto,
+			notepadAssets: Asset.getAssets(Object.values(notes)),
+			sections,
+			notes
+		});
 	}
 }
